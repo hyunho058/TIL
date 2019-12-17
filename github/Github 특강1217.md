@@ -315,12 +315,10 @@ $ git push origin master
 1. feature/signout branch 생성 및 이동
 
    ```bash
-   # git branch feature/signout #생성
-   # git checkout feature/signout #이동
-   $git checkout -b feature/signout #생성및 이동
+   # $ git branch feature/signout #생성
+   # $ git checkout feature/signout #이동
+   # $ git checkout -b feature/signout #생성및 이동
    ```
-
-   
 
 2. 작업 완료 후 commit
 
@@ -398,6 +396,13 @@ $ git push origin master
 
 8. branch 삭제
 
+   ```bash
+   (master)$ git branch -d {branch name}
+   & git branch -d feature/signout
+   ```
+
+   
+
 ------
 
 ### 상황 3. merge commit 충돌
@@ -413,8 +418,6 @@ $ git push origin master
    ```bash
    $ git checkout -b feature/board
    ```
-
-   
 
 2. 작업 완료 후 commit
 
@@ -452,7 +455,7 @@ $ git push origin master
    - **동일 파일을 수정 혹은 생성하세요!**
 
      ```bash
-     #README.md 수정
+     # README.md 수정
      (master)$ git add .
      $ git commit -m 'Update README on master'
      ```
