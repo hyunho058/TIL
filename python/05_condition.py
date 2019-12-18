@@ -9,3 +9,4 @@ elif dust > 100:
     print("나쁨")
 else:
     print("보통")
+    
