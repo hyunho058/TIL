@@ -14,3 +14,11 @@
   1. API Server -> 사용자
 
 외장모듈(PIP) = Reg,Bs4
+
+* python  pip requests 다운로드
+
+  [pip install requests](https://pypi.org/project/requests/)
+
+* python pip bs4 다운로드
+
+  [pip install bs4](https://pypi.org/project/bs4/)
