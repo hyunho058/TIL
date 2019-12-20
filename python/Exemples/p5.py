@@ -26,6 +26,6 @@ boxes.sort(reverse=True)
 print(boxes)
 boxes.sort(reverse=False) 
 print(boxes)
-print(len(boxes))
+print(len(boxes)) #배열 길이
 
 

@@ -1,0 +1,31 @@
+token code
+864971232:AAGQLck432-plycu3vlF692rg0jon_F3nqQ
+
+https://api.telegram.org/bot<token>/METHOD_NAME
+URL
+https://api.telegram.org/bot864971232:AAGQLck432-plycu3vlF692rg0jon_F3nqQ/getMe
+
+chat ID
+826839579
+
+ngrok
+https://58c1ae6c.ngrok.io == localgost.5000 ,http://127.0.0.1:5000/
+
+/setWebhook?url=<ngrok forw.https>
+https://api.telegram.org/bot864971232:AAGQLck432-plycu3vlF692rg0jon_F3nqQ//setWebhook?url=https://58c1ae6c.ngrok.io/864971232:AAGQLck432-plycu3vlF692rg0jon_F3nqQ
+
+url/token//ngrok//token
+
+
+pythonanywhere
+https://api.telegram.org/bot864971232:AAGQLck432-plycu3vlF692rg0jon_F3nqQ/setWebhook?url=https://matgangjung058.pythonanywhere.com/864971232:AAGQLck432-plycu3vlF692rg0jon_F3nqQ
+
+http://matgangjung058.pythonanywhere.com/
+
+
+
+
+
+
+
+https://api.telegram.org/bot864971232:AAGQLck432-plycu3vlF692rg0jon_F3nqQ/setWebhook?url=https://58c1ae6c.ngrok.io/864971232:AAGQLck432-plycu3vlF692rg0jon_F3nqQ
