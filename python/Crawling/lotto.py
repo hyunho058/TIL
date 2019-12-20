@@ -24,15 +24,13 @@ winner = []
 
 for i in range(1, 7):
     winner.append(lotto.get(f"drwtNo{i}")) #fString 사용
-print("----------00000")
+
 print(winner)
 
 #python 함수
 def pickLotto():
     picked = sorted(random.sample(range(1, 46),6))
     matched = len(set(winner) & set(picked))
-
-    print(sorted(picked))
 
     if matched == 6:
         print("1등")
@@ -42,8 +40,6 @@ def pickLotto():
         print("4등")
     elif matched == 3:
         print("5등")
-    else :
-        print("꽝")
     
 
 pickLotto()
