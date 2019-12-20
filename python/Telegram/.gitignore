@@ -1,0 +1,8 @@
+# python 가상환경
+telegram-venv/
+
+# 환경 변수(token, id value)
+.env
+
+# vscode setting
+.vscode
