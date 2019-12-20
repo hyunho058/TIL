@@ -13,29 +13,38 @@
   N이 주어졌을 때, N의 사이클의 길이를 구하는 프로그램을 작성하시오.
 
 ```java
-public class NumAdd {
+package easytest;
+
+import java.util.Scanner;
+
+public class Test001 {
 
 	public static void main(String[] args) {
-		int num = 26;
-		int swap = num;
-		int n = 0;
-		int count = 1;
+		Scanner scan = new Scanner(System.in);
+
 		boolean loof = true;
-		
-		while(loof) {
-			if(num == swap) {
+		int num = scan.nextInt();
+		int swap = num;
+		int count = 0;
+		int a = 0;
+		int b  =0;
+
+		while (loof) {
+
+			a = swap / 10;
+			b = swap % 10;
+			swap = a + b;
+			swap = swap % 10;
+			swap = swap + (b*10);
+			count++;
+			System.out.println(swap);
+			if (num == swap) {
 				loof = false;
 				break;
 			}
-			else {
-				int a = swap%10;
-				int b = swap/10;
-				n = a+b;
-				swap = n+(a*10);
-				count ++;
-				System.out.println(swap);
-			}
+
 		}
+		System.out.println(count);
 	}
 }
 

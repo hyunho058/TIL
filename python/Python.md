@@ -25,9 +25,13 @@
 
   [Flask](https://pypi.org/project/Flask/)
   
-  # Telegram chetbot
-  
+# Telegram chetbot
+
   * 가상환경 만들기
+
+  > 기존 컴퓨터 환경에 영향을 피해 가상환경을 만들어 원하는 version이나 환경을 구축 해서 사용 할 수있게 
+  >
+  > 해주는 역할을 하는게 가상환경을 만드는 것이다.
 
 ```bash
 $ python -m venv telegram-venv
@@ -136,7 +140,7 @@ $ pip install -r requirements.txt
 
 만든 가상환경 을 나가고 싶으면 -venv 폴더 삭제 하면 가상환경 정보 사라짐
 
-* Telegram 쳇봇 요청
+* Telegram ChatBot 요청
 
 ![image-20191220104847569](image/image-20191220104847569.png)
 
@@ -156,7 +160,7 @@ token 과 id value 는 hiden되어야 하기 때문에 .env 파일을 만들어�
 
 
 
-* [ngrok](https://ngrok.com/download) telegram에서 local에 접속을 도와주는 프로그램
+* [ngrok](https://ngrok.com/download) telegram에서 local에 접속을 도와주는 프로그램(임시 서버 할당)
 
 ```bash
 C:\Users\student>ngrok http 5000
@@ -184,6 +188,34 @@ https://58c1ae6c.ngrok.io == localgost.5000
 https://api.telegram.org/bot864971232:AAGQLck432-plycu3vlF692rg0jon_F3nqQ//setWebhook?url=https://58c1ae6c.ngrok.io/864971232:AAGQLck432-plycu3vlF692rg0jon_F3nqQ
 이 페이지를 실행시켜야 webHook 이 실행됨
 
+
+
+
+token code
+864971232:AAGQLck432-plycu3vlF692rg0jon_F3nqQ
+
+https://api.telegram.org/bot<token>/METHOD_NAME
+URL
+https://api.telegram.org/bot864971232:AAGQLck432-plycu3vlF692rg0jon_F3nqQ/getMe
+
+chat ID
+826839579
+
+ngrok
+https://58c1ae6c.ngrok.io == localgost.5000 ,http://127.0.0.1:5000/
+
+/setWebhook?url=<ngrok forw.https>
+https://api.telegram.org/bot864971232:AAGQLck432-plycu3vlF692rg0jon_F3nqQ//setWebhook?url=https://58c1ae6c.ngrok.io/864971232:AAGQLck432-plycu3vlF692rg0jon_F3nqQ
+
+url/token//ngrok//token
+
+pythonanywhere
+https://api.telegram.org/bot864971232:AAGQLck432-plycu3vlF692rg0jon_F3nqQ/setWebhook?url=https://matgangjung058.pythonanywhere.com/864971232:AAGQLck432-plycu3vlF692rg0jon_F3nqQ
+
+http://matgangjung058.pythonanywhere.com/
+
+https://api.telegram.org/bot864971232:AAGQLck432-plycu3vlF692rg0jon_F3nqQ/setWebhook?url=https://58c1ae6c.ngrok.io/864971232:AAGQLck432-plycu3vlF692rg0jon_F3nqQ
+
 ```
 
 https://github.com/edutak/TIL
@@ -193,3 +225,38 @@ https://github.com/edutak/TIL
 https://www.pythonanywhere.com/user/matgangjung058/
 
 id - matgangjung058
+
+```
+여기 사이트	http://bit.do/smartcity-b			
+수업 내용 정리	https://github.com/edutak/TIL			
+branch ~ github flow	http://bit.do/github-flow			
+branch flow	http://bit.do/git-branch			
+
+순번	이름 	TIL
+1	구기영	https://github.com/peterschoice/TIL
+2	김은지	
+3	김택광	https://github.com/rhkddl2422/TIL
+4	김하균	https://github.com/TunaHG/TIL
+5	김현호	https://github.com/hyunho058/TIL
+6	김효식	https://github.com/ksixtin/TIL
+7	박예원	https://github.com/ParkYewon95/Git
+8	박진한	https://github.com/JinhanPark92/TIL
+9	서보인	https://github.com/vvvvvoin/TIL
+10	송영재	https://github.com/twinsgemini/TIL
+11	심재영	https://github.com/Jzee21/TIL
+12	오우승	https://github.com/OGAYONG/TIL
+13	유미선	https://github.com/Mishuni/TIL
+14	이건하	https://github.com/leegunha/TIL
+15	이윤호	https://github.com/Lee-Yun-Ho/TIL
+16	이진호	https://github.com/strading/TIL
+17	이효진	https://github.com/lululalah/TIL
+18	임지현	
+19	정혜진	https://github.com/hyejinjeong9999/TIL
+20	조규창	https://github.com/jogyuchang/TIL
+21	최시영	https://github.com/csy7489/TIL
+22	최영신	https://github.com/hotaru1619/TIL
+23	최혜근	https://github.com/Hae-gun/TIL
+24	최환	https://github.com/choihwan2/TIL
+25	권혁락	https://github.com/vz4repo/til
+```
+

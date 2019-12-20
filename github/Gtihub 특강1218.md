@@ -7,7 +7,7 @@
 ```bash
 #  WD o, staging area X
 $ git commit
-# commit 할 거싱 없지만, ->stagingarea가 비어있음.
+# commit 할 것이 없지만, ->stagingarea가 비어있음.
 # untracked file 이 있다. ->gitcommit 이려에 담기지 않은 파일은 있음.
 $ git commit
 On branch master
@@ -374,4 +374,7 @@ $ git revert {해시코드}
 
   
 
-[Git Book](https://git-scm.com/book/ko/v2)
+[Git Book](https://git-scm.com/book/ko)
+
+[skgit](https://github.com/metatron-app/metatron-discovery/blob/master/README.md)
+
