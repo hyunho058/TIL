@@ -25,6 +25,8 @@
 
   [Flask](https://pypi.org/project/Flask/)
   
+  [Python Freeze](https://yujuwon.tistory.com/entry/freeze)
+
 # Telegram chetbot
 
   * 가상환경 만들기
