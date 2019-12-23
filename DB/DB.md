@@ -1,6 +1,6 @@
 # DB
 
-[web 프로그램]{https://www.w3schools.com/js/default.asp}
+[web 프로그램](https://www.w3schools.com/js/default.asp)
 
 ## SQL
 
