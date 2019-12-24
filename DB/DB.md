@@ -891,7 +891,7 @@ order by sal desc;
 ```
 
 ```bash
-#내림차순 정렬
+#오름차순 정렬
 Sselect ename,sal,comm,sal+nvl(comm, 0) as"총 급여"
 from emp
 order by sal asc;
@@ -931,6 +931,382 @@ FORD        3000       3000
 KING        5000       5000
 ```
 
+## 단일행 함수
+
+### to_char()
+
+```bash
+select sysdate, substr(sysdate, 4,2) from dual;
+select sysdate, to_char(sysdate,'yy') from dual;
+select sysdate, to_char(sysdate,'yyyy') from dual;
+select sysdate, to_char(sysdate,'day') from dual;
+select sysdate, to_char(sysdate,'mm') from dual;
+select sysdate, to_char(sysdate,'dd') from dual;
+
+select ename,to_char(hiredate,'mm') as "입사 월 ", to_char(hiredate,'day') as "입사 요일"
+from emp
+order by to_char(hiredate,'dd') asc;
+```
+
+### to_date()
+
+```bash
+select sysdate,to_date('2019/12/24') from dual;
+select sysdate,to_date('2019-12-24') from dual;
+select sysdate,to_date('2019 12 24') from dual;
+
+select sysdate,to_date('12/12/19','mm/dd/yy') from dual;
+```
+
+
+
+## Join
+
+* 둘 이상의 테이블을 합칠떄 쓰임.
+
+> 조건없이 쓸 수 없다.
+
+```bash
+SQL> select ename,loc
+  2  from emp,dept
+  3  where emp.deptno = dept.deptno;   # join 에서는 조건이 필수
+
+ENAME      LOC
+---------- --------------------------
+SMITH      DALLAS
+ALLEN      CHICAGO
+WARD       CHICAGO
+JONES      DALLAS
+MARTIN     CHICAGO
+BLAKE      CHICAGO
+CLARK      NEW YORK
+KING       NEW YORK
+TURNER     CHICAGO
+JAMES      CHICAGO
+FORD       DALLAS
+MILLER     NEW YORK
+
+12 rows selected.
+```
+
+### Simple Join
+
+* from절에 필요로 하는 테이블을 모두 적는다
+
+* 일반적으로 PK와 FK간의 조건이 붙는다
+
+* 컬럼 이름의 모호성을 피하기 위해(어느테이블에 속하는지 알 수 없음)이 있을 수 있으므로 table이름에 Alias사용(테이블 이름으로 직접 지칭 가능)
+
+* 적절한 Join 조건을 where 절에 부여(일반적으로 테이블 개수-1 개의 조인 조건이 필요)
+
+```bash
+SQL> select ename,deptno, dname,loc
+  2  from emp,dept
+  3  where emp.deptno = dept.deptno;
+select ename,deptno, dname,loc
+             *
+ERROR at line 1:
+ORA-00918: column ambiguously defined
+#deptno가 두개여서 선택을 하지못하는 err발생
+
+# select 에 테이블 지정을 해주고 출력하면 정상 출력
+SQL> select ename,emp.deptno, dname,loc
+  2  from emp,dept
+  3  where emp.deptno = dept.deptno;
+
+ENAME      DEPTNO DNAME                        LOC
+---------- ------ ---------------------------- --------------------------
+SMITH          20 RESEARCH                     DALLAS
+ALLEN          30 SALES                        CHICAGO
+WARD           30 SALES                        CHICAGO
+JONES          20 RESEARCH                     DALLAS
+MARTIN         30 SALES                        CHICAGO
+BLAKE          30 SALES                        CHICAGO
+CLARK          10 ACCOUNTING                   NEW YORK
+KING           10 ACCOUNTING                   NEW YORK
+TURNER         30 SALES                        CHICAGO
+JAMES          30 SALES                        CHICAGO
+FORD           20 RESEARCH                     DALLAS
+MILLER         10 ACCOUNTING                   NEW YORK
+
+12 rows selected.
+
+```
+
+* 테이블에 별칭 지정하여 사용 예시
+
+```bash
+SQL> select ename,e.deptno, dname,loc
+  2  from emp e,dept d  # table에 별칭 부여
+  3  where e.deptno = d.deptno;
+
+ENAME      DEPTNO DNAME                        LOC
+---------- ------ ---------------------------- --------------------------
+SMITH          20 RESEARCH                     DALLAS
+ALLEN          30 SALES                        CHICAGO
+WARD           30 SALES                        CHICAGO
+JONES          20 RESEARCH                     DALLAS
+MARTIN         30 SALES                        CHICAGO
+BLAKE          30 SALES                        CHICAGO
+CLARK          10 ACCOUNTING                   NEW YORK
+KING           10 ACCOUNTING                   NEW YORK
+TURNER         30 SALES                        CHICAGO
+JAMES          30 SALES                        CHICAGO
+FORD           20 RESEARCH                     DALLAS
+MILLER         10 ACCOUNTING                   NEW YORK
+
+12 rows selected.
+```
+
+* 예시 
+
+```bash
+#sal > 2000 and deptno 가 20번 부서에 근무하는 사원이름, sal,loc 출력
+SQL> select ename, sal, loc
+  2  from emp, dept
+  3  where emp.deptno = dept.deptno and sal > 2000 and emp.deptno = '20';
+
+ENAME        SAL LOC
+---------- ----- --------------------------
+JONES       2975 DALLAS
+FORD        3000 DALLAS
+
+
+# Ansi Join 예시 (위와 출력 동일)
+select ename, sal, loc
+from emp join dept
+on emp.deptno = dept.deptno 
+where sal > 2000 and emp.deptno = '20';
+```
+
+### Ansi Join
+
+> from table 에 ' , ' 를 join 으로 'where' 를 on 으로 표시
+
+​	ansi join
+
+```bash
+select ename,e.deptno, dname,loc
+from emp e join dept d
+on e.deptno = d.deptno;
+```
+
+​	inner join
+
+```bash
+select ename,e.deptno, dname,loc
+from emp e inner join dept d
+on e.deptno = d.deptno;
+```
+
+### Outer Join
+
+```bash
+##null 쪽에 '+' 마킹
+SQL> select ename, d.deptno, dname, loc
+  2  from emp e, dept d
+  3  where e.deptno(+) = d.deptno;
+
+ENAME      DEPTNO DNAME                        LOC
+---------- ------ ---------------------------- --------------------------
+SMITH          20 RESEARCH                     DALLAS
+ALLEN          30 SALES                        CHICAGO
+WARD           30 SALES                        CHICAGO
+JONES          20 RESEARCH                     DALLAS
+MARTIN         30 SALES                        CHICAGO
+BLAKE          30 SALES                        CHICAGO
+CLARK          10 ACCOUNTING                   NEW YORK
+KING           10 ACCOUNTING                   NEW YORK
+TURNER         30 SALES                        CHICAGO
+JAMES          30 SALES                        CHICAGO
+FORD           20 RESEARCH                     DALLAS
+MILLER         10 ACCOUNTING                   NEW YORK
+               40 OPERATIONS                   BOSTON
+
+13 rows selected.
+```
+
+### outer Ansi Join
+
+```bash
+
+
+SQL> select ename, d.deptno, dname, loc
+  2  from emp e right outer join dept d
+  3  on e.deptno = d.deptno
+  4  order by d.deptno;
+
+ENAME      DEPTNO DNAME                        LOC
+---------- ------ ---------------------------- --------------------------
+CLARK          10 ACCOUNTING                   NEW YORK
+MILLER         10 ACCOUNTING                   NEW YORK
+KING           10 ACCOUNTING                   NEW YORK
+JONES          20 RESEARCH                     DALLAS
+FORD           20 RESEARCH                     DALLAS
+SMITH          20 RESEARCH                     DALLAS
+ALLEN          30 SALES                        CHICAGO
+TURNER         30 SALES                        CHICAGO
+JAMES          30 SALES                        CHICAGO
+WARD           30 SALES                        CHICAGO
+BLAKE          30 SALES                        CHICAGO
+MARTIN         30 SALES                        CHICAGO
+               40 OPERATIONS                   BOSTON
+```
+
+### non equi join
+
+* craclie join
+
+```bash
+SQL> select ename, sal, grade
+  2  from emp,salgrade
+  3  where sal between losal and hisal;
+
+ENAME        SAL      GRADE
+---------- ----- ----------
+SMITH        800          1
+JAMES        950          1
+WARD        1250          2
+MARTIN      1250          2
+MILLER      1300          2
+TURNER      1500          3
+ALLEN       1600          3
+CLARK       2450          4
+BLAKE       2850          4
+JONES       2975          4
+FORD        3000          4
+KING        5000          5
+```
+
+* ansi join
+
+```bash
+SQL> select ename, sal, grade
+  2  from emp join salgrade
+  3  on sal between losal and hisal;
+
+ENAME        SAL      GRADE
+---------- ----- ----------
+SMITH        800          1
+JAMES        950          1
+WARD        1250          2
+MARTIN      1250          2
+MILLER      1300          2
+TURNER      1500          3
+ALLEN       1600          3
+CLARK       2450          4
+BLAKE       2850          4
+JONES       2975          4
+FORD        3000          4
+KING        5000          5
+```
+
+### n개의 table join
+
+```bash
+
+--사원명, sal, 부서명, salgrade
+
+ansi join 1
+select ename, sal, dname ,grade
+from emp NATURAL JOIN dept JOIN salgrade
+on sal between losal and hisal;
+
+ansi join 2
+select ename, sal, dname ,grade
+from emp e JOIN dept d on e.deptno = d.deptno JOIN salgrade
+on sal between losal and hisal;
+
+join
+select ename, sal, dname ,grade
+from emp e , dept d , salgrade
+where e.deptno = d.deptno and sal between losal and hisal;
+
+
+
+ENAME        SAL DNAME                             GRADE
+---------- ----- ---------------------------- ----------
+SMITH        800 RESEARCH                              1
+JAMES        950 SALES                                 1
+WARD        1250 SALES                                 2
+MARTIN      1250 SALES                                 2
+MILLER      1300 ACCOUNTING                            2
+TURNER      1500 SALES                                 3
+ALLEN       1600 SALES                                 3
+CLARK       2450 ACCOUNTING                            4
+BLAKE       2850 SALES                                 4
+JONES       2975 RESEARCH                              4
+FORD        3000 RESEARCH                              4
+KING        5000 ACCOUNTING                            5
+```
+
+### self Join
+
+> 하나의 table 을 2개처럼 사용
+>
+> table 이름이 동일하기 때문에 별첨을 부여해줘야함.
+
+```bash
+SQL> select e.ename as "사원명", em.ename as "상사 이름"
+  2  from emp e, emp em  #table 이름이 동일하기 때문에 별첨을 부여해줘야함
+  3  where e.mgr = em.empno(+); # king 상사가 null 이기 때문에 outer 사용
+
+사원명               상사 이름
+-------------------- --------------------
+FORD                 JONES
+JAMES                BLAKE
+TURNER               BLAKE
+MARTIN               BLAKE
+WARD                 BLAKE
+ALLEN                BLAKE
+MILLER               CLARK
+CLARK                KING
+BLAKE                KING
+JONES                KING
+SMITH                FORD
+KING
+```
+
+## 집계 함수()
+
+### avg()
+
+> 집계 함수에는 select 에 collumn 을 포함 할 수 없다.
+>
+> avg 는 하나의 값인데 ename 의 여러 값이 있이서에러발생
+
+```bash
+SQL> select ename, avg(sal) from emp; ## avg 는 하나의 값인데 ename 의 여러 값이 있이서에러발생
+select ename, avg(sal) from emp
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function
+```
+
+```bash
+SQL> select round(avg(sal))||'원'as "전체 평균 급여" from emp;  ## 정수형이 \\ 연산자로인해 Str type로 변환
+
+전체 평균 급여
+--------------------------------------------------------------------------------------
+2077원
+```
+
+### group by()
+
+> group by 함수만 select 에 column을 포함 할 수 있다.
+
+```bash
+SQL> select deptno, round(avg(sal)) from emp group by deptno ;
+
+DEPTNO ROUND(AVG(SAL))
+------ ---------------
+    30            1567
+    20            2258
+    10            2917
+```
+
+
+
 # eclipse 환경설정
 
 [환경설정 블로그](https://m.blog.naver.com/PostView.nhn?blogId=pyj721aa&logNo=221147393750&proxyReferer=https%3A%2F%2Fwww.google.com%2F)
@@ -964,4 +1340,3 @@ ojdbc6복사 - 내가 보관하는 lib파일에 붙어넣기
 루프백 127.0.0.1 내 자리에 서버 있어
 
 ![image-20191224112548237](C:\Users\student\Desktop\khh\myGit\DB\image-20191224112548237.png)
-
