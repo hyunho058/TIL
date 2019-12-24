@@ -1,8 +1,8 @@
-# DB
+
 
 [web 프로그램](https://www.w3schools.com/js/default.asp)
 
-## SQL
+# SQL
 
 [Oracle DateBase](https://www.oracle.com/database/technologies/xe-downloads.html)
 
@@ -24,7 +24,7 @@ Listener 8080
 
 
 
-### 시스템 계정 접속 확인
+## 시스템 계정 접속 확인
 
 ```bash
 # sqlplus system/1234
@@ -76,7 +76,7 @@ Copyright (c) 1982, 2014, Oracle.  All rights reserved.
 Connected to:
 Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
 
------------------------------------------------------
+--------------------------------------------------------------
 
 # hr/hr 계정 (table 관리 계정)
 C:\Users\student>sqlplus hr/hr
@@ -124,11 +124,11 @@ REGIONS                                                      TABLE
 # select * from employees;
 ```
 
-### 계정 생성및 관리
+## 계정 생성및 관리
 
  * DCL
 
-계정 파일 만들기
+### 계정 파일 만들기
 
 ```bash
 data 관련 파일(table space file)
@@ -148,14 +148,14 @@ Tablespace created.
 
 ![image-20191223104152364](C:\Users\student\AppData\Roaming\Typora\typora-user-images\image-20191223104152364.png)
 
-계정 파일 삭제
+### 계정 파일 삭제  _ drop
 
 ```bash
 #파일 삭제
 drop TABLESPACE mc INCLUDING CONTENTS AND Datafiles;
 ```
 
-계정 생성
+### 계정 생성 _ create
 
 ```bash
 #계정 생성(system(관리자)권한으로 해야함)
@@ -177,7 +177,7 @@ SQL> create user SCOTT identified by TIGER
 User created.
 ```
 
-계정 권한 부여
+## 계정 권한 관리 
 
 ```bash
 #권한 부여
@@ -194,7 +194,7 @@ ORA-01045: user TEST01 lacks CREATE SESSION privilege; logon denied ##권한 부
 
 ```
 
-권한 부여
+### 권한 부여
 
 ```bash
 #system 에서 권한부여
@@ -219,7 +219,7 @@ Connected to:
 Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
 ```
 
-권한 제거
+### 권한 제거
 
 ```bash
 #권한 제거
@@ -230,7 +230,7 @@ SQL> revoke connect from test01;
 Revoke succeeded.
 ```
 
-계정 삭제
+### 계정 삭제
 
 ```bash
 #계정 삭제 (cascade - 강제 삭제 명령어)
@@ -327,7 +327,7 @@ SQL> select * from emp;
 
 ![image-20191223134649262](C:\Users\student\AppData\Roaming\Typora\typora-user-images\image-20191223134649262.png)
 
-* 데이터베이스 - table들으 ㅣ집합
+* 데이터베이스 - table집합
 
 * 데이블 - row들의 집합
 
@@ -335,7 +335,7 @@ SQL> select * from emp;
 
 * 컬럼 - 테이블에서 동일한 종류
 
-## SQL 명령어
+# SQL 명령어
 
 * Query : SELECT
 * DML
@@ -343,7 +343,7 @@ SQL> select * from emp;
 * DDL (roll Back)
 * DCL
 
-DEPT 만들고 EMP 만들기
+DEPT 만들고 EMP 만들기 (삭제는 역순 EMP 삭제 후 DEPT 삭제)
 
 conn SCOTT/TIGER 스캇 테이블로 이동
 
@@ -355,7 +355,7 @@ select * from salgrade;
 desc emp;  // emp table 구조 보여줘
 ```
 
-### SELECT
+## SELECT
 
 ```bash
 select ename,sal,deptno
@@ -582,8 +582,6 @@ SQL> select empno, ename, nvl(to_char(sal), 'CEO')
 12 rows selected.
 
 
-
-
 ##문자열 연결##
 SQL> select ename, job
   2  from emp;
@@ -644,7 +642,7 @@ USER
 SCOTT
 ```
 
-### where
+## where
 
 * row 제한을 걸때 where를 사용
 
@@ -718,7 +716,7 @@ from emp
 where hiredate <> '81/05/01';
 ```
 
-* Between and
+### Between and
 
 ```bash
 SQL> select ename, sal
@@ -746,7 +744,15 @@ CLARK       2450
 FORD        3000
 ```
 
-* like 연산자
+### like 연산자
+
+* 검색창에서는 like 연산자 주로사용
+
+칼럼명 LIKE *patten*
+
+patten -  **%** : 문자가 없거나 하나 이상의 어떤 값이 와도 상관없다.
+
+​               **_** : 하나의 문자가 어떤 값이 와도 상관없다.
 
 ```bash
 -- like 연산자 --
@@ -798,7 +804,7 @@ SQL> select *
 
 select *
 from emp
-where ename like '%A%__';
+where ename like '%A__';
 
 SQL> select *
   2  from emp
@@ -811,5 +817,151 @@ SQL> select *
       7782 CLARK      MANAGER            7839 81/06/09  2450           10
 ```
 
+### where null 처리
 
+* is
+
+```bash
+where mgr is null
+
+SQL> select *
+  2  from emp
+  3  where mgr is null;
+
+     EMPNO ENAME      JOB                 MGR HIREDATE   SAL  COMM DEPTNO
+---------- ---------- ------------ ---------- -------- ----- ----- ------
+      7839 KING       PRESIDENT               81/11/17  5000           10
+```
+
+* is not
+
+```bash
+select *
+from emp
+where mgr is not null;
+```
+
+* where 절에서는 별칭 사용 불가
+
+```bash
+SQL> select ename,sal,comm,sal+nvl(comm, 0) as"총 급여"
+  2  from emp
+  3  where "총 급여" >= 2000;
+where "총 급여" >= 2000
+         *
+ERROR at line 3:
+ORA-00904: "총 급여": invalid identifier
+
+## 아래 where 처럼 표기를 해줘야 오류 안생김
+select ename,sal,comm,sal+nvl(comm, 0) as"총 급여"
+from emp
+where sal+nvl(comm, 0) >= 2000;
+```
+
+
+
+## order by (정렬)
+
+```bash
+SQL> select ename,sal,comm,sal+nvl(comm, 0) as"총 급여"
+  2  from emp
+  3  order by sal;
+
+ENAME        SAL  COMM    총 급여
+---------- ----- ----- ----------
+SMITH        800              800
+JAMES        950              950
+WARD        1250   500       1750
+MARTIN      1250  1400       2650
+MILLER      1300             1300
+TURNER      1500     0       1500
+ALLEN       1600   300       1900
+CLARK       2450             2450
+BLAKE       2850             2850
+JONES       2975             2975
+FORD        3000             3000
+KING        5000             5000
+```
+
+```bash
+#내림차순 정렬
+Sselect ename,sal,comm,sal+nvl(comm, 0) as"총 급여"
+from emp
+order by sal desc;
+```
+
+```bash
+#내림차순 정렬
+Sselect ename,sal,comm,sal+nvl(comm, 0) as"총 급여"
+from emp
+order by sal asc;
+```
+
+* order by 절에서는 별칭 사용가능
+
+```bash
+
+SQL> select ename,sal,sal+nvl(comm, 0) as"총 급여"
+  2  from emp
+  3  where sal+nvl(comm, 0) >= 2000
+  4  order by "총 급여";
+
+ENAME        SAL    총 급여
+---------- ----- ----------
+CLARK       2450       2450
+MARTIN      1250       2650
+BLAKE       2850       2850
+JONES       2975       2975
+FORD        3000       3000
+KING        5000       5000
+
+# 위치 index 사용한 정렬
+SQL> select ename,sal,sal+nvl(comm, 0) as"총 급여"
+  2  from emp
+  3  where sal+nvl(comm, 0) >= 2000
+  4  order by 3;    #index 3
+
+ENAME        SAL    총 급여
+---------- ----- ----------
+CLARK       2450       2450
+MARTIN      1250       2650
+BLAKE       2850       2850
+JONES       2975       2975
+FORD        3000       3000
+KING        5000       5000
+```
+
+# eclipse 환경설정
+
+[환경설정 블로그](https://m.blog.naver.com/PostView.nhn?blogId=pyj721aa&logNo=221147393750&proxyReferer=https%3A%2F%2Fwww.google.com%2F)
+
+[환경설정 블로그1](https://chrismare.tistory.com/48)
+
+.properties
+
+![image-20191224105511259](C:\Users\student\Desktop\khh\myGit\DB\image-20191224105511259.png)
+
+![image-20191224101957525](C:\Users\student\Desktop\khh\myGit\DB\image-20191224101957525.png)
+
+ojdbc6복사 - 내가 보관하는 lib파일에 붙어넣기 
+
+![image-20191224105701152](C:\Users\student\Desktop\khh\myGit\DB\image-20191224105701152.png)
+
+.properties file 생성
+
+
+
+오라클에서 압축해서 제ㅐ공해주는 파일
+
+오라클룡 jdbc driver
+
+자바 EE로 변경 - data source explower - 
+
+
+
+![image-20191224102509611](C:\Users\student\Desktop\khh\myGit\DB\image-20191224102509611.png)
+
+루프백 127.0.0.1 내 자리에 서버 있어
+
+![image-20191224112548237](C:\Users\student\Desktop\khh\myGit\DB\image-20191224112548237.png)
 
