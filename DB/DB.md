@@ -2,7 +2,7 @@
 
 [web 프로그램](https://www.w3schools.com/js/default.asp)
 
-# SQL
+# SQL 
 
 [Oracle DateBase](https://www.oracle.com/database/technologies/xe-downloads.html)
 
@@ -194,13 +194,14 @@ ORA-01045: user TEST01 lacks CREATE SESSION privilege; logon denied ##권한 부
 
 ```
 
-### 권한 부여
+### 권한 부여 _ grant
 
 ```bash
 #system 에서 권한부여
 #grant connect,resource,dba to test01;
 ----------------------------------------
 SQL> grant connect,resource,dba to test01;
+
 Grant succeeded.
 ```
 
@@ -219,7 +220,7 @@ Connected to:
 Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
 ```
 
-### 권한 제거
+### 권한 제거 _ revoke
 
 ```bash
 #권한 제거
@@ -230,7 +231,7 @@ SQL> revoke connect from test01;
 Revoke succeeded.
 ```
 
-### 계정 삭제
+### 계정 삭제 _drop
 
 ```bash
 #계정 삭제 (cascade - 강제 삭제 명령어)
@@ -511,7 +512,7 @@ MILLER     CLERK         1300
 
 
 ## nvl 명령어 사용 ##
-# nul(abc, 5) - abc가 null 일때 null 값을 5로 변환
+# nvl(abc, 5) - abc가 null 일때 null 값을 5로 변환
 SQL> select ename,job, sal, comm, sal+comm, nvl(comm, -1)
   2  from emp;
 ## comm 이 null일떄 -1출력 해줘
@@ -919,7 +920,7 @@ KING        5000       5000
 SQL> select ename,sal,sal+nvl(comm, 0) as"총 급여"
   2  from emp
   3  where sal+nvl(comm, 0) >= 2000
-  4  order by 3;    #index 3
+  4  order by 3;    #index 3 = sal+nvl(comm, 0) 
 
 ENAME        SAL    총 급여
 ---------- ----- ----------
