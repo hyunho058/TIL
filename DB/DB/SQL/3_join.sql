@@ -149,3 +149,105 @@ select deptno, round(avg(sal)) from emp group by deptno ;  --부서별 평균 �
 select round(avg(sal)) 
 from emp 
 group by deptno ; 
+
+select avg(sal), count(*),min(sal),max(sal),count(mgr)
+from emp;
+
+select avg(sal), count(*),min(sal),max(sal),count(mgr)
+from emp
+where deptno = 10;
+
+select avg(sal), count(*),min(sal),max(sal),count(mgr)
+from emp
+where deptno = 20;
+
+select deptno,avg(sal), count(*),min(sal),max(sal),count(mgr)
+from emp
+group by deptno;
+
+select d.deptno,dname,avg(sal), count(*),min(sal),max(sal)
+from emp e, dept d
+where e.deptno = d.deptno
+group by d.deptno,dname;
+
+--부서별 평균 급여 2000이상인 목록 출력
+select d.deptno,dname,round(avg(sal)) as "평균 급여"
+from emp e, dept d
+where e.deptno = d.deptno
+group by d.deptno,dname
+having round(avg(sal)) > 2000;
+
+--subQuery
+-- ford 보다 급여가 많은 사원 목록
+select sal
+from emp
+where ename = 'FORD';
+
+select *
+from emp
+where sal >3000;
+
+select *
+from emp
+where sal > (select sal from emp where ename = 'FORD');
+
+select *
+from emp
+where sal < (select avg(sal) from emp);
+--최소급여 목록
+select *
+from emp
+where sal = (select min(sal) from emp);
+
+-- 부서별고고 급여 목룍
+select *
+from emp
+where sal in (select max(sal) from emp group by deptno);
+-- 부서별고고 급여 목룍
+select *
+from emp
+where (deptno,sal) in (select deptno, max(sal) from emp group by deptno)
+order by deptno;
+
+
+----------
+--rowNum--
+----------
+select rownum, ename, job, sal
+from emp;
+
+select rownum, ename, job, sal
+from emp
+order by sal;
+
+select rownum, ename, job, sal
+from (select * from emp order by sal);
+
+select rownum, ename, job, sal
+from (select * from emp order by sal desc)
+where rownum <4;
+
+select rownum, ename, job, sal
+from (select * from emp order by sal desc)
+where rownum between 1 and 4;
+
+--------------------
+--oracle page 처리 --
+--------------------
+select rownum, ename, job, sal
+from (select * from emp order by sal desc)
+where rownum between 1 and 5;
+
+--값이 출력 되지 않음--
+select rownum, ename, job, sal
+from (select * from emp order by sal desc)
+where rownum between 6 and 10;
+
+select *
+from(
+	select rownum row#, ename, job, sal
+	from (select * from emp order by sal desc)
+)
+where row# between 6 and 10;
+
+

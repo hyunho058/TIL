@@ -1,5 +1,3 @@
-
-
 [web 프로그램](https://www.w3schools.com/js/default.asp)
 
 # SQL 
@@ -24,7 +22,7 @@ Listener 8080
 
 
 
-## 시스템 계정 접속 확인
+## 시스템 계정 접속 확인 DCM
 
 ```bash
 # sqlplus system/1234
@@ -336,7 +334,7 @@ SQL> select * from emp;
 
 * 컬럼 - 테이블에서 동일한 종류
 
-# SQL 명령어
+# SQL 
 
 * Query : SELECT
 * DML
@@ -357,6 +355,16 @@ desc emp;  // emp table 구조 보여줘
 ```
 
 ## SELECT
+
+> 순서
+
+```ba
+select
+from
+where
+group by
+order by
+```
 
 ```bash
 select ename,sal,deptno
@@ -818,6 +826,28 @@ SQL> select *
       7782 CLARK      MANAGER            7839 81/06/09  2450           10
 ```
 
+
+
+### in 연산자
+
+* where절 내에서 특정값 여러개를 선택하는 SQL 연산자
+* 괄호 내의 값 중 일치하는 것이 있으면 TRUE
+
+```bash
+SELECT * FROM 테이블명
+WHERE 컬럼명 IN (값1, 값2, ...);
+
+SELECT * FROM customer  
+WHERE cust_country IN ('JP', 'KR', 'US');
+
+SELECT * FROM customer  
+WHERE cust_country = 'JP'
+   OR cust_country = 'KR'
+   OR cust_country = 'US';
+```
+
+
+
 ### where null 처리
 
 * is
@@ -1103,7 +1133,7 @@ on e.deptno = d.deptno;
 ### Outer Join
 
 ```bash
-##null 쪽에 '+' 마킹
+##null 쪽에 '+' 마킹 ('+' 는 mySql 에서 사용 불가)
 SQL> select ename, d.deptno, dname, loc
   2  from emp e, dept d
   3  where e.deptno(+) = d.deptno;
@@ -1243,7 +1273,7 @@ KING        5000 ACCOUNTING                            5
 
 ### self Join
 
-> 하나의 table 을 2개처럼 사용
+> 하나에 table을 2개처럼 사용
 >
 > table 이름이 동일하기 때문에 별첨을 부여해줘야함.
 
@@ -1269,6 +1299,14 @@ KING
 ```
 
 ## 집계 함수()
+
+* AVG
+* COUNT\
+  * COUNT(*) - null도 count
+  * COUNT(expr) - null 뺴고 count
+* MAX
+* MIN
+* SUM
 
 ### avg()
 
@@ -1306,7 +1344,592 @@ DEPTNO ROUND(AVG(SAL))
     10            2917
 ```
 
+```bash
+SQL> select * from emp; #emp table
 
+     EMPNO ENAME      JOB                 MGR HIREDATE   SAL  COMM DEPTNO
+---------- ---------- ------------ ---------- -------- ----- ----- ------
+      7369 SMITH      CLERK              7902 80/12/17   800           20
+      7499 ALLEN      SALESMAN           7698 81/02/20  1600   300     30
+      7521 WARD       SALESMAN           7698 81/02/22  1250   500     30
+      7566 JONES      MANAGER            7839 81/04/02  2975           20
+      7654 MARTIN     SALESMAN           7698 81/09/28  1250  1400     30
+      7698 BLAKE      MANAGER            7839 81/05/01  2850           30
+      7782 CLARK      MANAGER            7839 81/06/09  2450           10
+      7839 KING       PRESIDENT               81/11/17  5000           10
+      7844 TURNER     SALESMAN           7698 81/09/08  1500     0     30
+      7900 JAMES      CLERK              7698 81/12/03   950           30
+      7902 FORD       ANALYST            7566 81/12/03  3000           20
+      7934 MILLER     CLERK              7782 82/01/23  1300           10
+```
+
+```bash
+##group by 함수만 select 에 column을 포함 할 수 있다.##
+SQL> select dept.dname,emp.deptno, avg(sal), count(*),min(sal),max(sal),count(mgr)
+  2  from emp, dept
+  3  where emp.deptno = dept.deptno
+  4  group by dept.dname;
+  
+select dept.dname,emp.deptno, avg(sal), count(*),min(sal),max(sal),count(mgr)
+                  *
+ERROR at line 1:
+ORA-00979: not a GROUP BY expression
+
+
+SQL> select d.deptno,dname,avg(sal), count(*),min(sal),max(sal)
+  2  from emp e, dept d
+  3  where e.deptno = d.deptno
+  4  group by d.deptno,dname;
+
+DEPTNO DNAME                          AVG(SAL)   COUNT(*)   MIN(SAL)   MAX(SAL)
+------ ---------------------------- ---------- ---------- ---------- ----------
+    10 ACCOUNTING                   2916.66667          3       1300       5000
+    20 RESEARCH                     2258.33333          3        800       3000
+    30 SALES                        1566.66667          6        950       2850
+```
+
+
+
+```bash
+SQL> select avg(sal), count(*),min(sal),max(sal),count(mgr)
+  2  from emp;
+
+  AVG(SAL)   COUNT(*)   MIN(SAL)   MAX(SAL) COUNT(MGR)
+---------- ---------- ---------- ---------- ----------
+2077.08333         12        800       5000         11
+
+
+SQL> select avg(sal), count(*),min(sal),max(sal),count(mgr)
+  2  from emp
+  3  where deptno = 10;  #10번 부서에 집계
+
+  AVG(SAL)   COUNT(*)   MIN(SAL)   MAX(SAL) COUNT(MGR)
+---------- ---------- ---------- ---------- ----------
+2916.66667          3       1300       5000          2
+
+SQL> select avg(sal), count(*),min(sal),max(sal),count(mgr)
+  2  from emp
+  3  where deptno = 20;  #20번 부서에 집계
+
+  AVG(SAL)   COUNT(*)   MIN(SAL)   MAX(SAL) COUNT(MGR)
+---------- ---------- ---------- ---------- ----------
+2258.33333          3        800       3000          3
+
+SQL> select avg(sal), count(*),min(sal),max(sal),count(mgr)
+  2  from emp
+  3  group by deptno;  #부서번호별로 묶어서 집계 시켜줌.
+
+  AVG(SAL)   COUNT(*)   MIN(SAL)   MAX(SAL) COUNT(MGR)
+---------- ---------- ---------- ---------- ----------
+1566.66667          6        950       2850          6
+2258.33333          3        800       3000          3
+2916.66667          3       1300       5000          2
+
+ #group by 함수만 select 에 column을 포함 할 수 있다.
+SQL> select deptno,avg(sal), count(*),min(sal),max(sal),count(mgr)
+  2  from emp
+  3  group by deptno;  
+
+DEPTNO   AVG(SAL)   COUNT(*)   MIN(SAL)   MAX(SAL) COUNT(MGR)
+------ ---------- ---------- ---------- ---------- ----------
+    30 1566.66667          6        950       2850          6
+    20 2258.33333          3        800       3000          3
+    10 2916.66667          3       1300       5000          2
+    
+    #부서별 집계
+SQL> select dept.dname,avg(sal), count(*),min(sal),max(sal),count(mgr)
+  2  from emp, dept
+  3  where emp.deptno = dept.deptno
+  4  group by dept.dname;
+
+DNAME                          AVG(SAL)   COUNT(*)   MIN(SAL)   MAX(SAL) COUNT(MGR)
+---------------------------- ---------- ---------- ---------- ---------- ----------
+ACCOUNTING                   2916.66667          3       1300       5000          2
+RESEARCH                     2258.33333          3        800       3000          3
+SALES                        1566.66667          6        950       2850          6
+```
+
+## having
+
+* GROUP BY 절에 의해 생성된 결과 값 중 원하는 조건에 부합하는 자료만 보고자 할 때 사용한다.
+
+```bash
+##부서별 평균 급여 2000이상인 목록 출력##
+SQL> select d.deptno,dname,round(avg(sal)) as "평균 급여"
+  2  from emp e, dept d
+  3  where e.deptno = d.deptno
+  4  group by d.deptno,dname
+  5  having round(avg(sal)) > 2000;
+
+DEPTNO DNAME                         평균 급여
+------ ---------------------------- ----------
+    10 ACCOUNTING                         2917
+    20 RESEARCH                           2258
+```
+
+## subQuery
+
+```bash
+SQL> select *
+  2  from emp
+  3  where sal > (select sal from emp where ename = 'FORD');
+
+     EMPNO ENAME      JOB                 MGR HIREDATE   SAL  COMM DEPTNO
+---------- ---------- ------------ ---------- -------- ----- ----- ------
+      7839 KING       PRESIDENT               81/11/17  5000           10
+      
+ 
+SQL> select *
+  2  from emp
+  3  where sal >3000;
+
+     EMPNO ENAME      JOB                 MGR HIREDATE   SAL  COMM DEPTNO
+---------- ---------- ------------ ---------- -------- ----- ----- ------
+      7839 KING       PRESIDENT               81/11/17  5000           10
+```
+
+### 예제
+
+```bash
+# 평균 급여보다 적게받는 사원 출력 #
+SQL> select *
+  2  from emp
+  3  where sal < (select avg(sal) from emp);
+
+     EMPNO ENAME      JOB                 MGR HIREDATE   SAL  COMM DEPTNO
+---------- ---------- ------------ ---------- -------- ----- ----- ------
+      7369 SMITH      CLERK              7902 80/12/17   800           20
+      7499 ALLEN      SALESMAN           7698 81/02/20  1600   300     30
+      7521 WARD       SALESMAN           7698 81/02/22  1250   500     30
+      7654 MARTIN     SALESMAN           7698 81/09/28  1250  1400     30
+      7844 TURNER     SALESMAN           7698 81/09/08  1500     0     30
+      7900 JAMES      CLERK              7698 81/12/03   950           30
+      7934 MILLER     CLERK              7782 82/01/23  1300           10
+
+# 최소급여를 받는 사람 출력 #
+SQL> select *
+  2  from emp
+  3  where sal = (select min(sal) from emp);
+
+     EMPNO ENAME      JOB                 MGR HIREDATE   SAL  COMM DEPTNO
+---------- ---------- ------------ ---------- -------- ----- ----- ------
+      7369 SMITH      CLERK              7902 80/12/17   800           20
+```
+
+```bash
+
+# 부서별 최고 급여 목록 #
+SQL> select *
+  2  from emp
+  3  where sal = (select max(sal) from emp group by deptno);
+where sal = (select max(sal) from emp group by deptno)
+             *
+ERROR at line 3:
+ORA-01427: single-row subquery returns more than one row
+# '=' 연산자 비교시 여러개의 목록이 비교되어 에러 발생 (in 연산자로 대처해야함)
+
+
+SQL> select *
+  2  from emp
+  3  where (deptno,sal) in (select deptno, max(sal) from emp group by deptno)
+  4  order by deptno;
+
+     EMPNO ENAME      JOB                 MGR HIREDATE   SAL  COMM DEPTNO
+---------- ---------- ------------ ---------- -------- ----- ----- ------
+      7839 KING       PRESIDENT               81/11/17  5000           10
+      7902 FORD       ANALYST            7566 81/12/03  3000           20
+      7698 BLAKE      MANAGER            7839 81/05/01  2850           30
+```
+
+### rowNum
+
+* 오라클에서 지원하는 **가상컬럼**으로 쿼리의 결과에 1부터 하나씩 증가하여 붙는 collum임..
+* 주로 여러개의 결과를 출력하는 쿼리문을 실행 후 결과의 개수를 제한하여 가져오는데 쓰임.
+
+```bash
+
+SQL> select rownum, ename, job, sal
+  2  from emp;
+
+    ROWNUM ENAME      JOB            SAL
+---------- ---------- ------------ -----
+         1 SMITH      CLERK          800
+         2 ALLEN      SALESMAN      1600
+         3 WARD       SALESMAN      1250
+         4 JONES      MANAGER       2975
+         5 MARTIN     SALESMAN      1250
+         6 BLAKE      MANAGER       2850
+         7 CLARK      MANAGER       2450
+         8 KING       PRESIDENT     5000
+         9 TURNER     SALESMAN      1500
+        10 JAMES      CLERK          950
+        11 FORD       ANALYST       3000
+        12 MILLER     CLERK         1300
+
+12 rows selected.
+```
+
+* rowNum 문제점
+
+```bash
+order by와 함께 사용될 경우 발생합니다.
+order by 절의 실행 순서가 where 절의 실행 후이기 때문에 order by와는 관계없이 rownum에 맞는 결과를 출력한 뒤 order by 절을 수행합니다.
+따라서 순서를 바꾸기 위해 order by 절을 내부쿼리에서 실행하도록 합니다.
+SQL> select rownum, ename, job, sal
+
+  2  from emp
+  3  order by sal;
+
+    ROWNUM ENAME      JOB            SAL
+---------- ---------- ------------ -----
+         1 SMITH      CLERK          800
+        10 JAMES      CLERK          950
+         3 WARD       SALESMAN      1250
+         5 MARTIN     SALESMAN      1250
+        12 MILLER     CLERK         1300
+         9 TURNER     SALESMAN      1500
+         2 ALLEN      SALESMAN      1600
+         7 CLARK      MANAGER       2450
+         6 BLAKE      MANAGER       2850
+         4 JONES      MANAGER       2975
+        11 FORD       ANALYST       3000
+         8 KING       PRESIDENT     5000
+
+12 rows selected.
+
+
+SQL> select rownum, ename, job, sal
+  2  from (select * from emp order by sal);
+
+    ROWNUM ENAME      JOB            SAL
+---------- ---------- ------------ -----
+         1 SMITH      CLERK          800
+         2 JAMES      CLERK          950
+         3 WARD       SALESMAN      1250
+         4 MARTIN     SALESMAN      1250
+         5 MILLER     CLERK         1300
+         6 TURNER     SALESMAN      1500
+         7 ALLEN      SALESMAN      1600
+         8 CLARK      MANAGER       2450
+         9 BLAKE      MANAGER       2850
+        10 JONES      MANAGER       2975
+        11 FORD       ANALYST       3000
+        12 KING       PRESIDENT     5000
+
+12 rows selected.
+```
+
+## Oracle page 처리
+
+### web page 처리
+
+```bash
+## web에서 page 처리할때 주로 사용됨##
+SQL> select *
+  2  from(
+  3  select rownum row#, ename, job, sal
+  4  from (select * from emp order by sal desc)
+  5  )
+  6  where row# between 6 and 10;
+
+      ROW ENAME      JOB            SAL
+---------- ---------- ------------ -----
+         6 ALLEN      SALESMAN      1600
+         7 TURNER     SALESMAN      1500
+         8 MILLER     CLERK         1300
+         9 MARTIN     SALESMAN      1250
+        10 WARD       SALESMAN      1250
+
+
+## 값 출력 되지 않는 코드 ## (위 코드로 사용 가능)
+SQL> select rownum, ename, job, sal
+  2  from (select * from emp order by sal desc)
+  3  where rownum between 6 and 10;
+
+no rows selected
+```
+
+# DDL
+
+> Auto commit
+>
+> 테이블은 실제로 데이터들이 저장되는 곳 이라고 생각하면 쉽게 이해 할 수 있으며, 
+> **CREATE TABLE 명령어**를 이용해서 테이블을 생성 할 수 있다.
+
+## 데이터 type
+
+### VARCHAR2
+
+- 가변길이 문자형 데이터 타입 
+- 최대 길이 : 2000 바이트(반드시 길이 지정) 
+- 다른 타입에 비해 제한이 적다 
+- 일부만 입력시 뒷부분은 NULL 
+- 입력한 값의 뒷부분에 있는 BLANK도 같이 입력 
+- 전혀 값을 주지 않으면 NULL 상태 입력 
+- 지정된 길이보다 길면 입력시 에러 발생 
+- 컬럼 길이의 편차가 심한 경우, NULL 로 입력되는 경우가 많은 경우 VARCHAR2 사용 
+
+### NUMBER
+
+- 숫자형 데이타 타입, 음수, ZERO, 양수 저장 
+- 전체 자리수는 38자리를 넘을 수 없다 
+- 소수점이 지정되지 않았을 때 소수점이 입력되거나, 지정된 소수점자리 이상 입력되면 반올림되어 저장 
+- 지정한 정수 자리수 이상 입력시 에러 발생 
+- 연산이 필요한 컬럼은 NUMBER타입으로 지정한다.
+- NUMBER(p,s) 로 지정시 p는 s의 자리수를 포함한 길이므로 감안하여 P의 자리수를 결정 
+- NUMBER 타입은 항상 가변길이므로 충분하게 지정할 것 
+
+### DATE
+
+- 일자와 시간을 저장하는 날짜형 타입 
+- 일자나 시간의 연산이 빈번한 경우 사용 
+- 포함정보 : 세기, 년도, 월, 일, 시간, 분, 초 
+- NLS_DATE_FORMAT을 이용하여 국가별 특수성을 해결 
+- 특별히 시간을 지정하지 않으면 00:00:00로 입력 됨 
+- 특별히 일자를 지정하지 않았다면 현재월의 1일로 지정 됨 
+- SYSDATE는 현재일과 시간을 제공 
+
+
+
+* table 생성
+
+```bash
+SQL> drop table book;
+
+Table dropped.
+
+SQL>
+SQL> create table book(
+  2  bookno number(5),
+  3  title varchar2(40),
+  4  author varchar2(20),
+  5  pubdate date
+  6  );
+
+Table created.
+
+## type 설정
+SQL> create table book(
+  2  bookno number(5), #5자리 bookno 생성
+  3  title varchar2(40), 
+  4  author varchar2(20),
+  5  pubdate date
+  6  );
+
+Table created.
+```
+
+# DML
+
+> commit , roll back
+>
+> 트렌젝션 관리
+
+* commit 이 되면 rollback 불가능함.
+* rollback - commit을 하지 않으면  rollback 으로 취소가능
+
+### insert
+
+```bash
+insert into book(bookno, title, author, pubdate)
+values(1, 'java', '홍길동', sysdate);
+
+commit;
+
+insert into book(bookno, title, author, pubdate)
+values(2, 'sql', null, null);
+
+rollback;
+
+insert into book(bookno, title, author, pubdate)
+values(2, 'sql', null, '2019/01/01');
+
+insert into book(bookno, title, author, pubdate)
+values(3, 'spring', '고길동', to_date('01/01/2019', 'mm/dd/yyyy'));
+
+commit;
+
+insert into book (bookno,title) values(4,'html5');
+--collum 을 표시 안해도 insert 가능( 하지만, 추천 하지 않음)
+insert into book values(1, 'java', '홍길동', sysdate);
+```
+
+### delete
+
+```bash
+# where 조건 없이 삭제하면 모든 데이터가 섹제 됨
+delete from book;
+
+# where 조건에 해당하는 데이터부분만 삭제
+delete from book where bookno = 4;
+```
+
+### updata
+
+```bash
+# where 조건 없이 삭제하면 모든 데이터가 섹제 됨
+update book set title='~~~~~';
+
+# where 조건에 해당하는 데이터부분만 삭제
+update book set title='~~~~~'where bookno = 3;
+
+update book set title='hadoop', author = 'kim' where bookno = 1;
+
+update book set title='html5' where bookno = 3;
+```
+
+# PK,FK 제약 
+
+PK 제약조건
+
+```bash
+#deptno 가 'pk'여서 중복 등록 불가능(pk 제약 조건)
+insert into dept (deptno, dname, loc) values(10,'EDU','SEOUL'); 
+
+#deptno 가 pk이가 아니기 때문에 중복 가능
+insert into dept2 (deptno, dname, loc) values(10,'EDU','SEOUL');
+
+# null 값이 적용되도 위와같이 pk제약 조건으로 인해 등록 불가능
+insert into dept (deptno, dname, loc) values(null,'EDU','SEOUL');
+
+#deptno 가 pk이가 아니기 때문에 중복 가능
+insert into dept2 (deptno, dname, loc) values(null,'EDU','SEOUL');
+```
+
+FK 제약조건
+
+```bash
+#제약 조건 때문에 등록 불가 90번 부서가 fk이기 때문에 pk에서 90번이 등록 되어있어야함.
+SQL> insert into emp emp(empno, ename, sal, deptno)
+  2  values(999,'홍',2100,90);
+insert into emp emp(empno, ename, sal, deptno)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (SCOTT.FK_DEPTNO) violated - parent key not found
+
+#PK 에 50번이 있기 때문에 등록 가능.
+SQL> insert into emp emp(empno, ename, sal, deptno)
+  2  values(999,'홍',2100,50);
+
+1 row created.
+
+#제약 조건이 없기때문에 등록이 됨.(PK에 해당 부서 번호가 없기때문에 데이터 찾을때 err가 발생)
+SQL> insert into emp2 emp(empno, ename, sal, deptno)
+  2  values(999,'홍',2100,90);
+
+1 row created.
+```
+
+
+
+![image-20191226144518781](image/image-20191226144518781.png)
+
+* PK,FK 구조 설계 예시
+
+```bash
+SQL> select ename,dname, loc
+  2  from emp e,dept d
+  3  where e.deptno = d.deptno and e.ename = '홍';
+
+ENAME      DNAME                        LOC
+---------- ---------------------------- --------------------------
+홍         EDU                          SEOUL
+
+# emp2 에는  90번 부서가 없기 때문에 해당 내용 출력 불가
+SQL> select ename,dname, loc
+  2  from emp2 e,dept d
+  3  where e.deptno = d.deptno and e.ename = '홍';
+
+no rows selected
+```
+
+
+
+## 제약 조건 설정
+
+```bash
+drop table book;
+## Book table 생성
+create table book(
+	bookno number(5) primary key,  ## PK(primary key) 설정
+	title varchar2(40) unique, 
+	author varchar2(20),
+	price number(7,2) check(price > 0),
+	pubdate date default sysdate ## pubdate 에 데이터 입력안하면 오늘날자 입력되게됨.
+);
+###################################################
+--------------------------------------------------
+## price 에서 언급 안하면 null 이다.
+SQL> insert into book(bookno, title, author, pubdate)
+  2  values(1, 'java', '홍길동', sysdate);
+
+1 row created.
+
+SQL> select * from book;
+
+    BOOKNO TITLE        AUTHOR            PRICE PUBDATE
+---------- ------------ ------------ ---------- --------
+         1 java         홍길동                  19/12/26
+# default sysdate ## pubdate 에 데이터 입력안하면 오늘날자 입력되게됨.
+
+SQL> insert into book(bookno, title, author, price)
+  2  values(1, 'java', '홍길동', 900);
+
+1 row created.
+
+SQL> select * from book;
+
+    BOOKNO TITLE        AUTHOR            PRICE PUBDATE
+---------- ------------ ------------ ---------- --------
+         1 java         홍길동              900 19/12/26
+         
+--------------------------------------------------
+######################################################
+
+insert into book(bookno, title, author, pubdate)
+values(2, 'sql', null, null);
+
+
+###################################################
+--------------------------------------------------
+## 제약 조건떄문에 등록 되지 않음 (bookno, title는 중복허용 제약이 걸려있음)
+SQL> insert into book(bookno, title, author, price)
+  2  values(1, 'java', '홍길동', 900);
+insert into book(bookno, title, author, price)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SCOTT.SYS_C007006) violated
+--------------------------------------------------
+###################################################
+```
+
+* 제약 조건 외부 설정(추가/삭제)
+
+```bash
+# 외부에서 pk제약 조건 설정 (제약 조건 이름(book_pk)은 내가 알아보기 쉽게 설정해야한다 에러가 날때 찾아가기 쉬움
+alter table book add CONSTRAINT book_pk primary key(bookno);
+
+
+SQL> insert into book(bookno, title, author, price)
+  2  values(1, 'sql', '홍길동', 2900);
+insert into book(bookno, title, author, price)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SCOTT.BOOK_PK) violated
+
+-# 제약 조건 제거
+alter table book drop CONSTRAINT book_pk;
+```
+
+* PK설정
+
+```bash
+
+```
+
+
+
+* FK설정
 
 # eclipse 환경설정
 
