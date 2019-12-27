@@ -1,0 +1,19 @@
+
+alter user hr idnetified by hr account unlook;
+
+conn hr/hr
+sqlplus hr/hr
+
+select * from tab;
+select * from employees;
+
+
+** TABLESPACE **
+
+create TABLESPACE mc
+datafile 'C:\oraclexe\app\oracle\oradata\XE\mc.dbf'
+size 10M
+autoextend on next 1M maxsize UNLIMITED;
+
+
+drop TABLESPACE mc INCLUDING CONTENTS AND Datafiles;

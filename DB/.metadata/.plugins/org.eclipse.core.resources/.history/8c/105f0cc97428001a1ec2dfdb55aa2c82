@@ -1,0 +1,64 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import util.jdbcUtil;
+
+public class DeptDAD {
+	
+	public void deleteDept(int deptno) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int row = 0;
+
+		String sql = "delete from dept where deptno = ?";
+
+		try {
+			con = jdbcUtil.getConnection();
+			ps = con.prepareStatement(sql);
+			//rs = ps.executeQuery(); 
+			ps.setInt(1, deptno);
+			
+			row = ps.executeUpdate();  //dml 구문이기 때민에 low사용
+			// 결과 값 처리
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			jdbcUtil.close(con, ps, rs);
+		}
+
+	}
+	
+	
+
+	public void insertDept(String dname, String loc) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int row = 0;
+
+		String sql = 
+		"insert into dept(deptno,dname,loc) " +
+		"values((select nvl(max(deptno),0)+1 from dept),?,?)";
+
+		try {
+			con = jdbcUtil.getConnection();
+			ps = con.prepareStatement(sql);
+			//rs = ps.executeQuery(); 
+			ps.setString(1, dname);
+			ps.setString(2, loc);
+			
+			row = ps.executeUpdate();  //dml 구문이기 때민에 low사용
+
+			// 결과 값 처리
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			jdbcUtil.close(con, ps, rs);
+		}
+
+	}
+}

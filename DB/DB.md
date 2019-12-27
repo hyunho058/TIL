@@ -2,6 +2,8 @@
 
 # SQL 
 
+[참고 자료](https://wikidocs.net/4101)
+
 [Oracle DateBase](https://www.oracle.com/database/technologies/xe-downloads.html)
 
 ![image-20191223094942291](C:\Users\student\AppData\Roaming\Typora\typora-user-images\image-20191223094942291.png)
@@ -1930,6 +1932,155 @@ alter table book drop CONSTRAINT book_pk;
 
 
 * FK설정
+
+# View
+
+* 뷰는 하나의 가상 테이블이라 생각 하면 된다.
+* 뷰는 실제 데이터가 저장 되는 것은 아니지만 뷰를 통해 데이터를 관리 할수 있다.
+* 뷰는 복잡한 Query를 통해 얻을 수 있는 결과를 간단한 Query로 얻을 수 있게 한다
+* 한 개의 뷰로 여러 테이블에 대한 데이터를 검색 할 수 있다.
+* 특정 평가 기준에 따른 사용자 별로 다른 데이터를 액세스할 수 있도록 한다. 
+
+## 가장 View 생성
+
+```bash
+
+SQL> create or replace view max_dept
+  2  as
+  3  select *
+  4  from emp
+  5  where (deptno,sal) in (select deptno, max(sal) from emp group by deptno)
+  6  order by deptno;
+
+View created.
+
+SQL> select *
+  2  from max_dept;
+
+     EMPNO ENAME      JOB                 MGR HIREDATE   SAL  COMM DEPTNO
+---------- ---------- ------------ ---------- -------- ----- ----- ------
+      7839 KING       PRESIDENT               81/11/17  5000           10
+      7902 FORD       ANALYST            7566 81/12/03  3000           20
+      7698 BLAKE      MANAGER            7839 81/05/01  2850           30
+       999 홍                                           2100           50
+```
+
+
+
+# Sequence
+
+* 유일(UNIQUE)한 값을 생성해주는 오라클 객체(table,view,sequence)이다. 
+* 시퀀스를 생성하면 기본키와 같이 순차적으로 증가하는 컬럼을 자동적으로 생성 할 수 있다. 
+* 보통 PRIMARY KEY 값을 생성하기 위해 사용 한다. 
+* 메모리에 Cache되었을 때 시퀀스값의 액세스 효율이 증가 한다. 
+* 시퀀스는 테이블과는 독립적으로 저장되고 생성된다.
+
+### sequence 생성
+
+```bash
+create sequence dept_seq;
+```
+
+
+
+### sequence 삭제
+
+```bash
+drop sequence dept_seq;
+```
+
+
+
+```bash
+#시퀀스를 실행하면 데이터를 중복하지 않고 지속적으로 데이터를 넣을 수 있다.
+SQL> create sequence dept_seq;
+
+Sequence created.
+
+SQL> insert into dept2(deptno,dname,loc)
+  2  values(dept_seq.nextval,'EDU','SEOUL');    #nextval 은 1씩 증가시킨다.
+
+1 row created.
+
+SQL> insert into dept2(deptno,dname,loc)
+  2  values(dept_seq.nextval,'EDU','SEOUL');
+
+1 row created.
+
+SQL> insert into dept2(deptno,dname,loc)
+  2  values(dept_seq.nextval,'EDU','SEOUL');
+
+1 row created.
+
+SQL> insert into dept2(deptno,dname,loc)
+  2  values(dept_seq.nextval,'EDU','SEOUL');
+
+1 row created.
+
+SQL> select * from dept2;
+
+DEPTNO DNAME                        LOC
+------ ---------------------------- --------------------------
+     1 EDU                          SEOUL
+     2 EDU                          SEOUL
+     3 EDU                          SEOUL
+     4 EDU                          SEOUL
+```
+
+* currval
+
+```bash
+SQL> select dept_seq.currval from dual;
+
+   CURRVAL
+----------
+         4
+```
+
+* nextval
+
+```bash
+SQL> select dept_seq.nextval from dual;
+
+   NEXTVAL
+----------
+         5
+
+SQL> select dept_seq.nextval from dual;
+
+   NEXTVAL
+----------
+         6
+         
+
+#sequence 는 번호 관리를 해준다
+SQL> select * from dept2;
+
+DEPTNO DNAME                        LOC
+------ ---------------------------- --------------------------
+     1 EDU                          SEOUL
+     2 EDU                          SEOUL
+     3 EDU                          SEOUL
+     4 EDU                          SEOUL
+     7 EDU                          SEOUL
+```
+
+```bash
+#시퀀스 10씩 증가
+SQL> create sequence dept_seq start with 10 increment by 10;
+
+Sequence created.
+
+SQL> select * from dept2;
+
+DEPTNO DNAME                        LOC
+------ ---------------------------- --------------------------
+    10 EDU                          SEOUL
+    20 EDU                          SEOUL
+    30 EDU                          SEOUL
+```
+
+
 
 # eclipse 환경설정
 

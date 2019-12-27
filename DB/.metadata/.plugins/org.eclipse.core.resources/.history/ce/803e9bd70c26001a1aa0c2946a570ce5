@@ -1,0 +1,25 @@
+-- JOIN --
+select * from dept;
+select * from emp;
+
+select ename,dname,loc
+from emp,dept
+where emp.deptno = dept.deptno;
+
+select ename,emp.deptno, dname,loc
+from emp,dept
+where emp.deptno = dept.deptno;
+
+select ename,dept.deptno, dname,loc
+from emp,dept
+where emp.deptno = dept.deptno;
+
+-- 테이블 이름을 별칭 지정하여 사용
+select ename,e.deptno, dname,loc
+from emp e,dept d
+where e.deptno = d.deptno;
+
+--sal > 2000 and deptno 가 20번 부서에 근무하는 사원이름, sal,loc 출력
+select ename, sal, loc
+from emp, dept
+where emp.deptno = dept.deptno and sal > 2000;

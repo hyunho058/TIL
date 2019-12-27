@@ -1,0 +1,14 @@
+select employee_id, first_name, department_name
+from employees, departments;
+
+
+select *
+from employees;
+
+select last_name, salary
+from employees e, employees m
+where e.last_name = m.manager_id and e.salary > m.salary;
+
+select e.ename as "사원명",e.sal, em.ename as "상사 이름",em.sal
+from emp e, emp em
+where e.mgr = em.empno and e.sal >= em.sal;

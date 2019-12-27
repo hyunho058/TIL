@@ -1,0 +1,8 @@
+
+alter user hr idnetified by hr account unlook;
+
+conn hr/hr
+sqlplus hr/hr
+
+select * from tab;
+select * from employees;

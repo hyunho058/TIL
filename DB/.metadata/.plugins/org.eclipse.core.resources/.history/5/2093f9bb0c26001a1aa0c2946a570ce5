@@ -1,0 +1,11 @@
+-- JOIN --
+select * from dept;
+select * from emp;
+
+select ename,dname,loc
+from emp,dept
+where emp.deptno = dept.deptno;
+
+select ename,emp.deptno, dname,loc
+from emp,dept
+where emp.deptno = dept.deptno;

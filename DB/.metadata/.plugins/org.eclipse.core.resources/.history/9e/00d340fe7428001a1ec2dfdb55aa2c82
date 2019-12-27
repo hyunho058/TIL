@@ -1,0 +1,17 @@
+package App;
+
+import dao.DeptDAD;
+
+public class Application {
+
+	public static void main(String[] args) {
+		DeptDAD dao = new DeptDAD(); //db연동 담당
+		
+		dao.insertDept("Edu2", "Chejudo");
+		
+		dao.deleteDept(51);
+		
+		System.out.println("END");
+	}
+
+}

@@ -1,0 +1,15 @@
+package test;
+
+public class Test01 {
+
+	public static void main(String[] args) {
+		//emp table 내용 호출
+		//Oracle DB 연동 ->driver setting
+		String id="SCOTT";
+		String pw="TIGER";
+		String driver="";  //드라이버 로딩 종류
+		String url="jdbc:oracle:thin:@127.0.0.1:1521:xe";  //서버 경로
+		
+	}
+
+}
