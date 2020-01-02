@@ -1,0 +1,49 @@
+day??  - 20/01/02 - 정리
+
+1. 자바 / 오라클 정리
+ 1) 구구단 전체단 출력 
+ 2) 1/2 + 2/3+ 3/4 +.......9/10 = ?
+ 3) 1 + (1+2) + (1+2)+3 +......(1+2+3+4)+5 = ?
+
+ emp/ dept / loc
+ 4) 
+ C:\Users\student>sqlplus "/as sysdba"
+ SQL> create user kingsmile identified by oracle;
+ SQL> alter user kingsmile account unlock;
+ 
+> ojdbc6.jar
+ C:\oraclexe\app\oracle\product\11.2.0\server\jdbc\lib\ojdbc6.jar 복사
+ C:\Program Files\Java\jre1.8.0_231\lib\ext\ojdbc6.jar 붙여넣기
+
+
+
+
+
+2. 웹 - HTML5 , CSS , JS, jQuery
+
+ https://developer.mozilla.org/ko/
+ https://devdocs.io/
+ https://caniuse.com/
+
+
+
+
+3. Jsp & Servlet <- 짧게
+
+4. Spring 
+
+
+========================
+>> 유용한 사이트
+ - DB
+ http://www.dbguide.net/index.db
+ http://www.sqler.com/
+ http://www.gurubee.net/
+
+----------------------------------------
+>> 강사 서버 접속
+ http://70.12.60.90:280/ 
+
+  bigdata4 / bigdata4
+
+
