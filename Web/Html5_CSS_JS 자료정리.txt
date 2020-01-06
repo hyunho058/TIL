@@ -1,0 +1,87 @@
+
+20/01/06 - 정리
+
+0. JDBC 마무리 
+
+1. 오라클 상태 확인하기 
+
+2. Memory 구조
+
+3. 웹 - HTML5 , CSS , JS, jQuery
+ http://info.cern.ch/
+ - server download
+  http://apache.org/
+  http://tomcat.apache.org/
+
+> Oracle port number 확인 및 변경
+ select dbms_xdb.gethttpport() from dual;
+ exec dbms_xdb.sethttpport(9090);
+
+> 라이브러리 복사/붙여넣기
+ C:\app\apache-tomcat-8.5.50\lib\el-api.jar / jsp-api.jar / servlet-api.jar 복사
+ C:\Program Files\Java\jre1.8.0_231\lib\ext\ 폴더에 3개 파일 붙여넣기
+
+=======================================
+day??  - 20/01/02 - 정리
+
+1. 자바 / 오라클 정리
+ 1) 구구단 전체단 출력 
+ 2) 1/2 + 2/3+ 3/4 +.......9/10 = ?
+ 3) 1 + (1+2) + (1+2)+3 +......(1+2+3+4)+5 = ?
+
+ emp/ dept / loc
+ 4) 
+ C:\Users\student>sqlplus "/as sysdba"
+ SQL> create user kingsmile identified by oracle;
+ SQL> alter user kingsmile account unlock;
+ 
+> ojdbc6.jar
+ C:\oraclexe\app\oracle\product\11.2.0\server\jdbc\lib\ojdbc6.jar 복사
+ C:\Program Files\Java\jre1.8.0_231\lib\ext\ojdbc6.jar 붙여넣기
+
+
+
+
+
+2. 웹 - HTML5 , CSS , JS, jQuery
+
+ https://developer.mozilla.org/ko/
+ https://devdocs.io/
+ https://caniuse.com/
+
+
+
+
+3. Jsp & Servlet <- 짧게
+
+4. Spring 
+
+
+========================
+>> 유용한 사이트
+ - DB
+ http://www.dbguide.net/index.db
+ http://www.sqler.com/
+ http://www.gurubee.net/
+
+- Java
+ http://www.terms.co.kr/
+ https://ko.wikipedia.org/
+ http://www.etnews.com/
+
+ https://www.youtube.com/playlist?list=PLieE0qnqO2kTyzAlsvxzoulHVISvO8zA9
+
+ - WEB
+ https://www.w3schools.com/
+ https://www.w3.org/  <-- html/css/js
+  HTML 4.x
+   ---> DHTML , XHTML1.x ,  XHTML2.x 
+  HTML5 
+
+----------------------------------------
+>> 강사 서버 접속
+ http://70.12.60.90:280/ 
+
+  bigdata4 / bigdata4
+
+

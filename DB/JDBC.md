@@ -1,5 +1,7 @@
 # JDBC
 
+
+
 > build path - configure build path - library - Add external -ojdbc6 추가
 
 ![image-20191227102851595](C:\Users\student\AppData\Roaming\Typora\typora-user-images\image-20191227102851595.png)
@@ -91,7 +93,7 @@ public class Test2 {
 }
 ```
 
-## dao
+### dao
 
 > DB연동 담당 Class
 
@@ -101,7 +103,7 @@ public class Test2 {
 
 
 
-## vo(DTO)
+### vo(DTO)
 
 * DTO
 
@@ -110,4 +112,68 @@ public class Test2 {
 ```
 
 
+
+
+
+# day2
+
+## Oracle 상태확인
+
+> 아래 3개 상태가 실행 중이여야 DB사용 가능
+
+![image-20200106092706086](image/image-20200106092706086.png)
+
+![image-20200106092450666](image/image-20200106092450666.png)
+
+![image-20200106092717596](image/image-20200106092717596.png)
+
+
+
+### get/set
+
+setXXX(0,0)
+
+getXXX(0)
+
+> xxx 에는 자료형 (0,0) ->
+>
+> (0)에는 index or fieldName ->fiealdName 를 권장으로 한다 (순서가 바뀌더라도 이름은 바뀌지않음.)
+
+
+
+## Memory 구조
+
+### RAM
+
+> 휘발성
+
+| const(static) | heap       | stack |
+| ------------- | ---------- | ----- |
+| 상수          | 동적Memory | 변수  |
+
+#### stack
+
+> 컴퓨터가 On 이 되면 system 역역이 생성된다
+
+* 변수
+
+  {    } 영역 -> 중괄호 영역이 끝나면 소멸
+
+#### Heap
+
+* 동적Memory
+
+  C/C++ =>할당 - method(), 해제 - delete()
+
+  JAVA => 할당 - new, 해제 - gc(garbage collector)
+
+#### static
+
+* 상수
+
+  응용 프로그램을 종료하기 전까지 데이터가 살아있음.
+
+### ROM
+
+> 비휘발성
 
