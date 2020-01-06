@@ -38,8 +38,6 @@
   * aspx - IIS
   * php - apache
 
-
-
 # Eclipse Web
 
 ## Tomcat
@@ -66,13 +64,13 @@ exec dbms_xdb.sethttpport(9090); # 기존 port를 9090으로 변경
 
 
 
-* jar 파일 Java 폴더 복사
+## jar 파일 Java 폴더 복사
 
 ![image-20200106164313669](image/image-20200106164313669.png)
 
-해당 경로로 복사
+해당 경로로 복사 붙여넣기(el-api, jsp-api, servlet-api)
 
-   ->  C:\Program Files\Java\jre1.8.0_231\lib\ext
+  C:\app\apache-tomcat-8.5.50\lib  ->  C:\Program Files\Java\jre1.8.0_231\lib\ext
 
 ## Server Side Script
 
@@ -104,3 +102,6 @@ exec dbms_xdb.sethttpport(9090); # 기존 port를 9090으로 변경
 [w3schools](https://www.w3schools.com/)
 
 [https://www.w3.org/](https://www.w3.org/)
+
+[HTML5/CSS 특강](https://www.youtube.com/playlist?list=PLMfOC9Ny9UB_w3Ru8HI0g00bxz21LA0gL)
+
