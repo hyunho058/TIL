@@ -329,6 +329,51 @@ exec dbms_xdb.sethttpport(9090); # 기존 port를 9090으로 변경
 
   - `(0, 0, 0, 0)`처럼 4개의 인자를 받는다. 앞의 세개는 r,g,b를 의미하며 0~~255까지의 값을 가진다. 맨뒤의 값은 투명도를 의미하며 0~~1까지의 값을 가진다.
 
+# JavaScript
+
+> 위치 상관 없다.
+>
+> jsp&servlet, javaScript에서는 tag와 쿼리문은 문자열 안에서 선언한다.
+
+* javaScript와 HTML에서 출력 비교
+
+```javascript
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<title>ex01_js.html JavaScript Test </title>
+
+<script type="text/javascript">
+	document.write("javaScript를 이용한 출력<br>");
+	document.write("javaScript는 대보문자 구분한다<br>");
+	document.writeln(" <font color='red' size='5'> javaScript를 이용한 출력</font>");
+	
+	function hello(){
+		alert('안녕');  /* 우선 순위가 높다 (가장 상위에 출력)*/
+	}
+</script>
+
+</head>
+<body onload="hello()"> 
+
+	<p>브라우저에서 출력되었습니다.</p>
+	<input type="button" value="눌러봐" onclick=hello()>  
+	
+
+</body>
+</html>
+```
+
+* document.write - 출력 method
+* method 호출은 "hello()", hello() 둘다 사용 가능하다
+
+### type
+
+> 티입선을 을 하지않아도 된다, 단 var str= 선언시 초기화 값을 지정해 줘야한다(초기화 지정시에 타입이 자동 형성되기 때문에 -.>초기화 값 지정해주지 않으면 undefinde 가 뜬다)
+
 # 유용 사이트
 
 [w3schools](https://www.w3schools.com/)

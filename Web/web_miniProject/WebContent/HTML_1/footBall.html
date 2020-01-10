@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<title>Sports</title>
+
+<script type="text/javascript">
+	document.getElementById("test").style.display = "none";
+	document.getElementById("test").style.display = "block";
+
+	function view() {
+		var f = document.form;
+		if (f.type[0].checked == true) {
+			document.all.cattery.style.visibility = "hidden";
+		} else {
+			document.all.cattery.style.visibility = "visible";
+		}
+	}
+</script>
+
+
+<style type="text/css">
+
+/* 링크에서 밑줄 없애기 */
+a.no-uline { text-decoration:none }
+
+/* 마우스 지나갈 때만 삭제 + 강제로 없애기 */
+a.noul:hover { text-decoration:none !important }
+
+</style>
+
+</head>
+<body>
+
+
+	<style type="text/css">
+#floatdiv {
+	position: fixed;
+	/* width: 175px; */
+	display: inline-block;
+	right: 1%; /* 창에서 오른쪽 길이 */
+	top: 0%; /* 창에서 위에서 부터의 높이 */
+	background-color: transparent;
+	margin: 0;
+}
+</style>
+
+
+	<table id="floatdiv" border="1">
+		<tr>
+			<th><a href="http://ticket.interpark.com/Contents/Sports" style="text-decoration:none" target=""> 예매</th>
+			<th><a href="https://sports.news.naver.com/kfootball/schedule/index.nhn" style="text-decoration:none" target=""> 일정</th>
+		</tr>
+
+	</table>
+
+
+
+	<marquee behavior="scroll" direction="right" scrollamount="30">
+		<h1>
+			<img
+				src="https://data.silhouette-ac.com/data/thumbnails/81/8117d556776d833047457f85437fd954_w.jpeg"
+				width="50" height="50" align="center" "/> FOOT BALL<img
+				src="https://data.silhouette-ac.com/data/thumbnails/81/8117d556776d833047457f85437fd954_w.jpeg"
+				width="50" height="50" align="center" "/>
+		</h1>
+	</marquee>
+
+	<table border="1" width="100%" height="200" align="center"
+		bgcolor="red">
+		<tr>
+			<th>축구 설명</th>
+			<th>감동</th>
+			<th>재미</th>
+			<th>감탄</th>
+		</tr>
+
+		<tr>
+			<th><a href="https://www.youtube.com/watch?v=2AJ8Q1fDWnw"
+				target=""> <img
+					src="https://i.ytimg.com/an_webp/qPcF63xjICU/mqdefault_6s.webp?du=3000&sqp=CMGL4PAF&rs=AOn4CLBVuBXLYu1GVAO60LzhZmEOKTkK5w"
+					width="100%" height="100%" align="center" "/></a></th>
+
+			<th><a href="https://www.youtube.com/watch?v=oWNT897SFqk"
+				target=""> <img
+					src="https://i.ytimg.com/an_webp/oWNT897SFqk/mqdefault_6s.webp?du=3000&sqp=CIP_3_AF&rs=AOn4CLANasoJiGCWnDXm_sAyk2AK4dLHhQ"
+					width="100%" height="100%" align="center" "/></a></th>
+
+			<th><a href="https://www.youtube.com/watch?v=1zGDn816DlI"
+				target=""> <img
+					src="https://i.ytimg.com/an_webp/1zGDn816DlI/mqdefault_6s.webp?du=3000&sqp=CLKO4PAF&rs=AOn4CLAWCq3gQLfd_D3v8DLIw8bjmde0qQ"
+					" width="100%" height="100%" align="center" "/></a></th>
+
+			<th><a href="https://www.youtube.com/watch?v=sHbJso-NX0Q"
+				target=""> <img
+					src="https://i.ytimg.com/an_webp/sHbJso-NX0Q/mqdefault_6s.webp?du=3000&sqp=CLiP4PAF&rs=AOn4CLCFNbN2QlU3R6PCzdRPsNSIttuUOw"
+					width="100%" height="100%" align="center" "/></a></th>
+		</tr>
+		<tr>
+		</tr>
+	</table>
+	<form name="form" method="post">
+
+
+		<div>
+			<h1>FOOT BALL 설명</h1>
+			<input type="radio" name="type" value="1" onclick="view()" checked>숨기기
+			<input type="radio" name="type" value="2" onclick="view()">열기
+			<hr>
+			<div id="cattery" style="visibility: hidden;">
+				<h2>1. 규칙의 제정</h2>
+				<hr>
+				<div>축구의 규칙은 국제축구평의회(IFAB)에서 결정한다. 국제축구평의회는 잉글랜드 축구 협회·스코틀랜드
+					축구 협회·웨일스 축구 협회·북아일랜드 축구 협회에서 각 1명씩, FIFA의 4명을 합해 총 8인으로 구성되며, 8명 중
+					6명이 안건에 찬성하면 통과된다.</div>
+
+
+				<h2>2. 경기 방식 (Rule)</h2>
+				<hr>
+				<div>경기를 치르는 양쪽 팀은 필드에 각각 11명을 출전시킨다. 골키퍼를 제외한 모든 선수들은 드로잉 상황을
+					제외하면 손을 사용할 수 없고, 골키퍼만이 페널티 박스 안에서 제한적으로 손을 쓸 수 있다.[1] 양 팀의 선수들은 상대
+					선수를 잡는 동작(홀딩), 손을 이용해 공을 건드리는 행위(핸드볼), 상대선수를 미는 동작(푸싱), 오프사이드 등
+					규정에서 금하고 있는 반칙 행위 없이 정상적인 과정을 거쳐 손과 팔을 제외한 모든 신체부위를 이용하여[2] 공을 상대방의
+					골대에 그어진 골 라인[3] 안으로 100% 집어넣어서 득점을 해야 하며, 양팀이 성공한 득점의 개수를 비교해 승패를
+					결정한다.</div>
+
+				<h2>3. 경기 시간 (Time)</h2>
+				<hr>
+				<div>정규 시간은 90분이며 전, 후반으로 나눠 각각 45분으로 진행되면서 그 어떤 상황에서도 시간은 계속
+					흐른다. 그러나 전, 후반의 45분이 각각 끝나면 경기 도중의 반칙, 선수들의 부상이나 교체 등으로 인해 소모된 시간을
+					계산하여 몇 분 간의 추가시간이 주어진다. 예전에는 주심이 마음대로 추가시간을 결정했으나, 최근에는 기록원이 이를
+					결정하며 다만 추가시간 도중 경기에서 추가시간을 부여할 여지가 생기면 주심에게 약간의 재량이 주어진다.[4][5] 최근
+					도입된 VAR 판독이 있다면 의무적으로 3분이 추가된다. 전후반 사이의 휴식 시간은 15분이다. 혹서기에는 주심의 재량에
+					의해 전후반 각 25분에서 30분경에 선수들에게 3분 동안 몸을 식히고 물을 마시는 쿨링 브레이크가 선언되기도 한다.</div>
+
+				<h2>4. 득점 (Goal)</h2>
+				<hr>
+				<div>팔과 손을 제외한 신체 부위로 공을 차서 골대 안으로 공을 넣으면 득점으로 1점을 부여한다. 다시
+					말하면 스로인 상황에서 손으로 공을 던진 공은 골대 안으로 들어가도 득점으로 인정되지 않는다.[6] 다만 스로인한 공이
+					다른 선수에 맞고 들어가면 득점으로, 스로인은 도움으로 인정된다. 마찬가지로 골키퍼가 자기 편 페널티 박스에서 공을
+					던져서 상대 편 골대에 넣어도 역시 득점으로 인정되지 않는다.[7]물론, 현실에서는 그 정도의 던지기 실력이면 골키퍼가
+					아니라 투포환 선수를 했을 것이다. 이전에는 고의성이 없었다면 손이나 팔에 맞고 골대로 들어갔어도 득점이 인정되었으나,
+					현재는 공격 전개 과정 중 선수의 손이나 팔에 공이 닿으면 무조건 득점이 취소된다. 다만 이것은 득점에 성공한 팀의
+					선수일 경우이고, 수비 측 선수의 손이나 팔에 닿았다면 파울 당한 팀에 대한 어드밴티지가 적용되어 득점이 인정된다. 같은
+					맥락으로 자책골은 스로인이 아닌 이상 팔이나 손에 의해 들어가도 인정된다.[8] 공 전체가 골 라인 안으로 완전히
+					들어가야 득점으로 인정된다. 종이 1장 차이로 노골 즉, 거의 공이 들어간 것 같아 보여도 라인에 일부라도 닿아 있으면
+					골이 아니다. 이 규칙은 당연히 맨눈으로 파악하기 힘든 부분이 있으므로 2014년부터 골라인 판독기가 도입되었고, 덕분에
+					많은 논란이 줄어들었다.</div>
+			</div>
+		</div>
+	</form>
+</body>
+</html>

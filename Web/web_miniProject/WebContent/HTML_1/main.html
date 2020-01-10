@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>문화생활 페이지</title>
+	<link rel="stylesheet" href="../CSS/style_hg.css">
+</head>
+<body>
+	<div id="divall">
+		<!--제목 표시 부분-->
+		<div>
+			<h1>문화생활 페이지</h1>
+		</div>
+		<!-- 내용 부분-->
+		<div>
+			<!-- 주요 내용 부분-->
+			<div>
+				<!-- 메뉴 부분-->
+				<div>
+					<ul>
+						<li><a href="home.html" target="iframe1">Home</a></li>
+						<li><a href="game.html" target="iframe1">Game</a></li>
+						<li><a href="music.html" target="iframe1">Music</a></li>
+						<li><a href="baseBall.html" target="iframe1">Baseball</a></li>
+						<li><a href="footBall.html" target="iframe1">football</a></li>
+						<li><a href="#Visitor">Visitor</a></li>
+						<li><a href="#Contact">Contact</a></li>
+					</ul>
+				</div>
+				<!-- 메뉴 밑 내용 부분-->
+				<div>
+					<iframe name="iframe1" src="home.html"></iframe>
+				</div>
+			</div>
+		</div>
+		<!-- 방명록 부분 -->
+		<div>
+			<form id="Visitor" action="../JSP/book.jsp" method="post">
+				<fieldset style="color:black">
+					<legend>Guest Book</legend>
+					Name:<br>
+					<input type="text" name="visit" size="10"><br>
+					Password:<br>
+					<input type="password" name="pwd" size="10"><br>
+					Contents:<br>
+					<textarea name="txt" rows="7" cols="30">Tell me your Impression about this Webpage</textarea><br>
+					Secret<input type="checkbox" name="secret" value="1" checked><br>
+					<Input type="submit" name="input" value="입력">
+					<input type="reset" name="reset" value="취소">
+				</fieldset>
+			</form>
+		</div>
+		<!-- Contact 부분-->
+		<div id="Contact">
+			<p id="p1">Contact Us!</p>
+			<p id="con">팀 멤버: 심재영, 최시영, 김현호, 김하균<br>
+			강의명: 빅데이터를 활용한 IoT 시스템 개발(Feat. 스마트시티 프로젝트)<br>
+			강의장소: 멀티캠퍼스 역삼 602호<br>
+		</p>
+		</div>
+	</div>
+</body>
+</html>

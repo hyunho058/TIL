@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<title>Sports</title>
+<script type="text/javascript">
+	document.getElementById("test").style.display = "none";
+	document.getElementById("test").style.display = "block";
+
+	function view() {
+		var f = document.form;
+		if (f.type[0].checked == true) {
+			document.all.cattery.style.visibility = "hidden";
+		} else {
+			document.all.cattery.style.visibility = "visible";
+		}
+	}
+</script>
+
+<style type="text/css">
+
+/* 링크에서 밑줄 없애기 */
+a.no-uline { text-decoration:none }
+
+/* 마우스 지나갈 때만 삭제 + 강제로 없애기 */
+a.noul:hover { text-decoration:none !important }
+
+</style>
+
+</head>
+<body>
+
+
+	<style type="text/css">
+#floatdiv {
+	position: fixed;
+	/* width: 175px; */
+	display: inline-block;
+	right: 1%; /* 창에서 오른쪽 길이 */
+	top: 0%; /* 창에서 위에서 부터의 높이 */
+	background-color: transparent;
+	margin: 0;
+}
+</style>
+
+
+	<table id="floatdiv" border="1">
+		<tr>
+			<th><a href="http://ticket.interpark.com/Contents/Sports" style="text-decoration:none" target=""> 예매</th>
+			<th><a href="https://sports.news.naver.com/kbaseball/schedule/index.nhn" style="text-decoration:none" target=""> 일정</th>
+		</tr>
+
+	</table>
+
+	<marquee behavior="scroll" direction="right" scrollamount="30">
+		<h1>
+			<img
+				src="http://image.auction.co.kr/itemimage/14/7f/e4/147fe440e6.jpg"
+				width="50" height="50" align="center" "/> BASE BALL<img
+				src="http://image.auction.co.kr/itemimage/14/7f/e4/147fe440e6.jpg"
+				width="50" height="50" align="center" "/>
+		</h1>
+	</marquee>
+
+	<table border="1" width="100%" height="200" align="center"
+		bgcolor="red">
+		<tr>
+			<th>야구 설명</th>
+			<th>감동</th>
+			<th>재미</th>
+			<th>감탄</th>
+		</tr>
+
+		<tr>
+			<th><a href="https://www.youtube.com/watch?v=ysmxzWxgCA0"
+				target=""> <img
+					src="https://i.ytimg.com/an_webp/ysmxzWxgCA0/mqdefault_6s.webp?du=3000&sqp=CKXY3_AF&rs=AOn4CLDLzTmSYgiTDqauqUvel0ojHoI-4Q"
+					width="100%" height="100%" align="center" "/></a></th>
+
+			<th><a href="https://www.youtube.com/watch?v=hJXmayxQ17g"
+				target=""> <img
+					src="https://i.ytimg.com/an_webp/hJXmayxQ17g/mqdefault_6s.webp?du=3000&sqp=CPjs3_AF&rs=AOn4CLAsb3rxitYIv4pSalnXqCTdS0Q0jA"
+					width="100%" height="100%" align="center" "/></a></th>
+
+			<th><a href="https://www.youtube.com/watch?v=c6iPi_SRBho"
+				target=""> <img
+					src="https://i.ytimg.com/an_webp/c6iPi_SRBho/mqdefault_6s.webp?du=3000&sqp=CLyT4PAF&rs=AOn4CLDwUDbOa4WJ3Sdt-0IzUpQsQ28Y-w"
+					" width="100%" height="100%" align="center" "/></a></th>
+
+			<th><a href="https://www.youtube.com/watch?v=wonYnTbCjYo"
+				target=""> <img
+					src="https://i.ytimg.com/an_webp/wonYnTbCjYo/mqdefault_6s.webp?du=3000&sqp=CNDs3_AF&rs=AOn4CLB-DdNck0uotFlJVqjRRpw_ya_4nQ"
+					width="100%" height="100%" align="center" "/></a></th>
+		</tr>
+		<tr>
+		</tr>
+	</table>
+
+
+	<form name="form" method="post">
+
+
+		<div>
+			<h1>BASE BALL 설명</h1>
+			<input type="radio" name="type" value="1" onclick="view()" checked>숨기기
+			<input type="radio" name="type" value="2" onclick="view()">열기
+			<hr>
+			<div id="cattery" style="visibility: hidden;">
+				<h2>1. 개요</h2>
+				<div>야구는 각 9명(지명타자가 있는 경우에는 10명)으로 구성된 양 팀이 각각 9이닝[1]에 걸친 공수로
+					승부를 가린다. 보통 원정팀이 초 공격, 홈팀이 말 공격을 한다. 공격하는 팀에서 3명의 타자 또는 주자가 아웃되면
+					수비하는 팀이 공격기회를 가지게 된다. 다만 9회초가 끝나고 9회말로 넘어가는 시점에서 공격하게 되는 팀이 앞서고 있어서
+					승패가 바뀔 가능성이 없는 경우에는 9회초에서 경기를 끝낸다. 9회말이 끝나도 동점 상황이 유지되면 연장전에 들어간다.
+					MLB의 경우 무제한 연장전을 실시하나, KBO의 경우 12회까지 계속 동점이면 경기가 끝나며 무승부가 된다.
+					2008년에 무제한 연장전을 도입한 적이 있으나 18회까지 가는 경기가 나오는 바람에 이듬해 폐지되고 12회 무승부
+					방식으로 복구되었다. (물론 이 때문에 허무하게 경기가 끝나는 경우가 적잖다.) 모든 타격은 홈 플레이트 옆에 있는
+					타석(batting box)에서 행해지며, 공격팀 선수가 3아웃 이전에 1루, 2루, 3루를 거쳐 홈에 이르면 득점한다.
+					9명의 수비수 중 투수와 포수는 배터리(battery)가 되어 투수의 투구 때에는 각각 피처 마운드, 캐처 박스에
+					위치해야만 한다. 나머지 7명의 수비는 내야ㆍ외야에 자유롭게 포진한다. 물론 현대 야구에서는 수비수의 위치가 거의 정해져
+					있지만, 특수한 상황에서는 약간씩 이동하기도 한다. 그것을 수비 시프트 라고 부르는데, 가끔 극단적으로 하는 경우도
+					있다. 예를 들면 중견수를 2루 앞으로 포진시켜서 내야수를 5명으로 만든다든가, 우측 애매한 타구를 방지하기 위해
+					유격수를 2루에 두고 2루수가 우익수 앞쪽으로 들어가서 수비하는 경우도 있다. 번트를 대비하기 위해서 3루수와 1루수가
+					포수 근처까지 가있거나 투수가 투구함과 동시에 일단 홈으로 그냥 달리는 등 변화가 있다.</div>
+
+
+				<h2>2. 경기장</h2>
+				<hr>
+				<div>경기장 메이저리그에서, 경기장의 크기는 홈플레이트에서 파울 폴까지 75m(250ft) 이상이며,
+					1958년 이후의 경기장들은 파울라인 양 끝과 중견수 뒤쪽 펜스까지의 거리가 각각 99.06m(325ft)와
+					121.92m(400ft) 이상으로 되어 있다. 마운드, 각 루 부근, 루 사이를 제외한 모든 지역은 잔디로 덮여 있고,
+					3개의 루와 홈플레이트는 각 변이 27.4m(90ft)인 사각형의 꼭지점에 있다. 이 사각형의 안쪽을
+					내야(infield)라고 부르고, 1루~2루~3루를 잇는 선의 뒤쪽에서 펜스의 앞까지를 외야(outfield)라고
+					부른다. 마운드와 홈플레이트까지의 거리는 18.44m(60.5ft)이다. 상기의 조건을 충족한다면 펜스까지의 거리나 펜스
+					높이 등 다른 것들은 재량사항이므로, 팀의 특성에 맞게 투수친화적, 타자친화적 구장을 설계할 수 있다.</div>
+
+				<h2>3. 장비</h2>
+				<hr>
+				<div>공은 코르크나 고무 덩어리를 실로 감아 2조각의 가죽으로 덮어 싼 것이며, 원주 23.5cm 가량,
+					무게 142~149g이다. 방망이는 손잡이 부분이 가는 둥근 나무막대기로 되어 있고 무게 제한은 없으나 길이가
+					1.07m를 넘어서는 안 되며, 굵은 부분의 직경이 6.99(2.75inch) 이하여야 하고, 프로의 경우 금속이나 다른
+					강화제가 섞인 재질이어서는 안된다.(아마추어의 경우 금속제 방망이가 허용됨.) 글러브는 솜 등을 채워넣은 가죽으로 길이와
+					둘레가 각각 39.4cm(15.5inch), 96.5cm(38inch) 이하여야 한다. 포수는
+					마스크ㆍ가슴보호대ㆍ정강이보호대 ㆍ낭심보호대 등의 보호장비를 착용하며, 주심도 이와 비슷한 장비를 착용한다. 타자는 귀까지
+					덮는 헬멧을 쓴다.</div>
+
+				<h2>4. 공격</h2>
+				<hr>
+				<div>
+					타순(batting order) 공격팀의 타자 9명은 타순에 의해 공격이 진행되며, 게임 중에는 타순의 변경이 허용되지
+					않는다.[5] 각기 타순에는 별명도 있어서 1번과 2번 타자는 테이블 세터, 3번ㆍ4번ㆍ5번 타자는 클린업 트리오,
+					6번부터 9번까지의 타자는 하위타선으로 불린다.<br> <br> 안타 (hit) 수비수의 실책 없이
+					타자가 한 베이스 이상을 갈 수 있게 공을 치는 것. 타구가 수비수가 잡지 못하고 페어지역에 떨어진 뒤 공이 베이스에
+					도착할때까지 타자가 도착하는 베이스 숫자에 맞춰서 루타가 주어진다. 상황에 따라(즉, 타구가 떨어진 곳에서 수비수가 와서
+					공을 잡고 주자가 있거나 진루ㆍ귀루가 예상되는 곳으로 송구하는 데 시간이 걸리면) 1루를 지나 2루나 3루까지 도달하는
+					경우 2루타ㆍ3루타 등으로 부르며, 심지어 홈에서 세이프가 되면 인사이드 파크 홈런 혹은 그라운드 홈런이 된다. 전광판에
+					숫자로 기록되므로 이것을 보고 확인할 수 있다. 공이 수비수에게 잡히지 않고 페어 지역 내에 떨어진다 하더라도 무조건
+					안타가 되는 것은 아니다. 내야에 떨어진 공을 수비수가 잡고 1루로 던져 타자를 아웃시키면 땅볼로 기록되며(반대로 타자가
+					세이프가 되면 안타로 인정한다. 이것을 내야안타라고 부른다.), 수비수가 실책을 해서 타자가 1루에서 세이프가 되면
+					안타로 인정하지 않는다. 그냥 실책으로 인해 출루를 한 것일 뿐. 또한 주자가 한 루도 진루하지 못하고 다음 루에서
+					아웃되는 경우에도 안타로 인정하지 않는다. 그리고 주자가 올 세이프라도 야수가 충분히 타자를 1루에서 아웃시킬 수 있었던
+					경우에 선행 주자를 잡기 위하여 다른 루에 공을 던졌다가 그 주자가 살아서 올 세이프가 된 경우에는 안타가 아니라
+					야수선택으로 기록된다. 반대로 주자가 죽었더라도 주자가 한개의 루를 지나서 추가 진루를 하려다가 죽은 경우(예를 들어
+					1사 1루 상황에서 우전안타 - 주자가 2루를 지나 3루까지 가려다가 3루에서 죽은 경우)에는 타자에게는 안타를
+					인정한다.<br> <br>홈런(home run) 수비수의 실책 없이 타자가 홈베이스를 밟을 수 있게
+					공을 치는 것. 타자가 홈베이스를 밟을 시간만큼 공을 치려면 수비가 못잡도록 아예 노바운드로 담장 밖으로
+					날려버리거나[6], 수비수가 그동안 공을 처리하지 못할 정도로 멀리 오랫동안 처리할 타구를 보내야한다. 현대야구에서는
+					전자의 경우를 홈런으로 기록하고, 후자의 경우는 인사이드 파크 홈런으로 기록한다. 루상에 주자가 있으면 순서대로 진루하여
+					홈플레이트를 밟으면 득점한다. 그렇기 때문에 만루홈런을 치면 최대 4점을 득점할 수 있다. 다만 공의 착지점을 확인하기
+					애매할 때가 많은 만큼 이를 판정하기 위해 파울과 페어지역의 경계선에 파울 폴이 세워져 있는데, 일단은 당연히 이
+					안쪽으로 공이 들어가야 하고, 폴 위를 정확히 지나가거나 폴을 직접 맞추는 것도 홈런으로 인정된다. 또한 공이 펜스를
+					넘었다가 그물이나 관중에 의해 다시 공이 그라운드로 들어가는 경우에도 홈런으로 인정된다. 이를 확인하기 위해서 보통 단층
+					펜스 상단에 노란 줄을 긋고 줄을 넘어가면 홈런으로 인정하는 룰을 많이 쓴다. 이중으로 펜스가 쳐진 경우는 예외. 획일적
+					구조로 지어진 한국과는 달리 미국은 구장마다 펜스의 생김새와 규정이 각각 달라서 이로 인해 이득과 손해를 보는 타자가
+					제법 있다. 참고로 홈런도 안타의 일종이다.
+				</div>
+			</div>
+		</div>
+	</form>
+
+
+	</div>
+
+
+</body>
+</html>
