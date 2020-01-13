@@ -374,6 +374,109 @@ exec dbms_xdb.sethttpport(9090); # 기존 port를 9090으로 변경
 
 > 티입선을 을 하지않아도 된다, 단 var str= 선언시 초기화 값을 지정해 줘야한다(초기화 지정시에 타입이 자동 형성되기 때문에 -.>초기화 값 지정해주지 않으면 undefinde 가 뜬다)
 
+# jQuery
+
+## 1. File link 
+
+> 인터넷 환경이 안좋을때 사용.
+
+다운로드 - 우클릭 링크주소로 복사
+
+![image-20200113164540884](image/image-20200113164540884.png)
+
+```javascript
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<title> </title>
+<!-- <!-- CDN -->
+<script
+  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script> -->
+  
+  <!-- file 로 like -->
+ <script type="text/javascript" src="../js/jquery-3.4.1.min.js"></script>
+  
+<script type="text/javascript">
+	
+	/* 아래 두 코드가 같다 */
+	$(document).ready(function(){
+		alert('hi');
+	});
+	
+	$(function() {
+		alert('hi1');
+	});
+	
+</script>
+</head>
+<body>
+
+</body>
+</html>
+```
+
+
+
+
+
+## 2. CDN 방식
+
+
+
+다운로드-past releases -복사-붙여넣기
+
+
+
+![](image/image-20200113162757460.png)
+
+```javascript
+<script
+  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>   해당 주소 붙여넣기
+  
+<script type="text/javascript">
+   $(document).ready(function() {
+      $('tr:even').css('backgroundColor', 'pink');
+      $('tr:odd').css('backgroundColor', 'yellow');
+   });
+</script>
+```
+
+```javascript
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<title> </title>
+<!-- CDN -->
+<script
+  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+  
+<script type="text/javascript">
+	
+	/* 아래 두 코드가 같다 */
+	$(document).ready(function(){
+		alert('hi');
+	});
+	
+	$(function() {
+		alert('hi1');
+	});
+	
+</script>
+</head>
+<body>
+
+</body>
+</html>
+```
+
+
+
 # 유용 사이트
 
 [w3schools](https://www.w3schools.com/)
@@ -391,5 +494,11 @@ exec dbms_xdb.sethttpport(9090); # 기존 port를 9090으로 변경
 [Web개발 학습](https://developer.mozilla.org/ko/docs/Learn)
 
 [프로그램 학습](https://www.javatpoint.com/android-tutorial)
+
+[무료 Test website](https://codesandbox.io/s/)
+
+[jQuery library](https://jquery.com/)
+
+
 
 [hg](https://github.com/TunaHG)
