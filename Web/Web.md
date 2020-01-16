@@ -475,6 +475,158 @@ exec dbms_xdb.sethttpport(9090); # 기존 port를 9090으로 변경
 </html>
 ```
 
+# Ajax
+
+* 에제
+
+```java
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script>
+	var httpRequest = null;
+
+	function getXMLHttpRequest() {
+		if (window.XMLHttpRequest) {
+			return new XMLHttpRequest();
+		} else if (window.ActiveXObject) {
+			return new ActiveXObject("Microsoft.XMLHTTP");
+		} else {
+			return null;
+		}
+	}
+
+	function sendRequest(method, url, params, callback) {
+		httpRequest.onreadystatechange = callback;
+		httpRequest.open(method, url, true);
+		httpRequest.send(params);
+	}
+
+	function requestMsg() {
+		httpRequest = getXMLHttpRequest();
+		sendRequest("GET", "hello.html", null, responseMsg);
+	}
+
+	function responseMsg() {
+		if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+           
+	//             - [AJAX 상태코드 표]
+	//0
+	//초기화 되지 않음. open 메소드가 아직 호출되지 않았음.
+	//1
+	//열기. open 메소드가 호출되었으나 send 메소드는 호출되지 않았음.
+	//2
+	//송신완료. send 메소드가 호출되었음. 요청이 시작되었음
+	//3
+	//수신 중, 서버가 응답을 보내는 중임.
+	//4
+	//수신완료. 서버가 응답을 다 보내고 작업을 완료했음
+            
+          //  status
+	// 서버 처리 결과 상태 코드
+	// 200 : OK (요청 성공)
+	// 404 : Not Found (페이지를 못찾을 경우)
+	// 500 : Server Error (서버에서 결과 생성 시 오류 발생)
+
+			var msgView = document.getElementById("msgView");
+			msgView.innerHTML += httpRequest.responseText; //responseText -문자열로 응답 데이터를 얻음
+		}
+	}
+</script>
+</head>
+<body>
+	<h1>서버에서 받은 메세지</h1>
+	<div id="msgView" style="height: 100px; width: 500px; border: 1px solid black"></div>
+	<input type="button" value="서버에서 자료 요청" onclick="requestMsg()" />
+</body>
+</html>
+```
+
+![image-20200116133353763](image/image-20200116133353763.png)
+
+# JSP & Servlet
+
+* 스크립트릿
+
+```java
+1) 스크립트릿
+     <%
+	코드작성(변수선언, 제어문,...)
+     %>
+```
+
+* 선언문
+
+```jade
+ 2) 선언문
+    <%!
+	코드작성(변수선언, 함수 )
+     %>
+```
+
+* 표현식
+
+```java
+ 3) 표현식
+   <%= 변수 또는 값 또는 메소드 %>
+```
+
+* 예시
+
+```java
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<title>ex01_basic.jsp</title>
+<script type="text/javascript">
+	document.write("javascript 이요해서 출력했어요");
+</script>
+</head>
+<body>
+	<h1>안녕하세요</h1>
+	<p>tag 이용한 웹 브라우저에 출력합니다.</p>
+	
+	<%
+	String str = "안녕!!! JSP를 이용한 웹 브라우저에 출력합니다";
+	/* out.print(str); */
+	%><br>
+	
+	<!-- 변수 선언부 -->
+	<%!
+	public int show(){
+		return 3+5;
+	}
+	%>
+	
+	<!-- 서버사이드는 해석기가 따로있따 서버에서 해석이 이루어지고  -->
+	<%= "표현식 이용"+ str%><br>           <!-- JSP출력하는 문구,표현식 -->
+	<font size = '7' color='red'> <%= show() %> </font>
+</body>
+</html>
+```
+
+![image-20200116155747628](image/image-20200116155747628.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # 유용 사이트

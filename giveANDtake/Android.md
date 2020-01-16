@@ -358,7 +358,7 @@ public class Calcul {
 
 [LInked List 자료](https://eskeptor.tistory.com/89)
 
-
+[sql 데이터관리](https://meaningone.tistory.com/549)
 
 * EditText 수정, 연산자 우선순위 진행
 
