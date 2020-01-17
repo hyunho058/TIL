@@ -548,6 +548,22 @@ exec dbms_xdb.sethttpport(9090); # 기존 port를 9090으로 변경
 
 # JSP & Servlet
 
+​	- servlet
+
+* Java + HTML  - java 코드안에 html tag 작성
+
+> 대규모, 장기, 유지보수를 위해서는 servlet 사용 해야함.
+
+​	- jstl
+
+* java jsp, servlet 에서는 Tag, sql 문은 문자열 취급함.
+
+
+
+## JSP
+
+### jsp 문법
+
 * 스크립트릿
 
 ```java
@@ -613,19 +629,304 @@ exec dbms_xdb.sethttpport(9090); # 기존 port를 9090으로 변경
 
 
 
+## Servlet
+
+* HTML + java - html 안에서 java 코드 작성
+
+> 혼합 되어있어 자료 구조가 복잡함 (java는 컴파일을 해야함) - 코드 갱신에 있어서 웹페이지를 중단했다 컴파일후 다시 열어야한다.
+
+## Class 방식
+
+### java Servlet 설정
+
+![image-20200117094704528](image/image-20200117094704528.png)
+
+[tomcat dot](http://tomcat.apache.org/tomcat-8.5-doc/index.html)
+
+```java
+get ,post
+```
+
+### GEt, POST Override
+
+> Defaul - get
+
+![image-20200117101430066](image/image-20200117101430066.png)
+
+```java
+package com.sds.date;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class ServletDate extends HttpServlet {
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		process(req, resp);
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		process(req, resp);
+	}
+	protected void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("Hello Servlet");
+	}
+}
+```
+
+
+
+### Servlet 등록
+
+> 1.설정파일
+>
+> 2.어노테이션
+
+1. 설정파일에 등록
+
+   web.xml
+
+   ```java
+   <?xml version="1.0" encoding="UTF-8"?>
+   <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+   	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+   	id="WebApp_ID" version="3.1">
+   	<display-name>web05_jsp</display-name>
+   	
+   	<servlet>
+   		<servlet-name>ServletDate</servlet-name>  // 이름입력 (Class name로 하는걸 권장)
+   		<servlet-class>com.sds.date.ServletDate</servlet-class> //classs 경로 입력
+   	</servlet>
+   	<servlet-mapping>
+   		<servlet-name>ServletDate</servlet-name>
+   		<url-pattern>/</url-pattern>
+   	</servlet-mapping>
+   	
+   	
+   	<welcome-file-list>
+   		<welcome-file>index.html</welcome-file>
+   		<welcome-file>index.htm</welcome-file>
+   		<welcome-file>index.jsp</welcome-file>
+   		<welcome-file>default.html</welcome-file>
+   		<welcome-file>default.htm</welcome-file>
+   		<welcome-file>default.jsp</welcome-file>
+   	</welcome-file-list>
+   </web-app>
+   ```
+
+   
+
+2. 어노테이션 등록
+
+   ```java
+   package com.sds.date;
+   
+   import java.io.IOException;
+   
+   import javax.servlet.ServletException;
+   import javax.servlet.annotation.WebServlet;
+   import javax.servlet.http.HttpServlet;
+   import javax.servlet.http.HttpServletRequest;
+   import javax.servlet.http.HttpServletResponse;
+   
+   @WebServlet("/serverDate")  // 어노테이션
+   public class ServletDate extends HttpServlet {
+   
+   	@Override
+   	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+   		process(req, resp);
+   	}
+   
+   	@Override
+   	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+   		process(req, resp);
+   	}
+   	
+   	protected void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+   		System.out.println("Hello Servlet"); //console 출력
+   	}
+   }
+   
+   ```
+
+   ![image-20200117104707388](image/image-20200117104707388.png)
+
+
+
+###  java에서 html 작성
+
+* html에 시간 찍기
+
+```jade
+package com.sds.date;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Calendar;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/serverDate")
+public class ServletDate extends HttpServlet {
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		process(req, resp);
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		process(req, resp);
+	}
+	
+	protected void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		System.out.println("Hello Servlet");
+		resp.setCharacterEncoding("euc-kr"); // 한글 깨짐 처리
+		Calendar c = Calendar.getInstance(); // system이가지고 있는ㄴ 날짜를 얻어옴.
+		int hour = c.get(Calendar.HOUR_OF_DAY);
+		int minute = c.get(Calendar.MINUTE);
+		int second = c.get(Calendar.SECOND);
+		
+		PrintWriter pw = resp.getWriter();
+		pw.write("<html><head><title>서버축 시간을 얻어서 씁니다.</title></head>");
+		pw.write("<body><h1>Hello Servlet</h1>");
+		pw.write("<h2>현재 시간은");
+		pw.write(Integer.toString(hour)+"시");
+		pw.write(Integer.toString(minute)+"분");
+		pw.write(Integer.toString(second)+"초");
+		pw.write("</h2></body></html>");
+		pw.close();
+	}
+}
+```
 
 
 
 
 
+## Servlet 방식
+
+```jade
+
+```
+
+
+
+#### jsp -> jsp 방식
+
+* model 1방식 
+
+> Model1
+>
+> model2 == MVC
+
+```java
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<title>ex03_login.jsp</title>
+</head>
+<body>
+<table>
+	<form action="ex03_loginOK.jsp" method="get">
+		<tr>
+			<td>ID: <input type="text" name="id" value=""></td>
+		</tr>
+		<tr>
+			<td>PWD: <input type="text" name="pwd" value=""></td>
+		</tr>
+		<tr>
+			<td>Hobby:<input type="checkbox" name="hobby" value="baseball">baseball
+			<input type="checkbox" name="hobby" value="football">football
+			<input type="checkbox" name="hobby" value="basketball">basketball</td>
+		</tr>
+		<tr>
+			<td><input type="submit" id="sub" value="전송"></td> 
+		</tr>
+	</form>
+</table>
+</body>
+</html>
+```
+
+```java
+<%@page import="java.util.Map"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<title>ex03_loginOK.jsp</title>
+</head>
+<body>
+<%
+	request.setCharacterEncoding("UTF-8");
+	String id = request.getParameter("id");
+	String pass = request.getParameter("pwd");
+	//out.print(id + "," + pass);
+
+	//여러개의 데이터 받아오기
+	//String[] hobbys = request.getParameterValues("hobby");  //getParameterValues 방식을 이용한것
+	
+	
+	//getParameterMap 을 이용한 방식
+	Map map = request.getParameterMap();
+	String[] hobbys = (String[])map.get("hobby");
+		
+%>
+<%= "당신의 아이디 :" +id %><br>
+<%= "당신의 비밀번호 :" +pass%><br>
+
+<%
+	if(hobbys != null){
+		for(int i=0; i<hobbys.length; i++){
+			out.print(hobbys[i] + "<br>");
+		}
+	}
+%>
+</body>
+</html>
+```
+
+
+
+# JSTL
+
+## 리이브러리
+
+### Core
+
+[Tomcat](http://tomcat.apache.org/taglibs.html)
+
+[MVNrepository](https://mvnrepository.com/search?q=jstl)
+
+다운로드(JSTL, standard) - >lib폴더 
+
+![image-20200117151916824](image/image-20200117151916824.png)
+
+![image-20200117152018655](image/image-20200117152018655.png)
+
+![image-20200117152156885](image/image-20200117152156885.png)
+
+```java
 
 
 
 
-
-
-
-
+```
 
 
 
