@@ -553,6 +553,8 @@ exec dbms_xdb.sethttpport(9090); # 기존 port를 9090으로 변경
 * Java + HTML  - java 코드안에 html tag 작성
 
 > 대규모, 장기, 유지보수를 위해서는 servlet 사용 해야함.
+>
+> java 에 jsp 가 섞여서 코딩하기가 어려웠음.
 
 ​	- jstl
 
@@ -928,7 +930,305 @@ public class ServletDate extends HttpServlet {
 
 ```
 
+# jsp _0120
 
+> JSP 는 `WEB-INF` 파일이 반드시 있어야 한다.
+>
+> -- lib 
+>
+> -- classes -- bundle -- testBundle.properties , testBundle_ko.properties
+>
+> -- tld(라이브러리-JSTL,standard)
+>
+> --web.xml (web.xml 생성 - 우클릭 java EE Tools)
+
+* JSP 내부 객체
+  * vrequest 로컬 쿠키(클라이언트) , 세션(서버)
+  * response
+  * out
+  * pageContext
+  * sessio
+  *  application
+  * config
+  * page
+  * exception
+
+## JSTL& EL
+
+```java
+<!-- \문자 ===> 해당 문자 표현, \\,\" -->
+	<h3>\${5+7} = ${5+7}</h3>  // ==> EL방식
+	<h3>\${5+7} = <%=5+7 %></h3>  // ==> java code 여서 갱신하려면 서버를 재 시작해야함.
+    <br>
+	<h3>\${5-7} = ${5-7}</h3>
+	<h3>\${5*7} = ${5*7}</h3>
+	<h3>\${5/7} = ${5/7}</h3>
+	<h3>\${5div7} = ${5 div 7}</h3>
+	<h3>\${5%7} = ${5%7}</h3>
+	<h3>\${5 mod 7} = ${5 mod 7}</h3>
+	<hr>
+	<h3>\${5!=7} = ${5!=7}</h3>
+	<h3>\${5>7} = ${5>7}</h3>
+	<h3>\${5<7} = ${5<7}</h3>
+	<h3>\${5<=7} = ${5<=7}</h3>
+	<hr>
+	<h3>\${5+3==8?8:10} = ${5+3==8?8:10}</h3>
+	<hr>
+	<table border="1" width="100%">
+		<tr>
+			<td>\${header['host']}</td>  
+			<td>${header['host']}</td>
+		</tr>
+		<tr>
+			<td>\${header['user-agent']}</td>  //보고싶은 부위만 출력
+			<td>${header['user-agent']}</td>
+		</tr>
+		<tr>
+			<td>\${headerValues}</td>   //전체 출력
+			<td>${headerValues}</td>
+		</tr>
+	</table>
+    
+  
+
+```
+
+![](image/image-20200120104650274.png)
+
+
+
+
+
+> F12 - 화면에 커서 두고F5- ex01_el.jsp 파일 클릭 =>headers 볼수 있다.
+
+![image-20200120104930050](image/image-20200120104930050.png)
+
+
+
+ ### El로 받아오기
+
+```jade
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<%session.setAttribute("msg", "Session Test") %>   //("a","b") c '값'을 a에 대입한다.
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<title>ex02_el.jsp EL TEST</title>
+</head>
+<body>
+	<form action="ex02_result.jsp" method = "post">
+	<table border = "1" align="center">
+		<tr>
+			<td>검색:</td>
+			<td><input type="text" name="search" placeholder="검색어를 쓰세요"></td>
+		</tr>
+		<tr>
+			<td>이름:</td>
+			<td><input type="text" name="name" placeholder="Name쓰세요"></td>
+		</tr>
+		<tr>
+			<td>나이:</td>
+			<td><input type="number" name="age" placeholder="Age를쓰세요"></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center"><input type="submit" value="전송"></td>
+		</tr>
+	</table>
+	</form>
+	
+</body>
+</html>
+```
+
+```java
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<title>ex02_result.jsp 결과 받아줄 페이지</title>
+</head>
+<body>
+	<fmt:requestEncoding value="UTF-8"/>   // ==> 해당 코드 적용이 안되면"request.setCharacterEncoding("UTF-8");""  로 대체 해야한다.
+
+	<%
+		request.setCharacterEncoding("UTF-8");  
+		String name = request.getParameter("name");
+		String search = request.getParameter("search");
+		int age = Integer.parseInt(request.getParameter("age"));
+		out.println(age);
+	%>
+	<br>
+	<%=name %>님 검색어는 <%=search %> 쓰셧군요
+	
+	
+	<h3>${ param.name }</h3><h3>${ param['name'] }</h3>
+	<h3>${ param.search }</h3><h3>${ param['search'] }</h3>
+	<h3>${ param.age }</h3><h3>${ param['age'] }</h3>
+	
+	<h2>${ sessionScope.msg }</h2>   // <%session.setAttribute("msg", "Session Test") %> 호출
+	
+</body>
+</html>
+```
+
+
+
+# DBCP & Pool & JNDI (커넥션 풀)
+
+* 톰켓 서버에서 라이브러리 같다 쓴다.
+
+[Tomcat Connercion Pool](http://commons.apache.org/)
+
+> 1.DBCP , POOL 두가지 필요
+>
+> 2.tomcat-dbcp.jar
+
+![image-20200120143208327](image/image-20200120143208327.png)
+
+
+
+
+
+* 라이브러리를 쓰기위해 이름을(3가지) 맞춰줘야한다.
+
+[TomcatLibrary](http://tomcat.apache.org/tomcat-8.5-doc/jndi-resources-howto.html#web.xml_configuration)
+
+![image-20200120143746643](image/image-20200120143746643.png)
+
+> web.xml 
+>
+> context.xml
+>
+> java code
+
+### Web.xml 설정
+
+```java
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+  <display-name>web06_jsp_el</display-name>
+  
+  
+    <!-- jdbc:dbcpTestDB  DBCP setting -->
+  <resource-ref>
+  		<description>jdbc:dbcpTestDB  DBCP setting</description>
+  		<res-ref-name>jdbc:dbcpTestDB</res-ref-name>
+  		<res-type>javax.sql.DataSource</res-type>
+  		<res-auth>Container</res-auth>
+  </resource-ref>
+  
+  
+  
+ 	<!-- jdbc:dbcpTestDB DBCP setting -->
+  
+  <!-- <resource-ref>
+ 	 <description>
+    	jdbc:dbcpTestDB DBCP setting
+  	</description>
+ 	 <res-ref-name>
+  	  jdbc:dbcpTestDB
+  	</res-ref-name>
+ 	 <res-type>
+  	  javax.sql.DataSource
+  	</res-type>
+ 	 <res-auth>
+ 	   Container
+ 	 </res-auth>
+</resource-ref> -->
+  
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
+```
+
+### context.xml
+
+xml 파일 생성
+
+```java
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Context reloadable="true">
+	 <WatchedResource>WEB-INF/web.xml</WatchedResource>
+	 
+	 <Resource   name="jdbc:dbcpTestDB"
+	 				   auth="Container"
+	 				   type="javax.sql.DataSource"
+	 				   username="doublekim"
+	 				   password="oracle"
+	 				   driverClassName="oracle.jdbc.OracleDriver"
+	 				   url="jdbc:oracle:thin:@localhost:1521:xe"
+	 				   
+	 				   maxActive="20"
+	 				   maxIdle="10"
+	 				   maxWait="-1"	 			 			
+	 
+	 		/>
+
+</Context>
+```
+
+### java code
+
+```java
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<%@ page import="javax.sql.DataSource , javax.naming.*  , java.sql.* "  %>
+
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<title>dbcpConnection.jsp</title>
+</head>
+<body>
+<%
+	try{
+		Context ctx = new InitialContext();
+		Context envCtx = (Context) ctx.lookup("java:comp/env");
+		DataSource ds = (DataSource) envCtx.lookup("jdbc:dbcpTestDB");
+
+		Connection conn = ds.getConnection();
+		
+		out.println("DBCP Connection success.....<br><br>");
+		
+	} catch(Exception e) {
+		e.printStackTrace();
+	}
+	
+%>
+</body>
+</html>
+```
+
+
+
+# Spring
+
+[Spring Download](https://spring.io/tools)
+
+> Framework
+>
+> DI(Dependency Injection) - loC
+>
+> AOP(Aspect Oriented Programming)
+>
+> POJO
+>
+> bean
 
 # 유용 사이트
 
