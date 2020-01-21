@@ -637,6 +637,21 @@ exec dbms_xdb.sethttpport(9090); # 기존 port를 9090으로 변경
 
 > 혼합 되어있어 자료 구조가 복잡함 (java는 컴파일을 해야함) - 코드 갱신에 있어서 웹페이지를 중단했다 컴파일후 다시 열어야한다.
 
+### servlet Lifecycle
+
+* client가 Servlet에 요청하면 Servlet은 바로 호출되지 않는다. Servlet은 객체를 생성하고 초기화 작업을 거친 후 , 요청을 처리하는 생명주기를 갖는다.
+* client가 호출하면 Class를 생성하고 다른 client가 호출하면 이미 생성된 class를 재사용 한다. 
+
+![image-20200121091901134](image/image-20200121091901134.png)
+
+1. 요청이 오면, Servlet 클래스가 로딩되어 요청에 대한 **Servlet 객체가 생성**
+2. 서버는 init() **메소드를** 호출해서 **Servlet을  초기화** 
+3. service() 메소드를 호출해서 Servlet이 **브라우저의 요청을 처리**.
+4. service() 메소드는 특정 **HTTP 요청(GET, POST 등)을 처리**하는 메서드 (doGet(), doPost() 등)를 호출
+5. 서버는 destroy() 메소드를 호출하여 **Servlet을 제거**
+
+
+
 ## Class 방식
 
 ### java Servlet 설정
@@ -907,7 +922,7 @@ public class ServletDate extends HttpServlet {
 
 # JSTL
 
-## 리이브러리
+## 리이브러리  Download(JSTL, Standard)
 
 ### Core
 
@@ -953,7 +968,38 @@ public class ServletDate extends HttpServlet {
   * page
   * exception
 
-## JSTL& EL
+# JSTL& EL
+
+## EL
+
+> EL은 JSP의 출력 문법을 대체하는 표현 언어입니다.
+>
+> EL 표기법에서 파라미터의 값은 **param 키워드**를 통해 가져올 수 있습니다.
+>
+> 또한 JSP 값 표기법에서 파라미터는 문자열이지만, EL에서 **숫자는 숫자로, 문자열은 문자열로 인식합니다.**
+
+- <%= i %> 
+
+- - JSP에서의 값 표기법이며, i는 **변수**
+
+- ${ i }
+
+- - EL에서의 값 표기법이며, i는 **이름**
+
+내장 객체
+
+|    pageScope     | page Scope에 접근하기 위한 객체        |
+| :--------------: | -------------------------------------- |
+|   reqeustScope   | request Scope에 접근하기 위한 객체     |
+|   sessionScope   | session Scope에 접근하기 위한 객체     |
+| applicationScope | application Scope에 접근하기 위한 객체 |
+|      param       | 파라미터 값을 가져오기 위한 객체       |
+|      header      | 헤더 값을 가져오기 위한 객체           |
+|      cookie      | 쿠키 값을 가져오기 위한 객체           |
+|    initParam     | JSP 초기 파라미터를 가져오기 위한 객체 |
+|   pageContext    | pageContext 객체에 접근하기 위한 객체  |
+
+
 
 ```java
 <!-- \문자 ===> 해당 문자 표현, \\,\" -->
@@ -1078,6 +1124,24 @@ public class ServletDate extends HttpServlet {
 </body>
 </html>
 ```
+
+
+
+## JSTL
+
+>JSTL(**JavaServer Pages Standard Tag Library** )은 태그를 통해 JSP 코드를 관리하는 라이브러리로
+>
+>라이브러리이기 때문에 JSTL을 사용하려면, 라이브러리를 다운로드 해서 추가해야 한다.
+>
+>그리고 JSP 페이지에서 아래의 세 줄을 맨 위에 작성해야 해야 JSTL 문법을 사용할 수 있다.
+>
+>```
+><%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+><%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+><%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+>```
+
+
 
 
 
@@ -1216,21 +1280,185 @@ xml 파일 생성
 
 
 
+# MVC
+
+> Model 2 방식
+>
+> C - Controller와 Data파일은 java로 작성
+>
+> M - 
+>
+> V - 
+>
+> **MVC는 controller 에서 컴파일 싱행 해야한다. **
+
+### MVC TEST Code
+
+* Controller (src 폴더 - servlet file)
+
+```java
+package com.multi.controler;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class MessageController
+ */
+@WebServlet("/MessageController")
+public class MessageController extends HttpServlet {   //HttpServlet 를 상속해야 doGet, doPost 을 사용 할 수 있다.
+	private static final long serialVersionUID = 1L;
+	
+	
+	//응답 객체 , 요청객체는 반드시 하나씩 가지고 있어야 한다.(사용 여부와 관계 없이)
+	//1. 전동방식 결정
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		process(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		process(request, response);
+	
+	}
+
+	//2. 사용자 요청 처리 메세지(doGet/ doPost
+	protected void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String msg = request.getParameter("message");
+		Object result = null;
+		
+		if(msg == null || msg.equals("test")) {
+			result = "메세지가 없거나, test로 넘어왔다.";
+		}else if(msg.equals("name")) {
+			result = "이름은 Kim 입니다.";
+		}else {
+			result = "찾는 type이 없습니다.";
+		}
+		//3. 데이터 저장 - request.setAttribute("변수", 값or변수(데이터)); -값을 변수에 담아 전달하는 메소드
+		request.setAttribute("result", result);  
+		//4. 해당 뷰 페이지로 이동
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/view/msgView.jsp");
+		dispatcher.forward(request, response); //응답객체와 요청객체는 반드시 포함 되어야한다.
+	}
+}
+
+```
+
+* View (webcontent 폴더 - jsp file)
+
+```java
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<title>msgView.jsp 간단한 컨트롤러 뷰 페이지</title>
+</head>
+<body>
+	전달된 결과:
+	<c:out value="${ result }"></c:out>
+</body>
+</html>
+```
+
+* index page (Controller 에서 실행 대신 해당 페이지에서 컴파일 가능하게 하기위해)
+
+```java
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<title>index.html</title>
+</head>
+<!-- <body onload="window.location.href='MessageController?message=name'">  MessageController는 controller 에 @WebServlet("/MessageController") 이름이다 -->
+<body onload="window.location.href='MessageController'">    
+
+</body>
+</html>
+```
+
+
+
+
+
 # Spring
 
 [Spring Download](https://spring.io/tools)
 
-> Framework
+> Framework 
 >
 > DI(Dependency Injection) - loC
 >
-> AOP(Aspect Oriented Programming)
+> AOP(Aspect Oriented Programming)-  **관점 지향 프로그래밍**
 >
 > POJO
 >
 > bean
+>
+> 개발자가 만든 코드를 Spring에 넣어 사용한다.
 
-# 유용 사이트
+* Framework -복잡한 문제를 해결하거나 서술하는 데 사용되는 기본 개념 구조이다. 간단히 **뼈대**, **골조**(骨組), **프레임워크**(framework)라고도 한다
+* DI -표준을 정의 할 수 있고, 정의된 표준을 바탕으로 같은 설계를 하게 헤줌
+  * 재사용성, 테스트 용이, 코드 단순화, 객체간의 의존관계를 없애거나 줄일 수 있다.
+* AOP -어떤 로직을 기준으로 핵심적인 관점, 부가적인 관점으로 나누어서 보고 그 관점을 기준으로 각각 모듈화하겠다는 것
+* 
+  * Aspect - 흩어진 것을 모듈화한것((주로 부가기능을 모듈화 한다)
+  * Target - Aspect 를 적용하는 곳(class, method...)
+  * Advice - 실질적 부가기능을 담은 구현체
+  * JointPoint - Advice 가 적용될 위치
+  * JointCut - JointPoint ㅡ이 상세한 스펙을 정의, Advice가 실행될 지점을 정할 수 있음.
+* POJO
+  * 특정 규약에 종속되지 않는다. (Java 언어와 꼭 필요한 API 외에 종속되지 않는다.)
+  * 특정환경에 종속되지 않는다.
+  * 객체 지향
+  * 코드의 간겨함(비즈니스 로직과 특정 환경/low 레벨 종속적인 코드를 분리하므로 단순하다.)
+  * 자동화 테스트에 유리
+  * 객체지향적 설계의 자유로운 사용
+* bean
+  * 자주 사용하는 객체를 singleton 으로 만들어 놓고 어디서든 불러쓸수 있도록 한 것.
+
+
+
+* .m2 => Maven -프로젝트 관리 도구
+
+![image-20200121151838660](image/image-20200121151838660.png)
+
+
+
+* 스프링 MVC의 생명주기
+
+![image-20200121151927116](image/image-20200121151927116.png)
+
+* web.xml =>1.Dispacher Servlet
+
+```java
+<servlet>
+		<servlet-name>appServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class> //설정파일 관문
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value> //xml file위치(경로)
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+```
+
+
+
+
+
+# 참고 사이트
+
+[Spring 영상](https://wizcenter.tistory.com/tag/spring)
 
 [w3schools](https://www.w3schools.com/)
 
@@ -1252,6 +1480,8 @@ xml 파일 생성
 
 [jQuery library](https://jquery.com/)
 
+참고 도석
 
+[코드로 배우는 스프링 웹 프로젝트](http://book.interpark.com/product/BookDisplay.do?_method=detail&sc.prdNo=291334836&gclid=EAIaIQobChMInczJ3v6T5wIVRaqWCh0x2Q2gEAQYASABEgJGSfD_BwE)
 
 [hg](https://github.com/TunaHG)
