@@ -475,6 +475,72 @@ exec dbms_xdb.sethttpport(9090); # 기존 port를 9090으로 변경
 </html>
 ```
 
+```java
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<title> </title>
+<!-- <!-- CDN -->
+<script
+  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script> -->
+  
+  <!-- file 로 like -->
+ <script type="text/javascript" src="../js/jquery-3.4.1.min.js"></script>
+  
+<script type="text/javascript">
+	
+	
+	$(document).ready(function(){
+		$('h1').hide();   //h1 tag
+		$('#id1').hide();  //id 이름 앞에 #을 붙인다
+		$('.c2').css('backgroundColor', 'red');   //클레스 사용 시에는 '.' 이 붙어야한다.
+		$('h3.c3').css('backgroundColor', 'green');
+		$('*').css('backgroundColor', 'green');  //정체 적용
+	});
+	
+	/* 아래 두 코드가 같다 */
+/* 	$(document).ready(function(){
+		alert('hi');
+	});
+	
+	$(function() {
+		alert('hi1');
+	}); */
+	
+</script>
+</head>
+<body>
+<h1 id="id1">Hello
+	<p>포함된 p태그</p>
+</h1>
+<h2>19315555</h2>
+<h1 id="id2">big data</h1>
+<h2 id="id2">big datah2</h2>
+<h3 id="id2">big datah h3</h3>
+
+<div>
+	영역 지정함
+</div>
+	
+<h1 class="c1">빅데이터 4기 b반</h1>
+<h2 class="c2">빅데이터 4기 b반1</h2>
+<h3 class="c3">빅데이터 4기 b반1</h3>
+</body>
+</html>
+```
+
+
+
+### .val()
+
+```java
+ $('input').val('helloworld); //input의 value 값에 helloworld라고 넣는다
+ $('input').val(); //input의 value값을 가져온다.
+```
+
 # Ajax
 
 * 에제
@@ -590,6 +656,16 @@ exec dbms_xdb.sethttpport(9090); # 기존 port를 9090으로 변경
  3) 표현식
    <%= 변수 또는 값 또는 메소드 %>
 ```
+
+* 지시어
+
+```java
+<%@ page inport="java.util.*" %>
+```
+
+
+
+
 
 * 예시
 
@@ -1459,6 +1535,8 @@ public class MessageController extends HttpServlet {   //HttpServlet 를 상속�
 # 참고 사이트
 
 [Spring 영상](https://wizcenter.tistory.com/tag/spring)
+
+[web 블로그](https://victorydntmd.tistory.com/156?category=719481)
 
 [w3schools](https://www.w3schools.com/)
 
