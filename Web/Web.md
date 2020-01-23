@@ -374,7 +374,7 @@ exec dbms_xdb.sethttpport(9090); # 기존 port를 9090으로 변경
 
 > 티입선을 을 하지않아도 된다, 단 var str= 선언시 초기화 값을 지정해 줘야한다(초기화 지정시에 타입이 자동 형성되기 때문에 -.>초기화 값 지정해주지 않으면 undefinde 가 뜬다)
 
-# jQuery
+# jQuery_library
 
 ## 1. File link 
 
@@ -1368,7 +1368,7 @@ xml 파일 생성
 >
 > **MVC는 controller 에서 컴파일 싱행 해야한다. **
 
-### MVC TEST Code
+## MVC TEST Code
 
 * Controller (src 폴더 - servlet file)
 
@@ -1470,6 +1470,14 @@ public class MessageController extends HttpServlet {   //HttpServlet 를 상속�
 
 [Spring Download](https://spring.io/tools)
 
+> Spring Framework 라이브러리 추가 방법 3가지
+>
+> * 응용 p/g, 사용가능한 프레임 워크
+> * 웹 p/g 사용가능한 프레임 워크
+> * 모바일에서 사용 가능한 프레임 워크
+>
+> 타 framework들과 호환성이 좋음.
+
 > Framework 
 >
 > DI(Dependency Injection) - loC
@@ -1529,6 +1537,123 @@ public class MessageController extends HttpServlet {   //HttpServlet 를 상속�
 ```
 
 
+
+## Spring 적용 방법
+
+> 로컬 저정소 위치 -C:\Users\student\.m2
+
+![image-20200123113550859](image/image-20200123113550859.png)
+
+### 1.  library 이용한 방법
+
+> Project 에 두고 우클릭 - configure -create Module - info.java 
+
+- jar 파일 다운받아 각각 폴더에 적용하는 방법
+
+### 2. pom.xml 방법
+
+* 사진에 아래 코드를 복사하여 적용하는 방법
+
+  ```java
+  <pom.XML>
+      
+  <project xmlns="http://maven.apache.org/POM/4.0.0"
+  	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  	<modelVersion>4.0.0</modelVersion>
+  	<groupId>ex02_di</groupId>
+  	<artifactId>ex02_di</artifactId>
+  	<version>0.0.1-SNAPSHOT</version>
+  	<build>
+  
+  		<sourceDirectory>src</sourceDirectory>
+  		<plugins>
+  			<plugin>
+  				<artifactId>maven-compiler-plugin</artifactId>
+  				<version>3.8.0</version>
+  				<configuration>
+  					<source>1.8</source>
+  					<target>1.8</target>
+  				</configuration>
+  			</plugin>
+  		</plugins>
+  	</build>
+  	
+          <!--dependencies 안에 넣어줘야함 -->
+  	<dependencies>
+  		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+  		<dependency>
+  			<groupId>org.springframework</groupId>
+  			<artifactId>spring-context</artifactId>
+  			<version>4.1.7.RELEASE</version>
+  		</dependency>
+  
+  	</dependencies>
+  
+  </project>
+  ```
+
+![image-20200123132257149](image/image-20200123132257149.png)
+
+
+
+
+
+
+
+
+
+
+
+### Spring Core
+
+[spring core 다운로드](https://mvnrepository.com/artifact/org.springframework/spring-context)
+
+> 4.1.7 or 4.1.9 를 주로 사용
+
+![image-20200123113320448](image/image-20200123113320448.png)
+
+## DI
+
+> 1. 생성자 (Constructor)함수
+>
+> 2.  Setter Method - 가장 많이 사용(권장)
+
+![image-20200123111715992](image/image-20200123111715992.png)
+
+* IoC Container
+
+
+
+### 1. 생성자 (Constructor)함수
+
+```java
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+### 2. Setter Method
+
+* Setter Injection은 argument가 없는 기본 생성자를 사용하여 객체를 생성한 후, setter 메소드를 사용하여 의존성을 주입하는 방식으로, <property/> element를 사용한다.
+* Class에 attribute(또는 setter 메소드 명)과 <property/> element의 ‘name’ attribute를 사용하여 매핑한다.
+
+
+
+
+
+
+
+## AOP
 
 
 
