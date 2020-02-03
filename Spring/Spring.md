@@ -2,7 +2,9 @@
 
 > 조성희 강사(bluejeansh@hanmail.net)
 >
-> DAY 1, DI / MVC / mybatis
+> DAY 1. DI / MVC / mybatis
+>
+> DAY 2. AOP 
 
 1. 여러가지 모듈 단위
 
@@ -165,7 +167,13 @@
 
     스프링은 여러가지 설정 XML파일을 사용. 또는 @(annotation).
 
-### IOC 예제
+### IOC
+
+* 기능 - DL / DI
+  * DL 은 사용하지않음
+  * DI - Constructor DI/ Setter DI
+
+* inversion of control
 
 > 왜ㅣ부 객체 전달(new 사라지고 xml 파일 설정)
 
@@ -376,10 +384,29 @@ public class EmpMain {
 
 ### Anootation
 
-- @Repository("dao")
-- @Repository - () 가 없으면 class 이름 적용
-- @Conponent - () => Repositoy 와 동일
-- @Autowired  --> 유일하게 객체가아닌 변수 위에 위치
+* Repository - 클래스위 선언
+
+* Service -클래스위 선언
+
+* Component -클래스위 선언
+
+* Autowired -맴버변수, 생성자 , sertter 위에 선언
+
+* Resource -맴버변수, 생성자 , sertter 위에 선언
+
+* Qualifier -맴버변수, 생성자 , sertter 위에 선언 ex) B type 객체가 여러개 즉 ,b1 or b2 가 있을때
+
+  Qualifier("b2") 처럼 선언하면 b2객체를 불러온다.
+
+>@Repository("dao")
+>
+>@Repository - () 가 없으면 class 이름 적용
+>
+>@Conponent - () => Repositoy 와 동일
+>
+>@Autowired  --> 유일하게 객체가아닌 변수 위에 위치
+
+
 
 
 
@@ -433,17 +460,249 @@ public class EmpMain {
 0. select id
 1. insert(EmpVO v0) sql
 
-| 입력/출력    | service | DAO  | VO   | DataBase |
-| ------------ | ------- | ---- | ---- | -------- |
-| main/servlet |         |      |      |          |
+| 입력/출력    | 서비스단 | DAO         | VO         | DataBase |
+| ------------ | -------- | ----------- | ---------- | -------- |
+| main/servlet | Service  | @Repository | @Component |          |
 
 
 
 ## AOP
 
-> (선택적)
+> ASPECT ORIENTED PROGRAMMING
+>
+> 구현 필요 - 핵심관심코드 = 종단관심코드
+>
+> Weaving
+>
+> aspect - 모든 스프링 클래스 공통 구현 사항(공통관심코드 = 횡단관심코드 = 핵심관심코드)
+>
+> ​			- 구현 공통 필요 반복 구현 사항들
+>
+> (반복적 코딩 필요 - 한번 정의 - 필욯나 클래스에 연결/해제)
+
+### weaving
+
+> 핵심관심모듈과 횡단관심 모듈은 연결해주는 역할
+
+![image-20200203101706015](image/image-20200203101706015.png)
+
+
+
+
+
+### 자바개발자 디자인 패턴 23 가지
+
+#### 1. proxy
+
+```java
+package proxypattern;
+
+public class ProxyMain {
+
+	public static void main(String[] args) {
+		ProxyInter p = new C();
+		B b1 = new B(); //A, C객체 실행 공통 실행 내용 객체
+		
+		b1.setP(p);
+		b1.action();//B +(A or c)  ==>B 는 공통관심 , A or C 는 핵심관심
+	}
+}
+
+```
+
+```java
+package proxypattern;
+
+public interface ProxyInter {
+	public void action();
+}
+```
+
+```java
+package proxypattern;
+
+public class A implements ProxyInter{
+	
+	@Override
+	public void action() {
+		System.out.println("A class action");
+	}
+}
+
+
+package proxypattern;
+
+public class B implements ProxyInter{
+	
+	ProxyInter p;
+	
+	public void setP(ProxyInter p) {
+		this.p = p;
+	}
+	@Override
+	public void action() {
+		System.out.println("B class action stat");
+		p.action();
+		System.out.println("B class action end");
+	}
+}
+
+package proxypattern;
+
+public class C implements ProxyInter{
+	
+	@Override
+	public void action(){
+		System.out.println("C class action");
+	}
+}
+
+```
+
+
+
+### AOP Libraries
+
+#### [AspectJ Weaver](https://mvnrepository.com/artifact/org.aspectj/aspectjweaver) » [1.9.2](https://mvnrepository.com/artifact/org.aspectj/aspectjweaver/1.9.2) Libraries
+
+![image-20200203104607040](image/image-20200203104607040.png)
+
+```xml
+		
+				<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+		<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjweaver</artifactId>
+		    <version>1.9.2</version>
+		    <scope>runtime</scope>
+		</dependency>
+		
+	</dependencies>
+
+xml 파일에 붙여넣기
+```
+
+libraries 추가 확인
+
+![image-20200203104712245](image/image-20200203104712245.png)
+
+#### aop pointcut예제1
+
+![image-20200203111109166](image/image-20200203111109166.png)
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	
+	<bean id="member" class="aop1.Member"></bean>
+	<bean id="board" class="aop1.Board"></bean>
+	<bean id="common" class="aop1.Common"></bean>
+	
+	<aop:config>
+		<aop:pointcut expression="execution(public * aop1.*.*(..))" id="pc"/> 리턴타입 패키지명.클래스명.메소드(매개변수) 
+		<aop:aspect id="aspect1" ref='common'>
+			<aop:before method="dateTime" pointcut-ref="pc"/>
+		</aop:aspect>
+	</aop:config>
+
+</beans>
+```
+
+> ​     = > 리턴타입 패키지명.클래스명.메소드(매개변수)
+>
+> *** :** **모든 **
+>
+> **(..) : 모든 매개변수**
+>
+> **.. :** **하위패키지 포함** 
+
+#### pointcut
+
+>● execution 명시자 : Advice를 적용할 메서드를 명시할 때 사용
+>
+> 기본 형식  execution(리턴타입 패키지명.클래스명.메소드(매개변수) )
+>
+> ▶ 수식어패턴 : public, private 등등의 수식어를 명시, 생략 가능
+>
+> ▶ 리턴타입 : 리턴 타입을 명시
+>
+> ▶ 클래스이름, 이름패턴 : 클래스 이름 및 메서드이름을 패턴으로 명시
+>
+> ▶ 파라미터패턴 : 매칭될 파라미터에 대해 명시
+>
+> ▶ '*' : 모든 값을 표현
+>
+> ▶ '..' : 0개 이상을 의미
+
+#### within 명시자
+
+> 특정 타입에 속하는 메서드를 PointCut으로 설정 할떄 사용
+
+```xml
+ within(sp.aop.service.*)
+
+  => sp.aop.service 패키지에 있는 모든 메서드
+
+ within(sp.aop.service..*)
+
+  => sp.aop.service 패키지 및 하위 패키지에 있는 모든 메서드
+```
+
+#### bean 명시자
+
+> Spring bean 이름을 이용하여 PointCut을 정의
+
+```xml
+bean(faqBoard)
+
+  => 이름이 faqBoard인 빈의 메서드 호출
+
+bean(*noticeBoard)
+
+  => 이름이 noticeBoard로 끝나는 빈의 메서드 호출
+```
+
+#### Aspect
+
+> **@Before** (이전) : 어드바이스 타겟 메소드가 호출되기 전에 어드바이스 기능을 수행
+>
+> **@After (이후)** : 타겟 메소드의 결과에 관계없이(즉 성공, 예외 관계없이) 타겟 메소드가 완료 되면 어드바이스 기능을 수행
+>
+> @AfterReturning (정상적 반환 이후)타겟 메소드가 성공적으로 결과값을 반환 후에 어드바이스 기능을 수행
+>
+> @AfterThrowing (예외 발생 이후) : 타겟 메소드가 수행 중 예외를 던지게 되면 어드바이스 기능을 수행
+>
+> **@Around** (메소드 실행 전후) : 어드바이스가 타겟 메소드를 감싸서 타겟 메소드 호출전과 후에 어드바이스 기능을 수행
 
 ## MVC
+
+> Web 프로그램 3가지
+>
+> html
+>
+> javaScript+jQuery
+>
+> serrblet+jsp
+
+| web client 실행 ,<br />요청= |      |
+| ---------------------------- | ---- |
+|                              |      |
+
+web 서버
+
+> http 요청 -> servlet ->DAO ->DB ->VO->JSP
+
+servlet - 클라이언트 요청 받아서 분석(회원가입, 조회 :id, pw, name...) =>결과 생성 객체 생성, 메소드 호출
+
+jsp -브라우저  전달(html)
+
+dao - 요청 기증 1개 수행
+
+vo - data return
 
 ## mybatis
 
