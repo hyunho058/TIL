@@ -704,6 +704,60 @@ dao - 요청 기증 1개 수행
 
 vo - data return
 
+```html
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>mvc2</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>FrontControllerServlet</display-name>
+    <servlet-name>FrontControllerServlet</servlet-name>
+    <servlet-class>test.FrontControllerServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FrontControllerServlet</servlet-name>
+    <url-pattern>/front</url-pattern> // 1개 url 만 호출 가능  ( <servlet-class>test.FrontControllerServlet</servlet-class>) //
+  </servlet-mapping>
+</web-app>
+```
+
+.mvc
+
+```xml
+ <servlet-class>test.FrontControllerServlet</servlet-class>
+  </servlet> 
+<servlet-mapping>
+    <servlet-name>FrontControllerServlet</servlet-name>
+    <url-pattern>*.mvc</url-pattern>  확장자자가 .mvc면 모두 실행 된다
+  </servlet-mapping>
+```
+
+```xml
+<servlet-class>test.FrontControllerServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FrontControllerServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+</web-app>
+```
+
+> http://localhost:8081/mvc2/뒤에 아무거나 와도 실행됨
+
+
+
+
+
+
+
 ## mybatis
 
 > data Base 이연결 == jdbc
