@@ -480,6 +480,10 @@ public class EmpMain {
 >
 > (반복적 코딩 필요 - 한번 정의 - 필욯나 클래스에 연결/해제)
 
+* @Aspect -공통관심 클래스 위 선언
+* @PointCut - 메소드 내부 위 선언(내용 구현x)
+* @Around - 메도스 위 선언(핵심 관심메소드 전 후)
+
 ### weaving
 
 > 핵심관심모듈과 횡단관심 모듈은 연결해주는 역할
@@ -491,6 +495,16 @@ public class EmpMain {
 
 
 ### 자바개발자 디자인 패턴 23 가지
+
+> 1.proxy
+>
+> 2.factory
+>
+> 3.commeand -인터 페이스 (메소드 다른 모든 클래스 공통 저으이 규칙)/상속 하위 클래스(오버라이딩)
+>
+> 4.singleton
+>
+> 5.front controller + mvc
 
 #### 1. proxy
 
@@ -563,7 +577,7 @@ public class C implements ProxyInter{
 
 ### AOP Libraries
 
-#### [AspectJ Weaver](https://mvnrepository.com/artifact/org.aspectj/aspectjweaver) » [1.9.2](https://mvnrepository.com/artifact/org.aspectj/aspectjweaver/1.9.2) Libraries
+> [AspectJ Weaver](https://mvnrepository.com/artifact/org.aspectj/aspectjweaver) » [1.9.2](https://mvnrepository.com/artifact/org.aspectj/aspectjweaver/1.9.2) Libraries
 
 ![image-20200203104607040](image/image-20200203104607040.png)
 
@@ -586,7 +600,7 @@ libraries 추가 확인
 
 ![image-20200203104712245](image/image-20200203104712245.png)
 
-#### aop pointcut예제1
+#### aop pointcut
 
 ![image-20200203111109166](image/image-20200203111109166.png)
 
@@ -752,9 +766,150 @@ vo - data return
 
 > http://localhost:8081/mvc2/뒤에 아무거나 와도 실행됨
 
+## Spring MVC
+
+#### .jsp 경로
+
+![image-20200204104139972](image/image-20200204104139972.png)
+
+* handleMapping 역할 
+
+  ```xml
+  servlet-context.xml
+  
+  <?xml version="1.0" encoding="UTF-8"?>
+  <beans:beans xmlns="http://www.springframework.org/schema/mvc"
+  	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  	xmlns:beans="http://www.springframework.org/schema/beans"
+  	xmlns:context="http://www.springframework.org/schema/context"
+  	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+  		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+  		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+  
+  	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+  	
+  	<!-- Enables the Spring MVC @Controller programming model -->
+  	<annotation-driven />
+  
+  	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+  	<resources mapping="/resources/**" location="/resources/" />
+  
+  	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+  	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+  		<beans:property name="prefix" value="/WEB-INF/views/" />
+  		<beans:property name="suffix" value=".jsp" />
+  	</beans:bean>
+  	mv.setViewName("/WEB-INF/views/hello.jsp");
+  	<context:component-scan base-package="edu.multi.mvc" />
+  	
+  	
+  	
+  </beans:beans>
+  ```
+
+  
+
+  
+
+  spring bean configuration file => di,aop
+
+  
+
+  spring mvc configuration file => di, aop, mvc
+
+  
+
+  web server configuration file => spring mvc, servlet.jsp
+
+  
 
 
 
+### spring mvc xml 테그 설정
+
+![image-20200204151349898](image/image-20200204151349898.png)
+
+
+
+### spring mvc annotation 설정
+
+> <context:component-scan:
+
+web.xml =>servlet 진입을 도와주는 역할 (요청을 받아 servlet으로 보냄, front controller 설정)
+
+#### @Controller
+
+
+
+#### @RequestMapping
+
+> @RequestMapping("/hello")
+>
+> @RequestMapping(name="/hello", method=RequestMethod.GET);
+>
+> @RequestMapping(name="/hello", method=RequestMethod.POST);
+
+##### GET
+
+@RequestMapping(name="/hello", method=RequestMethod.GET);
+
+1. http:...login?name1=value1&name2=value2.
+
+2. url 뒤 요청파라미터값 전송 방식
+
+3. url?변수명 1=값&
+
+4. 영문자 그대로 전송
+
+5. 특수문자나 한글 인코딩 전송
+
+6. url 공백 포함하면 안된다.(공백에는 +가 포시된다)
+
+7. 웹서버 url 제한
+
+8. code
+
+   ```html
+   url?id=키보드입력 값
+   <a href="/hello?id"=spring>이동</a>
+   브라우져
+   <form action ="url" method="get(기본)">
+       <input type=text name=id>
+   	<input type=submit value="로그인">
+   </form>
+   ```
+
+   
+
+##### post
+
+1. (post 전송 값 보이지 않는다)name1=value1&name2=value2.
+
+2. url 별도 분리
+
+3. 영문자 그대로 전송
+
+4. 특수문자나 한글 인코딩 전송
+
+5. url 공백 포함하면 안된다.(공백에는 +가 포시된다)
+
+6. 전달 길이 무제한
+
+7. 파일 Upload, 암호 전송
+
+8. code
+
+   <form action ="url" method="get(기본)">
+       <input type=text name=id>
+   	<input type=submit value="로그인">
+   </form>
+
+```html
+<form action ="url" method="post">
+    <input type=text name=id>
+	<input type=submit value="로그인">
+</form>
+```
 
 
 

@@ -1,0 +1,17 @@
+CREATE TABLE BOARD
+(SEQ NUMBER(5) primary key, title varchar2(100), contents varchar2(4000), writer varchar2(20), time date, password number(5), viewcount number(10));
+
+insert into BOARD
+values(1,'1번 게시물','아침시간','user1',sysdate,11111,0);
+
+insert into BOARD
+values(2,'2번 게시물','점심시간입니다','user2',sysdate,22222,0);
+
+insert into BOARD
+values(3,'3번 게시물','3번 시간','user3',sysdate,33333,0);
+
+commit;
+
+
+
+select to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS') from dual;
