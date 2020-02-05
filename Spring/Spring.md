@@ -702,9 +702,170 @@ bean(*noticeBoard)
 >
 > serrblet+jsp
 
-| web client 실행 ,<br />요청= |      |
-| ---------------------------- | ---- |
-|                              |      |
+![img](image/7_mvcpattern.png)
+
+- MVC 의 핵심은 비즈니스 로직과 프리젠테이션 로직의 분리이다.
+- 레이어별 역할이 뚜렷하기 때문에 협업이 용이하고, 디자인과 코딩의 분리가 자연스럽다.
+- 비즈니스 로직은 재사용 가능하도록 자바 클래스로 독립적으로 존재하며, 뷰는 어떤 것(JSP, Velocity, Freemarker)이든 상관 없어야 한다.
+- JSP 페이지에 비즈니스 로직이 제외되므로 가독성이 증가하고 유지보수가 용이하다.
+
+#### 1.1 Model
+
+- MVC 모델의 각 계층 사이에서 정보를 전송하는데 사용한다.
+- 객체지향 분석화 모델링의 결과로 나오는 모델을 오브젝트 모델로 활용한다.
+- Model을 사용하면 코드가 이해하기 쉽고, 로직 작성이 수월해지고, 코드 재사용성이 높아진다.
+- DAO 레벨에서 모든 필드를 채워보내는 것이 성능상의 낭비일 수 있고, 모델 객체를 설계하는 것이 모호하다.
+
+#### 1.2 View 
+
+- 사용자 뷰(프리젠테이션) 부분이다.
+- 사용자가 입력한 정보를 컨트롤에게 넘겨주거나, 컨트롤러부터 처리 정보를 반환 받는다.
+- 뷰는 컨트롤러와 비즈니스 로직에 독립적이어야 한다.
+- jsp 파일
+
+#### 1.3 Controller
+
+- 사용자 Request를 받아 Business Logic에 처리를 요청하는 제어를 담당한다.
+- 제어를 어느 Business Login에 넘길 것인가를 결정하고, 처리 결과를 받아 뷰로 Response하는 역할을 담당한다.
+
+```java
+package test;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public interface Controller {
+	
+	public String handleRequest(HttpServletRequest request, HttpServletResponse response);
+
+}
+```
+
+```java
+package test;
+
+import java.util.HashMap;
+
+public class HandlerMapping {
+	
+	HashMap<String, Controller> mappings;
+	public HandlerMapping() {
+		mappings = new HashMap<String, Controller>();
+		mappings.put("hello", new HelloController()); // hello url 끝나면 HelloController를 불러오겠다
+	}
+	
+	public Controller getController(String name) {
+		return mappings.get(name);
+	}
+}
+```
+
+- **HandlerMapping**은 클라이언트 요청에 해당하는 Controller가 어떤것인지를 결정 한다.
+- 즉 클라이언트 요청 URL과 Controller를 맵핑 한다.
+- Spring MVC는 다수의 HandlerMapping설정이 가능하며 이경우 order프로퍼티를 이용하여 사용순서를 정할 수 있다
+
+| **HandlerMapping**구성요소        | 설 명                                                       |
+| :-------------------------------- | :---------------------------------------------------------- |
+| SimpleUrlHandlerMapping           | URL과 컨트롤러 이름을 직접 매핑 한다.                       |
+| BeanNameUrlHandlerMapping         | URL과 일치하는 이름을 갖는 빈을 컨트롤러로 사용한다.        |
+| ControllerClassNameHandlerMapping | URL과 매칭되는 클래스 이름을 갖는 빈을 컨트롤러로 사용한다. |
+| DefaultAnnotationHandlerMapping   | @RequestMapping 어노테이션을 이용하여 컨트롤러와 매핑한다.  |
+
+```java
+package test;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class HelloController implements Controller{
+	
+	@Override
+	public String handleRequest(HttpServletRequest request, HttpServletResponse reponse) {
+		System.out.println("HelloController 실행중");
+		//servlet -->jsp 데이터 전달 = 공유
+		request.setAttribute("model", "hello Spring"); 
+		return "hello.jsp";
+		
+//	표현식 request.getAttribute("model") == $(model) 
+	}
+}
+```
+
+- **handleReqeust()** 메소드에서는 클라이언트의 요청을 처리한 후 View를 생성하는데 필요한 정보를 리턴
+
+```java
+package test;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class FrontControllerServlet extends HttpServlet {
+
+	//web.xml :'/' ->FrontControllerServlet
+	//1.모든 요청 FrontControllerServlet
+	//2.http:..../board.list
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		out.println("<h1> FrontControllerServlet</h1>");
+		out.println(request.getRequestURL());
+		out.println(request.getRequestURI());
+		String s[] = request.getRequestURI().split("/");
+		out.println("<h1>"+s[s.length-1]+"</h1>");
+		//3.boardlist - 일 시키자 MVC --> SPRING 내부환경 이해 로직
+		HandlerMapping mapping = new HandlerMapping();
+		Controller controller = mapping.getController(s[s.length-1]);
+		String viewname = controller.handleRequest(request, response);
+		
+		RequestDispatcher rd = request.getRequestDispatcher("/hello.jsp");  //http://localhost:port/컨텍스트명/hello.jsp
+		rd.forward(request, response);
+	}
+}
+```
+
+```jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<title>Spring MVC Test</title>
+</head>
+<body>
+	<h1>
+		${model }
+	</h1>
+	<h1>
+		<%=request.getAttribute("model") %>
+	</h1>
+</body>
+</html>
+```
+
+List를 받기 위해서는 setAttribute()와 getAttribute()를 써야 한다. 
+이때 type이 Object 이기 때문에 반드시 형변환을 해줘야 한다
+
+action에서 객체를 request에 담을 때.
+
+**request.setAttribute("객체명", 객체);**
+
+이렇게 해서 jsp를 호출하면 jsp에서 "객체명"을 이용해서 객체를 받을 수 있다.
+
+```jsp
+< %
+	Object x = request.getAttribute("객체명");
+% >
+```
+
+**Object 형으로 받아야함**
+
+
 
 web 서버
 
@@ -768,6 +929,8 @@ vo - data return
 
 ## Spring MVC
 
+> C - M -V 순으로 진행 된다. ex) .jsp(jps는 View이다) 파일에서 컴파일 하면 파일을 찾을 수 없다는 err가 발생
+
 #### .jsp 경로
 
 ![image-20200204104139972](image/image-20200204104139972.png)
@@ -775,8 +938,6 @@ vo - data return
 * handleMapping 역할 
 
   ```xml
-  servlet-context.xml
-  
   <?xml version="1.0" encoding="UTF-8"?>
   <beans:beans xmlns="http://www.springframework.org/schema/mvc"
   	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -790,7 +951,10 @@ vo - data return
   	
   	<!-- Enables the Spring MVC @Controller programming model -->
   	<annotation-driven />
-  
+  <!-- @Component @Service @Repository @Autowired 인식 -->
+  	<context:component-scan base-package="edu.multi.mvc" />
+  	
+  	
   	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
   	<resources mapping="/resources/**" location="/resources/" />
   
@@ -799,39 +963,149 @@ vo - data return
   		<beans:property name="prefix" value="/WEB-INF/views/" />
   		<beans:property name="suffix" value=".jsp" />
   	</beans:bean>
-  	mv.setViewName("/WEB-INF/views/hello.jsp");
-  	<context:component-scan base-package="edu.multi.mvc" />
   	
+  <!--========= 	1. xml 태그 만으로 spring mvc 설정     ===============-->
+  	<beans:bean id="hc" class="test.HelloController">
+  	</beans:bean> <!--  ==>  HelloController hc = new HelloController(); -->
   	
+  	<beans:bean id ="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<beans:property name="mappings">
+  			<beans:props>
+				<beans:prop key="/hello">hc</beans:prop>
+  			</beans:props>
+		</beans:property>
+  	</beans:bean>
+	
+  	<!-- <beans:bean id="bc" class="test.BoardlistController"></beans:bean>
+	<beans:bean id ="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+  		<beans:property name="mappings">
+			<beans:props>
+  				<beans:prop key="/board">bc</beans:prop>
+			</beans:props>
+  		</beans:property>
+	</beans:bean> -->
   	
   </beans:beans>
   ```
-
   
-
+  #### HandlerMapping 종류
   
-
+  | 구성요소                          | 설 명                                                       |
+  | :-------------------------------- | :---------------------------------------------------------- |
+  | SimpleUrlHandlerMapping           | URL과 컨트롤러 이름을 직접 매핑 한다.                       |
+  | BeanNameUrlHandlerMapping         | URL과 일치하는 이름을 갖는 빈을 컨트롤러로 사용한다.        |
+  | ControllerClassNameHandlerMapping | URL과 매칭되는 클래스 이름을 갖는 빈을 컨트롤러로 사용한다. |
+  | DefaultAnnotationHandlerMapping   | @RequestMapping 어노테이션을 이용하여 컨트롤러와 매핑한다   |
+  
+  - URL과 컨트롤러 빈 name을 직접 매핑
+  - 손쉽게 사용할 수 있기 때문에 많이 사용한다
+  - bean 등록 후 URL 매핑을 별도로 설정해야 한다.
+  
+  
+  
+  ```java
+  package test;
+  
+  import javax.servlet.http.HttpServletRequest;
+  import javax.servlet.http.HttpServletResponse;
+  
+  import org.springframework.web.servlet.ModelAndView;
+  import org.springframework.web.servlet.mvc.Controller;
+  //Command 패턴
+  public class HelloController implements Controller{
+  
+  	@Override
+  	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse reponse) {
+  		System.out.println("HelloController 실행중");
+  		ModelAndView mv = new ModelAndView();
+  		//servlet -->jsp 데이터 전달 = 공유 == model(view 보여줄 데이터)용어
+  		mv.addObject("model", "hello Spring");//  model setting// <==request.setAttribute("model", "hello Spring"); 
+  		mv.setViewName("hello"); //view setting
+  		return mv;
+  	}
+  }
+  ```
+  
+  ```jsp
+  <%@ page language="java" contentType="text/html; charset=UTF-8"
+      pageEncoding="UTF-8"%>
+  <!DOCTYPE html>
+  <html><head>
+  <meta charset="UTF-8">
+  <title>Spring MVC Test</title>
+  </head>
+  <body>
+  	<h1>
+  		${model }
+  	</h1>
+  	<h1>
+  		<%=request.getAttribute("model") %>
+  	</h1>
+  </body>
+  </html>
+  ```
+  
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+  	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+  
+  	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+  	<context-param>
+  		<param-name>contextConfigLocation</param-name>
+  		<param-value>/WEB-INF/spring/root-context.xml</param-value>
+  	</context-param>
+  	
+  	<!-- Creates the Spring Container shared by all Servlets and Filters -->
+  	<listener>
+  		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  	</listener>
+  
+  	<!-- Processes application requests -->
+  	<servlet>
+  		<servlet-name>appServlet</servlet-name>
+  		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  		<init-param>
+  			<param-name>contextConfigLocation</param-name>
+  			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+  		</init-param>
+  		<load-on-startup>1</load-on-startup>
+  	</servlet>
+  		
+  	<servlet-mapping>
+  		<servlet-name>appServlet</servlet-name>
+  		<url-pattern>/</url-pattern>
+  	</servlet-mapping>
+  
+  </web-app>
+  ```
+  
+  
+  
+  
+  
   spring bean configuration file => di,aop
-
   
-
+  
+  
   spring mvc configuration file => di, aop, mvc
-
   
-
+  
+  
   web server configuration file => spring mvc, servlet.jsp
-
+  
   
 
 
 
-### spring mvc xml 테그 설정
+### Spring MVCxml TAG 설정
 
 ![image-20200204151349898](image/image-20200204151349898.png)
 
 
 
-### spring mvc annotation 설정
+### Spring MVC annotation
 
 > <context:component-scan:
 
@@ -839,7 +1113,7 @@ web.xml =>servlet 진입을 도와주는 역할 (요청을 받아 servlet으로 
 
 #### @Controller
 
-
+> Class A implements org.sprin...Controller  를 선언 안해도 됨.
 
 #### @RequestMapping
 
@@ -848,6 +1122,87 @@ web.xml =>servlet 진입을 도와주는 역할 (요청을 받아 servlet으로 
 > @RequestMapping(name="/hello", method=RequestMethod.GET);
 >
 > @RequestMapping(name="/hello", method=RequestMethod.POST);
+
+```java
+@RequestMapping("/crud/start")
+	public String start(){
+		System.out.println("===첫 화면 입니다===");
+		return "crud/start"; //view로 start.jsp 를 넘긴다.
+	}
+	@RequestMapping("/crud/list")
+	public void list() {
+		//return type이 void 이면  ("/crud/list") url이름과 동일하게 정의된다.
+		//모든 회원 정보
+	}
+```
+
+```java
+package edu.multi.mvc;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+public class CRUDController {
+	//회원 관리
+	
+	Map<String, String> members = new HashMap<String, String>();  //Map 는 key 와 벨류이다 Map<key, value>
+	
+	//http:/ip:prot/컨텍스트명/crud/start
+	@RequestMapping("/crud/start")
+	public void start(){
+		System.out.println("===첫 화면 입니다===");
+		members.put("String", "김길동");
+		members.put("Oracle", "오라클");
+		members.put("mybatis", "바티스");
+		//return "crud/start"; //view로 start.jsp 를 넘긴다.
+	}
+	@RequestMapping("/crud/list")
+	public ModelAndView list() {
+		//모든 회원 정보
+		//Model 컴트롤러에서 jsp로 전달 출력 데이터
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("member", members);
+		//mv.setViewName("/crud/list");  ==>url 과 이름이 같음으로 안억어도 된다
+		//return type이 void 이면  ("/crud/list") url이름과 동일하게 정의된다.
+		return mv;
+	}
+	@RequestMapping("/crud/get")
+	public ModelAndView get(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		String name = members.get(id);
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("member", id+":"+name);
+		return mv;
+	}
+	@RequestMapping("/crud/add")
+	public void add() {
+		//form입력 , members 추가 - crud/add.jsp
+		members.put("new", "신입사원");
+		
+	}
+	@RequestMapping("/crud/delete")
+	public String delete() {
+		members.remove("new");
+		return "redirect:/crud/list"; //list 메소드 호출하는 url (redirect: 를 붙여줘야함)
+	}
+	@RequestMapping("/crud/update")
+	public Map<String, String> update(){
+		Map<String, String> informs = new HashMap<String, String>();
+	
+		
+		return informs; //자동으로 Model이 된다 , View 이름은 자동으로 url인 "/crud/update" 가 된다
+	}
+}
+```
+
+
 
 ##### GET
 
@@ -912,6 +1267,94 @@ web.xml =>servlet 진입을 도와주는 역할 (요청을 받아 servlet으로 
 ```
 
 
+
+#### @RequestParam
+
+#### Controller Methd return type
+
+1. ModeAndView - model + View(명시 or url자동)
+2. Stgring - View(명시)
+3. void - View(url 자동)
+4. Map - model + Veiw(url 자동)
+
+### Controller Method Prameter  type
+
+1. HtteServletRequest 등 서블릿 메ㅑ
+
+2. String, int ,double, boolean type + 변수명(=요청파라미터 명) - 요청파라미터 값 자동저장
+
+3. @RequestParam("i") String j, int, double, boolean type + 변수명(=요청파라미터명) - 요청 파리미터 값 자동 저장
+
+4. 요청 파리미터 갯수가 많으면 VO 객체로 정의하고 - > @ModelAttribute("m")LoginVO vo
+
+   1. 요청 파리미터 명과 LoginVO 맴버변수명 동일 자동 저장
+   2. LoginVO 객체는 자동 Model -jsp 전달
+
+   @Cotroller
+
+   @RequestMapping(value="", method=....) - 메소드위
+
+   @RequestParam(value="", required= , defaultVaule="")
+
+   @ModelAttrivute("") LoginVO
+
+```java
+@RequestMapping(name="/login", method = RequestMethod.POST)
+	public ModelAndView loginsuccess ( String id, String pw) {
+		//form inputname="id" : 요청파라미터 이름 id전송한다
+		//요청파라미터 이름과 컨트롤러 메소드 매개변수 이름 동일하면 자동 저장
+		//form 입력 name값 = aoroqustn dlfma ehddlf = DB컬럼명 동일 저장  ==>DB의 컬럼 이름, jsp의 form name 값, controller 의 메소드 매개변수 이름을 동일하게 하면 편하다
+		ModelAndView mv = new ModelAndView();
+		if(id.equalsIgnoreCase("spring") && pw.equals("spring")){
+			mv.addObject("loginresult",true);
+		}else {
+			mv.addObject("loginresult",false);
+		}
+		mv.setViewName("loginsuccess");
+		return mv;
+	}
+}
+```
+
+```java
+@RequestMapping(name="/login", method = RequestMethod.POST)
+	public ModelAndView loginsuccess (@RequestParam("id") String id2, String pw) {
+		//form inputname="id" : 요청파라미터 이름 id전송한다
+		//요청파라미터 이름과 컨트롤러 메소드 매개변수 이름 동일하면 자동 저장
+		//form 입력 name값 = aoroqustn dlfma ehddlf = DB컬럼명 동일 저장  ==>DB의 컬럼 이름, jsp의 form name 값, controller 의 메소드 매개변수 이름을 동일하게 하면 편하다
+		ModelAndView mv = new ModelAndView();
+		if(id2.equalsIgnoreCase("spring") && pw.equals("spring")){
+			mv.addObject("loginresult",true);
+		}else {
+			mv.addObject("loginresult",false);
+		}
+		mv.setViewName("loginsuccess");
+		return mv;
+	}
+}
+```
+
+@RequestParam("id")
+
+- 
+
+```java
+@RequestMapping(name="/login", method = RequestMethod.POST)
+	public ModelAndView loginsuccess (@RequestParam(value="id", required = false, defaultValue = "spring") String id2, String pw) {  
+        
+        //required = false 이면 입력 필수X, true면 필수
+		//defaultValue = "spring" --> id에 값이 안들어가 있으면 deault로 spring 이 적용 된다
+		ModelAndView mv = new ModelAndView();
+		if(id2.equalsIgnoreCase("spring") && pw.equals("spring")){
+			mv.addObject("loginresult",true);
+		}else {
+			mv.addObject("loginresult",false);
+		}
+		mv.setViewName("loginsuccess");
+		return mv;
+	}
+}
+```
 
 ## mybatis
 
