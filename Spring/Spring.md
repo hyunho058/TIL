@@ -1277,11 +1277,15 @@ public class CRUDController {
 3. void - View(url 자동)
 4. Map - model + Veiw(url 자동)
 
-### Controller Method Prameter  type
+#### Controller Method Prameter  type
 
-1. HtteServletRequest 등 서블릿 메ㅑ
+1. HtteServletRequest 등 서블릿 메소드
+
+   1. request.getParameter("id")
 
 2. String, int ,double, boolean type + 변수명(=요청파라미터 명) - 요청파라미터 값 자동저장
+
+   -form 입력 name값 = aoroqustn dlfma ehddlf = DB컬럼명 동일 저장  ==> DB의 컬럼 이름, jsp의 form name 값,  controller 의 메소드 매개변수 이름을 동일하게 하면 편하다
 
 3. @RequestParam("i") String j, int, double, boolean type + 변수명(=요청파라미터명) - 요청 파리미터 값 자동 저장
 
@@ -1355,6 +1359,20 @@ public class CRUDController {
 	}
 }
 ```
+
+#### CRUD 
+
+> 프로그램 기능 제공
+>
+> 조회.생성,수정,삭제 "기본필요기능"
+
+
+
+
+
+
+
+
 
 ## mybatis
 
