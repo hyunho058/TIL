@@ -470,6 +470,8 @@ public class EmpMain {
 
 > ASPECT ORIENTED PROGRAMMING
 >
+> 관점 지향 프로그래밍, 어떤 로직을 기준으로 핵심적인 관점과 부가적인 관점으로 나누어서 보고 그 관점을 기준으로 각각 모듈화하는 것
+>
 > 구현 필요 - 핵심관심코드 = 종단관심코드
 >
 > Weaving
@@ -480,9 +482,18 @@ public class EmpMain {
 >
 > (반복적 코딩 필요 - 한번 정의 - 필욯나 클래스에 연결/해제)
 
-* @Aspect -공통관심 클래스 위 선언
-* @PointCut - 메소드 내부 위 선언(내용 구현x)
-* @Around - 메도스 위 선언(핵심 관심메소드 전 후)
+* Annotation
+  * @Aspect -공통관심 클래스 위 선언
+  * @PointCut - 메소드 내부 위 선언(내용 구현x)
+  * @Around - 메도스 위 선언(핵심 관심메소드 전 후)
+
+### 관심 분리
+
+![image-20200210121516335](image/image-20200210121516335.png)
+
+	- 횡단관심이 공통된 Code가 작성된 Class이다.
+	- 구현이 필요한 코드 - **핵심관심코드** (= 종단관심코드)
+	- 공통된 Code가 작성될 반복구현사항들 - **공통관심코드** (= 횡단관심코드)
 
 ### weaving
 
@@ -494,7 +505,7 @@ public class EmpMain {
 
 
 
-### 자바개발자 디자인 패턴 23 가지
+### 자바개발자  디자인 패턴 23 가지
 
 > 1.proxy
 >
@@ -506,7 +517,24 @@ public class EmpMain {
 >
 > 5.front controller + mvc
 
-#### 1. proxy
+### proxy
+
+```
+23가지 자바 개발 디자인 패턴 중 AOP와 유사
+```
+
+- ProxyInter라는 Interface를 상속받는 A, B, C중 A와 C는 변경되더라도 B는 변경되지 않는다.
+
+  - 이 때의 B Class의 역할은 공통 실행 내용 객체 (= 공통관심코드)
+  - A, C Class는 구현하는 서로 다른 Class (= 핵심관심코드)
+
+- B의 Action을 실행하면 공통부분을 실행하고 p의 Action을 실행하면 공통부분이 없다.
+
+- **Codes**
+
+  [Interface Code](https://github.com/TunaHG/Eclipse_Workspace/blob/master/Spring/src/main/java/proxypattern/ProxyInter.java), [A Code](https://github.com/TunaHG/Eclipse_Workspace/blob/master/Spring/src/main/java/proxypattern/A.java), [B Code](https://github.com/TunaHG/Eclipse_Workspace/blob/master/Spring/src/main/java/proxypattern/B.java), [C Code](https://github.com/TunaHG/Eclipse_Workspace/blob/master/Spring/src/main/java/proxypattern/C.java), [Main Code](https://github.com/TunaHG/Eclipse_Workspace/blob/master/Spring/src/main/java/proxypattern/ProxyMain.java)
+
+  - A와 C Class가 핵심관심코드이며 B Class가 공통관심코드이다.
 
 ```java
 package proxypattern;
@@ -543,7 +571,6 @@ public class A implements ProxyInter{
 	}
 }
 
-
 package proxypattern;
 
 public class B implements ProxyInter{
@@ -572,8 +599,6 @@ public class C implements ProxyInter{
 }
 
 ```
-
-
 
 ### AOP Libraries
 
@@ -634,7 +659,44 @@ libraries 추가 확인
 >
 > **.. :** **하위패키지 포함** 
 
-#### pointcut
+#### JointPoint
+
+```
+클라이언트가 호출하는 모든 비즈니스 메소드(핵심관심 메소드)
+```
+
+- 포인트컷 대상, 포인트컷 후보라고도 한다.
+
+  - JoinPoint중에서 Pointcut이 선택되기 때문이다.
+
+- JoinPoint에서 제공하는 유용한 메소드
+
+  - ```
+    Signature getSignature()
+    ```
+
+    : 시그니처(return type, 이름, 매개변수) 정보가 저장된 객체 return
+
+    - `String getName()` : 메소드 이름 return
+    - `String toLongString()` : 메소드의 return type, 이름, 매개변수를 패키지 경로까지 포함하여 return
+    - `String toShortString()` : 메소드 Signature를 축약한 문자열로 return
+
+  - `Object getTartget()` : 비즈니스 메소드를 포함하는 비즈니스 객체 return
+
+  - `Object[] getArgs()` : 메소드를 호출할 때 넘겨준 인자 목록을 Object 배열로 return
+
+- Around에서 사용한 ProceedingJoinPoint는 JoinPoint를 상속했다.
+
+  - 추가적으로 메소드를 실행시키는 `proceed()` 메소드를 사용할 수 있다.
+  - Around에서만 사용가능하며 다른 5가지 Advice에서는 JoinPoint를 사용해야 한다.
+    - Around에서만 `proceed()`가 필요하기 때문
+
+#### PointCut
+
+> 필터링된  JoinPoint
+
+* 원하는 특정 메소드에서만 횡단 관심에 해당하는 공통 기능을 수행시키기 위해서 사용한다.
+  * 공통 관심 메소드는 모든 핵심 관심메소드에서 동작할 필요가 없다. 특정 핵심관심 메소드에서만 동작하면 된다.
 
 >● execution 명시자 : Advice를 적용할 메서드를 명시할 때 사용
 >

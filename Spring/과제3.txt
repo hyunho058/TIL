@@ -1,0 +1,57 @@
+scott/TIGER
+
+-회원관리
+1. 테이블 생성
+create table member(
+userid varchar2(30) primary key,
+password varchar2(30),
+name varchar2(50),
+phone varchar2(30) 
+);
+
+INSERT into member('spring,'spring','홍길동','010-2222-4567');
+INSERT into member('mybatis,'mybatis','김수옥','010-555-4567');
+INSERT into member('mvc,'mvc','유재범','010-2222-5765');
+commit;
+=========================
+-. spring mvc + mybatis 연동
+-MemberController: 2
+회원가입
+/mybatis/insertmember:get - 폼 출력 뷰
+/mybatis/insertmember:post - 폼입력데이터 db insert
+1. select * from member where userid=사용자입력id
+1-1. 결과 존재
+===> 아이디가 중복되었습니다 출력 뷰(mybatis/inserterror.jsp)
+1-2. 결과 존재x
+폼입력데이터 db insert, 로그인폼 출력 뷰(mybatis/login.jsp)
+
+
+
+MemberDAO:mybatis member접근sql실행
+
+MemberVO:MEMBER테이블 4개컬럼 변수
+SETTER/GETTER 메소드
+(생성자추가+toString)
+
+mybatis-spring.xml( 
+hr/hr ---> scott / TIGER 
+sql매핑파일명 - member-mapping.xml 
+)
+mybatis-config.xml
+(typealias = "XXXX.MemberVO" ==> "member" )
+member-mapping.xml  정의
+(eml-mapping.xml 복사)
+
+web.xml :  수정x
+servlet-context.xml: 
+<context:component-scan base-package
+="edu.multi.member" />
+
+pom.xml: 추가x
+
+
+수행평가 3 문제-
+1:ioc,
+2문제:mvc 게시판
+
+3번문제:mybatis

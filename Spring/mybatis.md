@@ -68,7 +68,26 @@ DB 연결 파일 은 1개 mapping 파일은 여러개
    1. board-mapping.xml  - 개시글과 관련 -mapping 파일
    2. memver-mapping.xml - 맴버 관리 -mapping 파일
 
-## mabatis
+# mabatis
+
+> 1. db 연결정보 설정.xml
+>
+> - jdbc driver, url, id, pw ===>sqlSession api
+>
+> 2. sql mapping.xml
+>
+> - < select id="" resultType="xxxVO" parameterType="int["]
+>   - 특정 함수 는 resultType 는 String or Int 사용
+>   - resultType, parameterType 모든 객체가 올 수 있다.
+> - < insert id=""
+> - < delete id=""
+> - < update id=""
+>
+> 3. XXXVO - (Mybatis = sql mapper framwork)
+>
+> * spl결과(레코드) =>mapping
+>
+> 4. XXXDAO - mybatis 코드 작성 
 
 1. xml 설정 읽기
 
@@ -80,7 +99,9 @@ DB 연결 파일 은 1개 mapping 파일은 여러개
 
    => 1, 2(설정파일) 번은 한 번만 설정 하면 되고 3,4(sql 정의) 번을 활용한다
 
-### 환경 설정
+
+
+## 환경 설정
 
 * mybatis.jar => pom.xml 파일에  <dependency>  적용
 
@@ -88,9 +109,9 @@ DB 연결 파일 은 1개 mapping 파일은 여러개
 
 ![image-20200207094838830](image/image-20200207094838830.png)
 
-* ojdbc6.jar : 오라클 jdbc driver 파일 압축파일 등록
 
-  ​	
+
+* ojdbc6.jar : 오라클 jdbc driver 파일 압축파일 등록
 
 ![image-20200207095018002](image/image-20200207095018002.png)
 
@@ -106,7 +127,7 @@ spring project file -> properties -> java Build Path -> Add External -> ojdbc6.j
 
 
 
-* 설정파일(DB연결)
+* 설정파일(DB연결) : xxx.config.xml
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -377,9 +398,171 @@ dao 는 mapping file 호출
 
 
 
+# mybatis Spring
+
+* spring mvc(cmv) + spring orm(= 다른 db프레임워크 연동) + mybaits 연동 
+
+object - relational db - mapping
+
+* 라이브러리 다운로드
+
+  pom.xml:<dependency>
+
+  * mybatis-spring.jar(orm기능)
+  * spring-jdbc.jar(orm기능)
+
+  oracle jdbc드라이버(ojdbc6.jar)
+
+  1. java main -java application
+
+     * 메인 에서 실행할떄
+
+  2. servlet, jsp, spring mvc - java web server
+
+     * serblet , jsp 에서 실행할떄
+* (탐색기 - tomcat 경로 \lib\ojdbc6.jar붙여넣기) (톰켓 환경에서 모두 사용가능)
+     * 프로젝트\main\webapp\web-inf\lib(생성)\ojdbc6.jar 붙여넣기 (이클립스 project  환경 에서 사용)
+
+1. db 연결정보 설정.xml
+
+- jdbc driver, url, id, pw ===>sqlSession api
+- typeAlias 제외
+
+2. sql mapping.xml
+
+- < select id="" resultType="xxxVO" parameterType="int["]
+  - 특정 함수 는 resultType 는 String or Int 사용
+  - resultType, parameterType 모든 객체가 올 수 있다.
+- < insert id=""
+- < delete id=""
+- < update id=""
+
+3. XXXVO - (Mybatis = sql mapper framwork)
+
+* spl결과(레코드) =>mapping
+
+4. XXXDAO - mybatis 코드 작성 
+
+5. main 삭제
+
+6. mybatis - <bean tag 없다, @annotation 없다. (Spring 에만 존제) = jdbc driver, url, id, pw - DataSource생성(connection poll - ,,,)
+
+   * Mybatis - spring 연동 설정파일(spring bean 설정파일)
+     1. Mybatis -dbc driver, url, id, pw - DataSource생성
+     2. mapper 파일 이름
+     3. typealias 이름
+     4. SqlSessionTemplate bean 생성
+
+   * JDBC - ConnectionPool = spring 에서 DataSource
+   * JDBC - Connection = spring 에서 sqlSessionTemplate = mybatis에서 SqlSession
+
+7. Controller - Model - View
 
 
-![image-20200207104412541](image/image-20200207104412541.png)
+
+
+
+​		6.
+
+![image-20200210102415991](image/image-20200210102415991.png)
+
+![image-20200210102459387](image/image-20200210102459387.png)
+
+* mybatis-spring.xml
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <beans xmlns="http://www.springframework.org/schema/beans"
+  	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+  
+  <!-- 1. DataSource 생성 =>connectionpoll mybatis에 sqlSession 믄든것과 동일-->
+  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+  	<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+  	<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+  	<property name="username" value="hr"></property>
+  	<property name="password" value="hr"></property>
+  </bean>
+  <!-- 2.mapper file, mybatis 설정파일 정보 알려줌 -->
+  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+  	<property name="dataSource" ref="dataSource"></property>
+  	<property name="configLocation" value="classpath:/edu/multi/mybatis/mybatis-config.xml"></property>
+  	<property name="mapperLocations" value="classpath:/edu/multi/mybatis/emp-mapping.xml"></property>
+  </bean>
+  <!-- 3.SqlSessionTemplate(스프링 객체(spring api))생성 -->
+  <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+  	<constructor-arg ref="sqlSessionFactory"></constructor-arg>
+  </bean>
+  
+  </beans>
+  ```
+
+* web.xml 수정
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+  	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+  
+  	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+  	<!-- 컨텍스트 = 프로젝트 내부 모든 파일 변수공유 -->
+  	<!-- /web -inf/spring/mybatis-spring:xml -->
+  	<context-param>
+  		<param-name>contextConfigLocation</param-name>
+  		<param-value>
+  		/WEB-INF/spring/root-context.xml
+  		/WEB-INF/spring/mybatis-spring.xml    <--> 해당 코드 추가</-->
+  		</param-value>
+  	</context-param>
+  ```
+
+* servlet-context.xml 수정
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <beans:beans xmlns="http://www.springframework.org/schema/mvc"
+  	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  	xmlns:beans="http://www.springframework.org/schema/beans"
+  	xmlns:context="http://www.springframework.org/schema/context"
+  	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+  		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+  		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+  
+  	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+  	<!-- Enables the Spring MVC @Controller programming model -->
+  	<annotation-driven />
+  <!-- @Component @Service @Repository @Autowired 인식 -->
+  	<context:component-scan base-package="edu.multi.mvc" />
+  	<context:component-scan base-package="edu.multi.mybatis" />  <-- 추가 삽입</-->
+  	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+  	<!-- *.png, *.mp3, *.mp4, *.js 저장 위치 -->
+  	<resources mapping="/resources/**" location="/resources/" />
+  ```
+
+  
+
+## 환경설정
+
+* mvc
+
+![image-20200210094908977](image/image-20200210094908977.png)
+
+
+
+![image-20200210095105589](image/image-20200210095105589.png)
+
+> Spring JDBC 4.3.18 Release 는 설치되어있는 spring version 과 동일한것으로 선택
+
+![image-20200210095243641](image/image-20200210095243641.png)
+
+* 
+
+![image-20200210100844968](image/image-20200210100844968.png)
+
+
+
+
 
 
 
