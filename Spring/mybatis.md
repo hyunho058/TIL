@@ -421,6 +421,7 @@ object - relational db - mapping
 
      * serblet , jsp 에서 실행할떄
 * (탐색기 - tomcat 경로 \lib\ojdbc6.jar붙여넣기) (톰켓 환경에서 모두 사용가능)
+     
      * 프로젝트\main\webapp\web-inf\lib(생성)\ojdbc6.jar 붙여넣기 (이클립스 project  환경 에서 사용)
 
 1. db 연결정보 설정.xml
@@ -565,4 +566,67 @@ object - relational db - mapping
 
 
 
+
+* \ModelAndView mv
+
+mv.addObject("", 객체) ==>1개 VIew에 적용
+
+1개 요청 처리동안 ( C M V) 공유
+
+
+
+* 여러개 View 1번 로그인 정보 지속 공유(브라우저 종료 이전/ 브라우저 실행 30분동안 사용 움직임 없을떄)
+
+  *  javax.servlet.http.HttpSession
+
+    
+
+  1. HttpSession생성
+
+     ```java
+     HttpSession session = request.getSession();
+     ```
+
+  2. HttpSession 공유정보 저장
+
+     ```java
+     session.setAttribute("세션 값 이름", 객체);
+     ```
+
+  3. HttpSession 저장 정보 추출
+
+     ```java
+     ??? = (형변환)session.getAttribute("세션 이름");
+     ```
+
+  4. HttpSession 저장 정보 삭제
+
+     ```java
+     session.removeAttibute("세션 값 이름");
+     ```
+
+  5. HttpSession 소멸
+
+     ```java
+     session.invalidate();
+     ```
+
+     
+
+여러개 쓸때
+
+![image-20200211112234573](image/image-20200211112234573.png)
+
+![image-20200211112311131](image/image-20200211112311131.png)
+
+해당 영역 처럼 추가하여 사용
+
+```xml
+<param-value>
+		/WEB-INF/spring/root-context.xml
+		/WEB-INF/spring/mybatis-spring.xml
+    	/WEB-INF/spring/xxxxxxx.xml
+    	/WEB-INF/spring/yyyyyyy.xml
+</param-value>
+```
 

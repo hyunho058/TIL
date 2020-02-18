@@ -1,0 +1,28 @@
+create table member1(
+MEMBER_ID varchar2(30) primary key,
+PASSWORD varchar2(50),
+NAME varchar2(30),
+PHONE varchar2(30), 
+ALLOWED varchar2(30),
+date date, 
+HOUSE_ID varchar2(30)  
+);
+
+create table board(
+seq number(5),
+title varchar2(30),
+context varchar2(500),
+member_id varchar2(30), 
+form varchar2(30), 
+viewcnt number(5),
+date date
+);
+
+create table HOUSESTATUS{
+HOUSE_ID varchar2(30),
+temperature number(5),
+date date
+}
+
+
+INSERT into member1('spring1,'spring','홍길동','010-2222-4567', 'false', '100');
