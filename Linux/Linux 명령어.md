@@ -67,7 +67,17 @@ CentOS Linux release 7.0.1406 (Core)
 
 > 기본 값이 5로 설정 되어 있어 재푸팅하면 Graphic 화면이 가장 먼져 나온다.
 
+0. Power Off - 종료 모드
+1. Rescue - 시스템 복구모드
+2. Multi-User -  사용X
+3. Mulit-User - 텍스트 모드의 다중 사용자 모드
+4. Multi -User - 사용X
+5. Graphical - 그래픽 모드의 다중 사용자 모드
+6. Reboot - 설정파일 변경 반영하여 재시작
+
 ## 자동완성과 히스토리
+
+* Tab 키를 누르면 명령어나 파일 명 자동 완성 시켜줌
 
 * history -지금까지 썻던 명령어 표시
 * history -c - 썻던 명령어 삭제
@@ -119,31 +129,67 @@ drwxr-xr-x. 2 root root    6  2월 18 11:12 음악
 * ls
 
   * -a 현제 디렉토리의 목록
+
+  ```
+  [root@localhost ~]# ls -a
+  .              .bash_profile  .dbus      all.cfg               다운로드  서식
+  ..             .bashrc        .esd_auth  anaconda-ks.cfg       문서      음악
+  .ICEauthority  .cache         .local     initial-setup-ks.cfg  바탕화면
+  .bash_history  .config        .mozilla   sample.txt            비디오
+  .bash_logout   .cshrc         .tcshrc    공개                  사진
+  ```
+
   * -l 현재 디렉토리의 목록을 자세히 보여줌
+
+  ```
+  [root@localhost ~]# ls -l
+  합계 16
+  -rw-r--r--  1 root root 5894  2월 18 15:25 all.cfg
+  -rw-------. 1 root root 1365  2월 18  2020 anaconda-ks.cfg
+  -rw-r--r--. 1 root root 1582  2월 18 11:11 initial-setup-ks.cfg
+  -rw-r--r--  1 root root    0  2월 18 14:44 sample.txt
+  drwxr-xr-x. 2 root root    6  2월 18 11:12 공개
+  drwxr-xr-x. 2 root root    6  2월 18 15:12 다운로드
+  drwxr-xr-x. 2 root root    6  2월 18 14:51 문서
+  drwxr-xr-x. 2 root root    6  2월 18 11:12 바탕화면
+  drwxr-xr-x. 2 root root    6  2월 18 11:12 비디오
+  drwxr-xr-x. 2 root root    6  2월 18 11:12 사진
+  drwxr-xr-x. 2 root root    6  2월 18 11:12 서식
+  drwxr-xr-x. 2 root root    6  2월 18 11:12 음악
+  ```
 
 * cd
 
-  * ```
-    [root@localhost ~]# cd /etc/sysconfig
-    [root@localhost sysconfig]# pwd
-    /etc/sysconfig
-    [root@localhost sysconfig]# cd ..
-    [root@localhost etc]# pwd
-    /etc
-    [root@localhost etc]# cd ..
-    [root@localhost /]# pwd
-    /
-    [root@localhost /]# cd etc/sysconfig
-    [root@localhost sysconfig]# pwd
-    /etc/sysconfig
-    [root@localhost sysconfig]# cd /root
-    [root@localhost ~]# pwd
-    /root
-    [root@localhost ~]# cd etc/sysconfig
-    bash: cd: etc/sysconfig: 그런 파일이나 디렉터리가 없습니다    cd /root/ect ... 라고 생각해서 파일을 찾지 못하는거다.
-    ```
+  ```
+  [root@localhost ~]# cd /etc/sysconfig
+  [root@localhost sysconfig]# pwd
+  /etc/sysconfig
+  [root@localhost sysconfig]# cd ..
+  [root@localhost etc]# pwd
+  /etc
+  [root@localhost etc]# cd ..
+  [root@localhost /]# pwd
+  /
+  [root@localhost /]# cd etc/sysconfig
+  [root@localhost sysconfig]# pwd
+  /etc/sysconfig
+  [root@localhost sysconfig]# cd /root
+  [root@localhost ~]# pwd
+  /root
+  [root@localhost ~]# cd etc/sysconfig
+  bash: cd: etc/sysconfig: 그런 파일이나 디렉터리가 없습니다    cd /root/ect ... 라고 생각해서 파일을 찾지 못하는거다.
+  ```
 
 * pwd
+
+  현재 위치 확인
+
+  ```
+  [root@localhost ~]# pwd
+  /root
+  ```
+
+  
 
 * rm - 파일+디렉토리(하위디렉토리)삭제.
 
@@ -177,7 +223,7 @@ drwxr-xr-x. 2 root root    6  2월 18 11:12 음악
   [root@localhost ~]# 
   ```
 
-* cat
+* cat  _ 파일의 내용을 화면에 보여줌
 
 > 1. cat 파일명1 파일명2 > 파일명3(내용 삭제) ==> 파일명3에 내용을 지우고 파일1,2,를 3에 저장
 >

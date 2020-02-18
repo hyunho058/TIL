@@ -90,6 +90,8 @@ C:\Users\student>
 <img src="image/image-20200218102558863.png" alt="image-20200218102558863" style="zoom:67%;" />
 
 > p.68에 1-59를 이렇게 실행한다.
+>
+> vmnetcfg.exe 파일을 c\vmware 폴더에 위치하고 해당 위치에서 실행
 
 <img src="image/image-20200218102741349.png" alt="image-20200218102741349" style="zoom: 80%;" />
 
@@ -148,6 +150,8 @@ C:\Users\student>
 > 두번 click vkxltus tjfwjd 
 
 <img src="image/image-20200218105001074.png" alt="image-20200218105001074" style="zoom:67%;" />
+
+​									VMware, VMware VirtualS 를 두번 클릭해서 선택 해야한다
 
 <img src="image/image-20200218105059436.png" alt="image-20200218105059436" style="zoom:67%;" />
 
