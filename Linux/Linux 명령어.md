@@ -584,7 +584,7 @@ testuser1:x:1001:1001::/home/testuser1:/bin/bash       ==1001 은 식별자 값�
   
   ```
 
-* usermod -g root testuser1
+* usermod -g root testuser1 (사용자 그룹변경)
 
   ```
   [root@localhost ~]# usermod -g root testuser1
@@ -626,7 +626,7 @@ testuser1:x:1001:1001::/home/testuser1:/bin/bash       ==1001 은 식별자 값�
 * 다운로드 + 설치 해주는 명령어
 * yum -y install  == -y 는 무조건 설치하라는 명령어(yes)
 * yum remeve == 제거
-* yum info ????????????
+* yum info 페키지 이름 == 패키지의 요악 정보를 보여준다.
 * yum clean all == yum 저장소 초기화(yum작업이 끝난후 해주는게 좋다)
 
 ```
@@ -713,7 +713,7 @@ drwxr-xr-x. 2 root root    6  2월 18 11:12 음악
 
 > ln 원본 링크이름 ==> hardlink
 >
-> ln -s 원본 링크이름 ==>symbolic
+> ln -s 원본 링크이름 ==>symbolic(soft link)
 >
 > * alias ls 도 ls 링크와 같은 킹크역할을 하지만 터미털이 종료되면 사라진다(다시 설정해줘야함.)
 
@@ -865,7 +865,7 @@ cat: softlink: 그런 파일이나 디렉터리가 없습니다
 
       ​									파일관리자(탐색기)
 
-      * rpm 의존성 문제
+      * rpm 의존성 문제(Dependencies)
 
       ```
       [root@localhost Packages]# rpm -Uvh mysql-connector-odbc-5.2.5-6.el7.x86_64.rpm 
