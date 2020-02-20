@@ -99,6 +99,8 @@ Mozilla Firefox 72.0.2
 
 ## Tomcat 설치
 
+> 다운로드 폴더에서 압축 풀기 후 경로이동 
+
 ```
 [root@localhost ~]# mv /root/다운로드/tomcat9 /usr/local
 [root@localhost ~]# ls -l /usr/local/
@@ -124,6 +126,14 @@ Using CATALINA_TMPDIR: /usr/local/tomcat9/temp
 Using JRE_HOME:        /usr/local/jdk1.8
 Using CLASSPATH:       /usr/local/tomcat9/bin/bootstrap.jar:/usr/local/tomcat9/bin/tomcat-juli.jar
 Tomcat started.      ====> 이 부분 확인
+
+////////////////Tomcat 종료////////////////
+[root@localhost ~]# /usr/local/tomcat9/bin/shutdown.sh 
+Using CATALINA_BASE:   /usr/local/tomcat9
+Using CATALINA_HOME:   /usr/local/tomcat9
+Using CATALINA_TMPDIR: /usr/local/tomcat9/temp
+Using JRE_HOME:        /usr/local/jdk1.8
+Using CLASSPATH:       /usr/local/tomcat9/bin/bootstrap.jar:/usr/local/tomcat9/bin/tomcat-juli.jar
 
 ```
 
