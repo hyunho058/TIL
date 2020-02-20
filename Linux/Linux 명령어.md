@@ -989,112 +989,210 @@ cat: softlink: 그런 파일이나 디렉터리가 없습니다
 
 
 
+## 시스템 설정
 
-
-
-
-
-
-
-
-## Linux jdk 설치
-
-1. 리눅스 설치시 openjdk 1.7 내장
-2. 삭제
-3. 새로운 버전 설치(rpm, yum, tar)
-4. (환경변수 path 등록)
-   * java.exe 
-   * javac.exe
-5. .hadoop
-
-![image-20200219155527167](image/image-20200219155527167.png)
-
-복사해서 아래에 붙여넣기
-
-경로 위치-다운로드
-
-![image-20200219155503345](image/image-20200219155503345.png)
-
-![image-20200219155659105](image/image-20200219155659105.png)
-
-![image-20200219160133506](image/image-20200219160133506.png)
-
-read only 체크하고
+> 서비스 프로그램 = 자동 샐행 프로그램(Background 프로세스)
 
 ```
-[root@localhost ~]# java version
-bash: java: 명령을 찾을 수 없습니다...
-[root@localhost ~]# cd 다운로드
-[root@localhost 다운로드]# ls -l
-합계 690568
--rwxrw-rw- 1 root root  11026056  2월 18 08:36 apache-tomcat-9.0.30.tar.gz
--rwxrw-rw- 1 root root  66348863  2월 18 08:38 firefox-72.0.2.tar.bz2
--rwxrw-rw- 1 root root  63851630  2월 18 08:38 hadoop-1.2.1.tar.gz
--rwxrw-rw- 1 root root 194545143  2월 18 08:38 jdk-8u241-linux-x64.tar.gz
--rwxrw-rw- 1 root root 315891481  2월 18 08:38 oracle-xe-11.2.0-1.0.x86_64.rpm.zip
-tar: Exiting with failure status due to previous errors
-[root@localhost 다운로드]# tar xfvz jdk-8u241-linux-x64.tar.gz
+[root@localhost ~]# systemctl list-unit-files
+```
 
+* 방화벽 프로그램 서비스
 
-[root@localhost 다운로드]# mv jdk1.8.0_241 /usr/local/jdk1.8
-[root@localhost 다운로드]# ls -l
-합계 636396
--rwxrw-rw- 1 root root  11026056  2월 18 08:36 apache-tomcat-9.0.30.tar.gz
--rwxrw-rw- 1 root root  66348863  2월 18 08:38 firefox-72.0.2.tar.bz2
--rwxrw-rw- 1 root root  63851630  2월 18 08:38 hadoop-1.2.1.tar.gz
--rwxrw-rw- 1 root root 194545143  2월 18 08:38 jdk-8u241-linux-x64.tar.gz
--rwxrw-rw- 1 root root 315891481  2월 18 08:38 oracle-xe-11.2.0-1.0.x86_64.rpm.zip
-[root@localhost 다운로드]# cd /usr/local/jdk1.8
-[root@localhost jdk1.8]# pwd
-/usr/local/jdk1.8
-[root@localhost jdk1.8]# cd bin
-[root@localhost bin]# gedit /etc//profile
+```
+[root@localhost ~]# systemctl list-unit-files | grep fire
+firewalld.service                           enabled 
+```
 
+### grep 
+
+* 문자열을 찾아주는 역할
+
+```
+[root@localhost ~]# systemctl list-unit-files | grep fire ==> fire 를 포함한걸 출력 해줌
+firewalld.service                           enabled 
 ```
 
 ```
-프로파일에 아래 4줄 저장
-
-export JAVA_HOME=/usr/local/jdk1.8
-export PATH=$PATH:$JAVA_HOME/bin
-export JAVA_OPTS="-Dfile.encoding=UTF-9"
-export CLASSPATH="."
+[root@localhost ~]# grep test hardlink ==>hardlink 에 test가 포함된걸 출력 해주는 역할
+test
+test2
 ```
 
-![](image/image-20200219161622304.png)
+```
+[root@localhost ~]# ls -l | grep link
+-rw-r--r--  1 root root   48  2월 19 13:25 hardlink
+lrwxrwxrwx  1 root root    8  2월 19 13:18 softlink -> link.txt
+```
 
 ```
-[root@localhost 다운로드]# cd /usr/local/jdk1.8
-[root@localhost jdk1.8]# pwd
-/usr/local/jdk1.8
-[root@localhost jdk1.8]# cd vin
-bash: cd: vin: 그런 파일이나 디렉터리가 없습니다
-[root@localhost jdk1.8]# cd bin
-[root@localhost bin]# java -version
-bash: java: 명령을 찾을 수 없습니다...
-[root@localhost bin]# gedit /etc//profile
-[root@localhost bin]# echo $PATH
-/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:/root/bin
-[root@localhost bin]# echo $JAVA_HOME
-
-[root@localhost bin]# source /etc/profile
-[root@localhost bin]# echo $JAVA_HOME
-/usr/local/jdk1.8
-[root@localhost bin]# java -version
-java version "1.8.0_241"
-Java(TM) SE Runtime Environment (build 1.8.0_241-b07)
-Java HotSpot(TM) 64-Bit Server VM (build 25.241-b07, mixed mode)
-
-[root@localhost bin]# cd /
-[root@localhost /]# pwd
-/
-[root@localhost /]# java -version
-java version "1.8.0_241"
-Java(TM) SE Runtime Environment (build 1.8.0_241-b07)
-Java HotSpot(TM) 64-Bit Server VM (build 25.241-b07, mixed mode)
-[root@localhost /]# 
-
+systemctl list-unit-files | grep at | sort
 ```
 
 
+
+* 같은 표현
+
+```
+[root@localhost ~]# rpm -qa *jdk*
+[root@localhost ~]# rpm -qa | grep jdk
+```
+
+
+
+
+
+
+
+```
+| ==> 명령1 | 명령2 =>명령1 에 결과물을 가지고 명령2에 대해 수행
+> ==>
+>> ==>
+< ==>
+<< =>
+```
+
+
+
+### 방화벽 설정
+
+* firewall-config 
+
+<img src="image/image-20200220100315316.png" alt="image-20200220100315316" style="zoom:67%;" />
+
+### 작업 예약
+
+* cron
+  * 주기적으로 특정 작업 자동수행
+  * crond.service
+* at
+  * 예약시간 1번 특정 잡업 수행
+  * atd.service
+
+
+
+#### cron
+
+```
+[root@localhost ~]# gedit /etc/crontab
+```
+
+<img src="image/image-20200220102128101.png" alt="image-20200220102128101" style="zoom:67%;" />
+
+```
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
+
+# For details see man 4 crontabs
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name  command to be executed
+01 3 15 * * root run-parts /etc/cron.monthly
+```
+
+```
+[root@localhost ~]# gedit /etc/cron.monthly/mybackup.sh
+```
+
+<img src="image/image-20200220111826485.png" alt="image-20200220111826485" style="zoom:67%;" />
+
+```
+set $(date)
+fname="backup-$2$3.tar.xz"
+tar cfjv /backup/$fname /home
+```
+
+```
+[root@localhost ~]# /etc/cron.monthly/mybackup.sh
+[root@localhost ~]# ls -l /backup
+합계 604
+-rw-r--r-- 1 root root 615909  1월 15 03:28 backup-01.15..tar.xz
+[root@localhost ~]# gedit /etc/cron.monthly/mybackup.sh
+[root@localhost ~]# date 021503002020
+2020. 02. 15. (토) 03:00:00 KST
+[root@localhost ~]# systemctl restart crond
+[root@localhost ~]# ls -l /backup
+합계 1208
+-rw-r--r-- 1 root root 615909  1월 15 03:28 backup-01.15..tar.xz
+-rw-r--r-- 1 root root 615909  2월 15 03:01 backup-02.15..tar.xz
+
+```
+
+#### at
+
+```
+[root@localhost ~]# at now + 2minutes            
+at> tar cfjv backup/at.tar.xz /home  
+at> <EOT>     ==>ctrl+D
+job 1 at Thu Feb 20 11:20:00 2020
+
+```
+
+### 네트워크 설정
+
+* 네트워크 설정 들어가는 경로
+
+```
+[root@localhost ~]# gedit /etc/sysconfig/network-scripts/ifcfg-eno16777736
+```
+
+* 프로토콜
+
+  web : http (고급)
+
+  tcp/ip : (저급, 네트워크 연결/ip)
+
+* 네트워크 인터넷 ip
+  * 70.12.80.90 ==>  IPV4 -- IPV6
+
+* ping
+
+  ```
+  [root@localhost ~]# ping 192.168.111.1
+  PING 192.168.111.1 (192.168.111.1) 56(84) bytes of data.
+  64 bytes from 192.168.111.1: icmp_seq=1 ttl=128 time=0.256 ms
+  64 bytes from 192.168.111.1: icmp_seq=2 ttl=128 time=0.368 ms
+  64 bytes from 192.168.111.1: icmp_seq=3 ttl=128 time=0.392 ms
+  
+  ```
+
+* nslookup
+
+  * 접속하는 경로상에 모든 네트워크 주소를 보여줌
+  * DNS (domain name server)
+
+  ```
+  [root@localhost ~]# nslookup 192.168.111.1
+  Server:		192.168.111.2  ==> 게이트웨이 
+  Address:	192.168.111.2#53
+  
+  ** server can't find 1.111.168.192.in-addr.arpa.: NXDOMAIN
+  
+  [root@localhost ~]# nslookup www.daum.net
+  Server:		192.168.111.2   ==> 게이트웨이 
+  Address:	192.168.111.2#53
+  
+  Non-authoritative answer:
+  www.daum.net	canonical name = www.g.daum.net.
+  Name:	www.g.daum.net
+  Address: 211.231.99.80
+  Name:	www.g.daum.net
+  Address: 211.231.99.17
+  ```
+
+  
+
+`telnet - 원격 다른 컴퓨터 접속 프로토콜
+
+### ssh 
+
+> - 보안 telnet(hadoop 에 사용)
+> - Secure Shell Protocol
 
