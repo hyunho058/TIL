@@ -1135,7 +1135,7 @@ job 1 at Thu Feb 20 11:20:00 2020
 
 ```
 
-### 네트워크 설정
+## 네트워크 설정
 
 * 네트워크 설정 들어가는 경로
 
@@ -1150,8 +1150,9 @@ job 1 at Thu Feb 20 11:20:00 2020
   tcp/ip : (저급, 네트워크 연결/ip)
 
 * 네트워크 인터넷 ip
-  * 70.12.80.90 ==>  IPV4 -- IPV6
-
+  
+* 70.12.80.90 ==>  IPV4 -- IPV6
+  
 * ping
 
   ```
@@ -1187,7 +1188,287 @@ job 1 at Thu Feb 20 11:20:00 2020
   Address: 211.231.99.17
   ```
 
+### 네트워크 commend
+
+* ifconfig - 네트워크 종류확인, ip
+
+  <img src="image/image-20200220131539526.png" alt="image-20200220131539526" style="zoom: 67%;" /> 
+
+  eno16777736 - 게이트웨이 name
+
+  192.168.111.100 - ip
+
+* nmtui - GUI 형태로 네트워크 조회및 설정
+
+* ifup - 네트워크 장치 가동
+
+  ```
+  ifup eno16777736
+  ```
+
+* ifdown -네트워크 장치 중지
+
+  ```
+  ifdown eno16777736
+  ```
+
   
+
+### 네트워크 설정  commend 
+
+*  cat /etc/sysconfig/network-scripts/ifcfg-eno16777736
+  * 네트워크, 맥어드레스, ip, 게이트웨이, dns 저장파일
+  * systemctl restart network 를 해줘야함(설정변경 사항이 적용됨)
+  
+* /etc/resolv.conf
+  
+  * dns 수정 추가(네트워크 재시작 필요하지 않음)
+  
+* cat /etc/hostname
+  * 도메인 수정
+  * systemctl restart network 를 해줘야함(설정변경 사항이 적용됨)
+  
+* systemctl stop network - 네트워크 서비스 중지
+
+* systemctl start network - 네트워크 서비스 실행
+
+* systemctl status network -네트워크 서비스 상태 확인
+
+  <img src="image/image-20200220134024987.png" alt="image-20200220134024987" style="zoom: 67%;" />네트워크 사용가능
+
+### 네트워크 보안
+
+```
+[root@localhost ~]# cat /etc/sysconfig/selinux
+
+# This file controls the state of SELinux on the system.
+# SELINUX= can take one of these three values:
+#     enforcing - SELinux security policy is enforced.
+#     permissive - SELinux prints warnings instead of enforcing.
+#     disabled - No SELinux policy is loaded.
+SELINUX=disabled
+# SELINUXTYPE= can take one of these two values:
+#     targeted - Targeted processes are protected,
+#     minimum - Modification of targeted policy. Only selected processes are protected. 
+#     mls - Multi Level Security protection.
+SELINUXTYPE=targeted 
+```
+
+<img src="image/image-20200220134826105.png" alt="image-20200220134826105" style="zoom:80%;" />  disabled로 설정 바꿈
+
+보안 가능 설정을하면 네트워크 제약이 있어 교육상 어려움 때문에 diable로 .......
+
+
+
+### pipe
+
+* 명령어1 | 명령어2
+
+### redirection
+
+* 모든 터미널 명령은 표준입력 키보드, 표준출력은 모니터이다
+
+* 이름 변경시
+
+  ```
+   명령어 결과를 출력파일로 저장
+  명령어 > 파일명  (저장 기존 내용 삭제하고 새로 추가)
+  명령어 >> 파일명 (저장 기존 내용 유지하면서 추가)
+  
+  명령어  < 파일명 (명령어를 입력파일로 지정)
+  ```
+
+  * >>
+
+  ```
+  [root@localhost ~]# echo "test" >> sample.txt
+  [root@localhost ~]# cat sample.txt
+  a abc afgdfg
+  test
+  ```
+
+  * sort 
+
+  ```
+  [root@localhost ~]# echo "process test" >> sample.txt
+  
+  [root@localhost ~]# cat sample.txt
+  a abc afgdfg
+  test
+  process test
+  [root@localhost ~]# sort < sample.txt
+  a abc afgdfg
+  process test
+  test
+  [root@localhost ~]# sort < sample.txt >> result.txt
+  [root@localhost ~]# cat result.txt
+  a abc afgdfg
+  process test
+  test
+  
+  ```
+
+### 필터
+
+* grep - 파일에서 특정 문자열 검색 
+
+  * 지정 파일에 해당 키워드가 들어간 문자 출력
+
+  ```
+  [root@localhost ~]# echo "a abc afgdfg" > sample.txt  ==> 파일 생성
+  
+  <정규 표현식>
+  [root@localhost ~]# grep 'a' sample.txt
+  a abc afgdfg
+  [root@localhost ~]# grep '[a-zA-Z0-9]' sample.txt
+  a abc afgdfg
+  ```
+
+  <img src="image/image-20200220141609665.png" alt="image-20200220141609665" style="zoom:67%;" />  
+
+  * 해당 키워드가 들어간 파일명을 출력
+
+  ```
+  [root@localhost ~]# ls
+  all.cfg          initial-setup-ks.cfg  softlink  문서      사진
+  anaconda-ks.cfg  sample.txt            공개      바탕화면  서식
+  hardlink         sample.txt~           다운로드  비디오    음악
+  [root@localhost ~]# ls hardlink
+  hardlink
+  [root@localhost ~]# ls *link
+  hardlink  softlink
+  [root@localhost ~]# ls | grep link
+  hardlink
+  softlink
+  ```
+
+  <img src="image/image-20200220142114047.png" alt="image-20200220142114047" style="zoom:67%;" /> 
+
+  * 프로그램 설치 여부확인
+
+  ```
+  [root@localhost ~]# rpm -qa | grep firefox
+  firefox-24.5.0-1.el7.centos.x86_64
+  [root@localhost ~]# rpm -qa | grep gedit
+  gedit-3.8.3-6.el7.x86_64
+  
+  ```
+
+* find - 파일 검색
+
+
+
+## 프로그램
+
+> 컴퓨터 실행 가능한 이진코드 집합체
+>
+> ls로 검색
+
+### 프로세스 - 현재 cpu 실행중인 프로그램
+
+* ps 로 검색
+
+* 포그라운드 프로세스
+
+* 백그라운드 프로세스
+
+  ```
+  [root@localhost ~]# gedit /etc/passwd &
+  ```
+
+  <img src="image/image-20200220143918866.png" alt="image-20200220143918866" style="zoom:67%;" />
+
+  ​				동시 작업 가능
+
+  * 백그라운드 프로세스 동작 생성/종료
+
+    ​	kill 백그라운드 프로세스 ID
+
+  ```
+  ////////////백그라운드 프로세스 생성////////////////
+  [root@localhost ~]# gedit /etc/passwd &
+  [1] 17712
+  [root@localhost ~]# ls
+  all.cfg          initial-setup-ks.cfg  sample.txt~  다운로드  비디오  음악
+  anaconda-ks.cfg  result.txt            softlink     문서      사진
+  hardlink         sample.txt            공개         바탕화면  서식
+  [root@localhost ~]# jobs
+  [1]+  Running                 gedit /etc/passwd &
+  
+  ==========백그라운드 프로세스 종료하는 명령어===========
+  [root@localhost ~]# kill 17712
+  [1]+  종료됨               gedit /etc/passwd
+  [root@localhost ~]# 
+  
+  ```
+
+  ```
+  [root@localhost ~]# ps -ef
+  UID         PID   PPID  C STIME TTY          TIME CMD
+  root          1      0  0 09:28 ?        00:00:01 /usr/lib/systemd/systemd --system 
+  root          2      0  0 09:28 ?        00:00:00 [kthreadd]
+  root          3      2  0 09:28 ?        00:00:00 [ksoftirqd/0]
+  root          5      2  0 09:28 ?        00:00:00 [kworker/0:0H]
+  root          6      2  0 09:28 ?        00:00:00 [kworker/u256:0]
+  root          7      2  0 09:28 ?        00:00:00 [migration/0]
+  root          8      2  0 09:28 ?        00:00:00 [rcu_bh]
+  root          9      2  0 09:28 ?        00:00:00 [rcuob/0]
+  root         10      2  0 09:28 ?        00:00:00 [rcuob/1]
+  					.
+  					.
+  					.
+  [root@localhost ~]# ps -ef | grep gedit
+  root      17850   2572  0 14:43 pts/0    00:00:00 grep --color=auto gedit
+  [root@localhost ~]# gedit /etc/passwd &
+  [1] 17862
+  [root@localhost ~]# ps -ef | grep gedit
+  root      17862   2572  2 14:44 pts/0    00:00:00 gedit /etc/passwd
+  root      17875   2572  0 14:44 pts/0    00:00:00 grep --color=auto gedit
+  [root@localhost ~]# kill 17862
+  [1]+  종료됨               gedit /etc/passwd
+  [root@localhost ~]# ps -ef | grep gedit
+  root      17883   2572  0 14:45 pts/0    00:00:00 grep --color=auto gedit
+   						======2572 는 부모 아이디=====
+  ```
+
+  <img src="image/image-20200220144956808.png" alt="image-20200220144956808" style="zoom:80%;" />
+
+  
+
+* 서비스 - 백그라운드에서 동작하는 프로세스
+  * 항상 실행중인 서비스 - 데몬 서비스
+  * 필요시 실행하는 서비스  - 소켓 서비스
+
+
+
+```
+[root@localhost ~]# systemctl list-unit-files | grep enabled
+cups.path                                   enabled 
+abrt-ccpp.service                           enabled 
+abrt-oops.service                           enabled 
+abrt-vmcore.service                         enabled 
+abrt-xorg.service                           enabled 
+abrtd.service                               enabled 
+accounts-daemon.service                     enabled 
+atd.service                                 enabled 
+auditd.service                              enabled 
+avahi-daemon.service                        enabled 
+bluetooth.service                           enabled 
+chronyd.service                             enabled
+			.
+			.
+			.
+
+[root@localhost ~]# systemctl list-unit-files | grep firewalld
+firewalld.service                           enabled 
+
+```
+
+
+
+
+
+
 
 `telnet - 원격 다른 컴퓨터 접속 프로토콜
 
