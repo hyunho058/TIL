@@ -1230,7 +1230,7 @@ job 1 at Thu Feb 20 11:20:00 2020
   
 * systemctl stop network - 네트워크 서비스 중지
 
-* systemctl start network - 네트워크 서비스 실행
+* systemctl start network - 네트워크 서비스 실행(부팅시 자동으로 설정)
 
 * systemctl status network -네트워크 서비스 상태 확인
 
@@ -1463,6 +1463,40 @@ chronyd.service                             enabled
 firewalld.service                           enabled 
 
 ```
+
+
+
+
+
+## 톰켓
+
+* 톰켓 시작
+
+```
+[root@localhost ~]# /usr/local/tomcat9/bin/startup.sh 
+Using CATALINA_BASE:   /usr/local/tomcat9
+Using CATALINA_HOME:   /usr/local/tomcat9
+Using CATALINA_TMPDIR: /usr/local/tomcat9/temp
+Using JRE_HOME:        /usr/local/jdk1.8
+Using CLASSPATH:       /usr/local/tomcat9/bin/bootstrap.jar:/usr/local/tomcat9/bin/tomcat-juli.jar
+Tomcat started.
+```
+
+
+
+
+
+
+
+
+
+## root 계정 암호 복구
+
+
+
+
+
+## 커널 Update
 
 
 

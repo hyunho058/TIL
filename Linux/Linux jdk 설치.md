@@ -69,7 +69,7 @@ export CLASSPATH="."
 /usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:/root/bin
 [root@localhost bin]# echo $JAVA_HOME
 
-[root@localhost bin]# source /etc/profile
+[root@localhost bin]# source /etc/profile    ///실행을 해줘야 저장한게 적용이 된다.
 [root@localhost bin]# echo $JAVA_HOME
 /usr/local/jdk1.8
 [root@localhost bin]# java -version
