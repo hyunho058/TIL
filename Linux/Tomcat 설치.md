@@ -301,3 +301,4 @@ drwxr-x---  4 root root       50  2월 21 10:30 vm
 <img src="image/image-20200221105536675.png" alt="image-20200221105536675" style="zoom:67%;" />
 
 ​							LInux firefox 에서 실행 화면
+

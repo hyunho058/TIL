@@ -1,4 +1,4 @@
-# Oracle 설치
+# Oracle DB설치
 
 [Oracle](https://www.oracle.com/database/technologies/xe-prior-releases.html)
 
@@ -157,7 +157,7 @@ Complete!
 oracle-xe-11.2.0-1.0.x86_64
 ```
 
-# Oracle Setting
+# Oracle DB Setting
 
 ```
 [root@localhost Disk1]# service oracle-xe configure
