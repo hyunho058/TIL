@@ -865,3 +865,4 @@ slave1: stopping secondarynamenode
 
 ```
 
+숨겨진 파일 보기 ls -a
