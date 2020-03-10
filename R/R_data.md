@@ -199,12 +199,37 @@ result
 1. numeric(수치형)
    * 정수와 실수를 구분하지 않음.
    * 숫자 뒤에 L을 붙이면 실수형 타입이 된다 (100 - 실수, 100.3 - 실수, 10L - 정수)
+   
 2. character(문자열)
+   
    * 하나의 문자, 문자열 둘다 문자열로 사용
+   
 3. logical(논리형)
    * TRUE - T
    * FALSE - F
+   
+   1. boolean indexing(size가 같아야한다)
+   
+   ```R
+   > x <- c(2,4,6,8)   
+   > y <- c(T,F,T,F)
+   > y[1]
+   [1] TRUE
+   > x[y]
+   [1] 2 6
+   ```
+   
+   2. fency indexting
+   
+   ```R
+   > x[c(1,2,4)]
+   [1] 2 4 8
+   ```
+   
+   
+   
 4. complex(복소수형)
+   
    * 4-3i
 
 ## 특수 Data Type
@@ -315,6 +340,29 @@ result
   > is.integer(var2)
   [1] FALSE
   ```
+  
+* is.na()
+
+  * 결측치 확인(Missing Value = NA)
+
+  ```R
+  > x <- c(10,20,30,NA,40,50,60,NA,NA,100)
+  > is.na(x)
+   [1] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE  TRUE FALSE
+  > sum(is.na(x))
+  [1] 3
+  ```
+
+  * 실습 예제
+
+  ```R
+  > z <-c(1,2,3,4)
+  > (z+2)[(!is.na(z)) & z>2] ->z
+  > z
+  [1] 5 6
+  ```
+
+  
 
 
 ## as 계열 함수
@@ -343,6 +391,17 @@ result
 ### factorial()
 
 * 팩토리얼
+
+### sum()
+
+```R
+> x <- c(2,4,6,8)   
+> y <- c(T,F,T,F)
+> sum(x[y])
+[1] 8
+```
+
+
 
 # 자료 구조
 
@@ -502,14 +561,178 @@ result
    [1] 1 2
    ```
 
-1. matrix
-   * 2차원구조
+2. matrix
+
+   * 2차원구조(행과 열로 구성)
+
    * index를 사용할 수 있다.
+
    * 같은종류의 데이터 타입을 이용
-2. array
+
+   * matrix 생성
+
+     1. matrix() 
+
+     ```R
+     > var1 = matrix(c(1:5))   # 5행 1열
+     > var1
+          [,1]
+     [1,]    1
+     [2,]    2
+     [3,]    3
+     [4,]    4
+     [5,]    5
+     
+     > var1 = matrix(c(1:10),nrow=2)   # 2행 5열
+     > var1
+          [,1] [,2] [,3] [,4] [,5]
+     [1,]    1    3    5    7    9
+     [2,]    2    4    6    8   10
+     
+     > var1 <- matrix(c(1:11), nrow=2)  # recycleRule을 적용하여 빈곳에 1이 생성
+     경고메시지(들): 
+     In matrix(c(1:11), nrow = 2) :
+       데이터의 길이[11]가 행의 개수[2]의 배수가 되지 않습니다
+     > var1
+          [,1] [,2] [,3] [,4] [,5] [,6]
+     [1,]    1    3    5    7    9   11
+     [2,]    2    4    6    8   10    1
+     
+     > var1 <- matrix(c(1:10), nrow=2, byrow=TRUE)  # byrow 속성을 이용한 가로열(행방향) 우선 체우기
+     > var1
+          [,1] [,2] [,3] [,4] [,5]
+     [1,]    1    2    3    4    5
+     [2,]    6    7    8    9   10
+     ```
+
+     2. cbind(), rbind() 이용하여  matrix생성
+
+     ```R
+     > var2 <- 1:4
+     > var3 <- 5:8
+     > matl = rbind(var2,var3)
+     > matl
+          [,1] [,2] [,3] [,4]
+     var2    1    2    3    4
+     var3    5    6    7    8
+     
+     > matl = cbind(var2,var3)
+     > matl
+          var2 var3
+     [1,]    1    5
+     [2,]    2    6
+     [3,]    3    7
+     [4,]    4    8
+     ```
+
+   * matrix사용 방법
+
+     1. 2차원 indexing
+
+     ```R
+     > var1 <- matrix(c(1:10), nrow = 2, byrow = TRUE)
+     > var1
+          [,1] [,2] [,3] [,4] [,5]
+     [1,]    1    2    3    4    5
+     [2,]    6    7    8    9   10
+     
+     > var1[1,4]
+     [1] 4
+     
+     > var1[,4]  # 모든행의 4열 출력 (결과는 vector로 return)
+     [1] 4 9
+     
+     > var1[1,]
+     [1] 1 2 3 4 5
+     
+     > length(var1) # 전체 요소의 개수
+     [1] 10
+     > nrow(var1) # 행의 갯수
+     [1] 2
+     > ncol(var1) # 열의 갯수
+     [1] 5
+     ```
+
+     1. ㅁㄴㅇㄹ
+     2. ㅁㄴㅇㄻㄴ
+
+3. array
+
    * 3차원 이상의 구조
    * index를 사용할수 있다.
    * 같은종류의 데이터 타입을 이용
+   * 3차원 array 생성
+
+   ```R
+   > var1<-array(c(1:24),dim = c(3,2,4))  #24개 요소를 3행 2열 4면 으로 구성
+   > var1
+   , , 1
+   
+        [,1] [,2]
+   [1,]    1    4
+   [2,]    2    5
+   [3,]    3    6
+   
+   , , 2
+   
+        [,1] [,2]
+   [1,]    7   10
+   [2,]    8   11
+   [3,]    9   12
+   
+   , , 3
+   
+        [,1] [,2]
+   [1,]   13   16
+   [2,]   14   17
+   [3,]   15   18
+   
+   , , 4
+   
+        [,1] [,2]
+   [1,]   19   22
+   [2,]   20   23
+   [3,]   21   24
+   ```
+
+4. factor
+
+   * 범주
+
+   * 방의 크기 (대, 중, 소) =>Level
+
+   * 명목형과 순서형이 있따.
+
+     * 명목형 - level에 순서개념이 없으면( ex)좌파,우파 )
+
+     ```R
+     > var1 = c("A","B","AB","O","A","AB")
+     > var1
+     [1] "A"  "B"  "AB" "O"  "A"  "AB"
+     > var1Factor<- factor(var1)
+     > var1Factor
+     [1] A  B  AB O  A  AB
+     Levels: A AB B O    # factor는 반드시 level이 함께 나온다.
+     
+     > levels(var1Factor) # factor의 Level만 확인
+     [1] "A"  "AB" "B"  "O"
+     
+     > var1Factor <- factor(var1, levels = c("A","B","O"))
+     > var1Factor
+     [1] A    B    <NA> O    A    <NA>  # 범주안에 포함되지 않은 요소는 "NA" 로 표시된다
+     Levels: A B O
+     
+     > var1Factor <- factor(var1, levels = c("A","B","O"), ordered = FALSE)
+     > var1Factor
+     [1] A    B    <NA> O    A    <NA>
+     Levels: A B O
+     > var1Factor<- factor(var1, levels = c("A","B","O"), ordered = TRUE)
+     > var1Factor
+     [1] A    B    <NA> O    A    <NA>
+     Levels: A < B < O
+     ```
+
+     * 순서형 - level에 순서개념이 있으면( ex)대,중,소 )
 
 ## heterogeneous
 
@@ -518,11 +741,140 @@ result
 1. list 
    * 1차원 선형구조
    * 순서개념이 존재
+   * json 을 활용할떄 많이 사용
    * 저장이 되는 구조는 **map구조(kew, value) **
-   * 중첩자료 구조 = 모든 자료구조(vector, matrix, array)를 포함시킬 수 있다.
-2. data frame
-   * 2차원 Table 구조(DB의 Table 구조)
-3. Factor
+   * 중첩자료 구조 = 모든 자료구조(vector, matrix, array)를 포함시킬 수 있다
+   * list사용.
+   
+   ```R
+   > var1_scalar = 100
+   > var2_vector = c(10,20,30)
+   > var3_matric = matrix(c(1:6), nrow = 3)
+   > myList = list(var1_scalar, var2_vector, var3_matric)
+   > myList
+   [[1]]  # key 값을 명시하지 않으면 index값으로 명시된다.
+   [1] 100
+   
+   [[2]]
+   [1] 10 20 30
+   
+   [[3]]
+        [,1] [,2]
+   [1,]    1    4
+   [2,]    2    5
+   [3,]    3    6
+   
+   > myList[[1]]  # key 값으로 데이터 출력
+   [1] 100
+   > myList[[3]]
+        [,1] [,2]
+   [1,]    1    4
+   [2,]    2    5
+   [3,]    3    6
+   
+   > myList[[3]][1]
+   [1] 1
+   > myList[[3]][2]
+   [1] 2
+   > myList[[3]][4]
+   [1] 4
+   > myList[[3]][1,2]
+   [1] 4
+   ```
+   
+   * ;list key 값 부여
+   
+   ```R
+   > myList <-list(name=c("홍길동","김길동"), age=c(20,30), gender=c("남","여"))
+   > myList
+   $name
+   [1] "홍길동" "김길동"
+   
+   $age
+   [1] 20 30
+   
+   $gender
+   [1] "남" "여"
+   
+   > myList$age # key 값을 가지고 출력
+   [1] 20 30
+   > myList$gender
+   [1] "남" "여"
+   > myList[[2]] # index순번을 가지고 출력 가능
+   [1] 20 30
+   > myList[["age"]]
+   [1] 20 30
+   > myList[["age"]][2]
+   [1] 30
+   > myList[["age"]][1]
+   [1] 20
+   ```
+   
+   
+   
+2. **data frame**
+
+   * 행과 열로 구성된 2차원 Table 구조(DB의 Table 구조)
+   * matrix는 2차원 형태의 자료구조이지만 data frame 애눈 column이 존재한다
+   * column단위로 서로 다른 type의 데이터 저장이 가능
+
+   ```R
+   > df = data.frame(NO=c(1,2,3), name=c("김","이","박"),age=c(18,19,20))
+   > df
+     NO name age
+   1  1   김  18
+   2  2   이  19
+   3  3   박  20
+   
+   > df$name
+   [1] 김 이 박
+   Levels: 김 박 이  # data frame 에 문저열이 들어갈떄는 Factor형태로 들어간다.
+   
+   #stringsAsFactors=FALSE 해당 option을 해주면 String type으로 선언이 가능하다
+   > df = data.frame(NO=c(1,2,3), name=c("김","이","박"),age=c(18,19,20),stringsAsFactors=FALSE)
+   > df$name
+   [1] "김" "이" "박"
+   ```
+
+   ```R
+   Veiw(df)  # data frame의 테이블을 볼 수 있다.
+   ```
+
+   ![image-20200310104308420](image/image-20200310104308420.png)
+
+   * data frame 일부를 추출해서 또 다른 data frame을 생성 
+
+   ```R
+   > df<-data.frame(x=c(1:5),y=seq(2,10,2),z=c("a","b","c","d","e"),stringsAsFactors=FALSE)
+   > df
+     x  y z
+   1 1  2 a
+   2 2  4 b
+   3 3  6 c
+   4 4  8 d
+   5 5 10 e
+   > subset(df, x>=3)
+     x  y z
+   3 3  6 c
+   4 4  8 d
+   5 5 10 e
+   > subset(df, y>=6)
+     x  y z
+   3 3  6 c
+   4 4  8 d
+   5 5 10 e
+   > subset1 <- subset(df, y>=6)
+   > subset1
+     x  y z
+   3 3  6 c
+   4 4  8 d
+   5 5 10 e
+   > subset(df, x>=3 & y<=8)
+     x y z
+   3 3 6 c
+   ```
+
+   
 
 
 
@@ -607,4 +959,6 @@ result
 # 참고 사이트
 
 [R documentation](https://www.rdocumentation.org/)
+
+[R]([http://datamining.dongguk.ac.kr/lectures/R/_book/%EC%86%8C%EA%B0%9C.html](http://datamining.dongguk.ac.kr/lectures/R/_book/소개.html))
 
