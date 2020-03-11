@@ -537,6 +537,28 @@ movie_title
 nodes = html_nodes(page_html, "td.title > div.list_netizen_score > em")
 movie_title<-html_text(nodes)
 movie_title
+
+> nodes = html_nodes(page_html, "td.title")
+> movie_title<-html_text(nodes)
+> nodes1 = html_nodes(page_html, "td.title > a.movie")
+> movie_title1<-html_text(nodes1)
+> nodes2 = html_nodes(page_html, "td.title > div.list_netizen_score")
+> movie_title2<-html_text(nodes2)
+> movie_title<-str_remove_all(movie_title, movie_title1)
+> movie_title<-str_remove_all(movie_title, movie_title2)
+> movie_title<-str_remove_all(movie_title, "신고")
+> movie_title<-str_remove_all(movie_title, "[\t\n]")
+> movie_title
+ [1] "버즈 오브 프레이(할리 퀸의 황홀한 해방)그야 말로 비싼똥이다... 액션씬이라도 잘 만들지..긴박함 전혀 없고 시원한 맛도 없다...저예산 영화 수준 "
+ [2] "그냥 명작입니다.... 역사 좋아하시는 분이라면 강추입니다 "                                                                                    
+ [3] "주디와닉이경찰파트너가되어서를지킨점 "                                                                                                       
+ [4] "영화를 달고나커피 만들면서 봤는데 넋놓고 보느라 젓는걸 잊어버렸다.. 진짜 지금까지 3번이나 봤는데도 볼때마다 경이롭고 집중해서 보게 되는 듯 " 
+ [5] "예고편만봐도 재미없을거같다 스토리만 봐도 딱느낌옴 오씨엔에서 보여줘도 안봄 "                                                                
+ [6] "아, 역시 킬링타임용으로는 제격이네. 재밌게 잘 봤다. 쥬만지 1편부터 지금까지 쭈우욱~!!! 재밌네 ㅋㅋ "                                         
+ [7] "방구석에서 혼자 조용히 보는데도 이정도인데 영화관에서 보면 개오질듯 ㄷㄷ "                                                                   
+ [8] "너무 잘생겼어요. 긴머리도 잘생겼고, 짧은 머리는 더 잘생겼어요 "                                                                              
+ [9] "엄기영 앵커 보신분들은 공감 "                                                                                                                
+[10] "진짜 재밌다ㅜㅜ 흐어엉ㅜㅜ 와 진짜 마음에 잔잔한 물결이 흐르는 거 같아아앙 흐어엉 "  
 ```
 
 
