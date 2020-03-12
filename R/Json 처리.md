@@ -518,7 +518,7 @@ request_url
 ```
 
 ```R
-install.packages("rvest")
+install.packages("rvest")   #scraping 위한 package
 library(rvest)
 library(stringr)
 
@@ -561,13 +561,180 @@ movie_title
 [10] "진짜 재밌다ㅜㅜ 흐어엉ㅜㅜ 와 진짜 마음에 잔잔한 물결이 흐르는 거 같아아앙 흐어엉 "  
 ```
 
+![image-20200312092345474](image/image-20200312092345474.png)
+
+```R
+#Naver 제목, 뎃글 ,평점 들고오기
+url <-"https://movie.naver.com/movie/point/af/list.nhn?&page="
+#문자열 합치기 = url과 page number를 합친다
+request_url <- str_c(url,1)
+request_url
+#naver의 영화 페이지 encoding에 맞춰 적용
+page_html <- read_html(request_url, encoding="CP949")
+page_html
+
+#########selector이용###########
+#네이버 뎃글 가져오가 +>Scraping html_nodes는 Tag를 찾아오는 함수
+nodes = html_nodes(page_html, "td.title > a.movie") # td tag 하위 a tag 추출
+movie_title<-html_text(nodes)
+movie_title
+
+#평점을 가지고있는 html엘리먼트(html TAB)를 획득하는 작업
+nodes = html_nodes(page_html, "td.title > div.list_netizen_score > em")
+movie_title<-html_text(nodes)
+movie_title
+
+
+#사용자가 입력한 뎃글 영역만 받아오는 작업
+nodes = html_nodes(page_html, "td.title")
+movie_title<-html_text(nodes)
+View(movie_title)
+
+nodes1 = html_nodes(page_html, "td.title > a.movie")
+movie_title1<-html_text(nodes1)
+movie_title1
+
+nodes2 = html_nodes(page_html, "td.title > div.list_netizen_score")
+movie_title2<-html_text(nodes2)
+movie_title2
+
+nodes3 = html_nodes(page_html, "td.title > a,report")
+movie_title3<-html_text(nodes3)
+movie_title3
+
+movie_title<-str_remove_all(movie_title, movie_title1)
+movie_title<-str_remove_all(movie_title, movie_title2)
+movie_title<-str_remove_all(movie_title, "신고")
+movie_title<-str_remove_all(movie_title, "[\t\n]")
+movie_title
+```
+
 
 
 #### 4.1.2 XPATH
 
+![image-20200312093246939](image/image-20200312093246939.png)
+
+* 해당 문구 우클릭 - copy xpath - R studio 코드에 붙여넣기
 
 
-### 4.2 Craling
+
+* 문제
+
+```R
+###########로튼토마토 2019 TOP100 제목 user Rating 장르 ######################
+url <-"https://www.rottentomatoes.com/top/bestofrt/?year=2019"
+request_url <- url
+request_url
+
+page_html <- read_html(request_url, encoding="UTF-8")
+page_html
+
+# //*[@id="top_movies_main"]/div/table/tbody/tr[1]/td[3]/a
+myPath=str_c('//*[@id="top_movies_main"]/div/table/tr/td/a')
+nodes = html_nodes(page_html, xpath=myPath)
+movie_title = nodes
+movie_title = str_extract_all(movie_title, "[\\s]{2,}")
+html_text(movie_title)
+
+
+
+
+###############################################33
+#//*[@id="top_movies_main"]/div/table/tbody/tr[1]/td[3]/a
+
+url <-"https://www.rottentomatoes.com/top/bestofrt/?year=2019"
+request_url <- url
+
+page_html <- read_html(request_url, encoding="UTF-8")
+
+nodes = html_nodes(page_html, xpath='//*[@id="top_movies_main"]/div/table/tr/td/a')
+nodes
+type(html_text(nodes))
+titleLink <- html_attr(nodes,"href")
+titleLink
+for(i in 1:100){
+
+enterLink = str_c("https://www.rottentomatoes.com",titleLink[i])
+moviePage_html <- read_html(enterLink, encoding = "UTF-8")
+titileNode <- html_nodes(moviePage_html, xpath='//*[@id="topSection"]/div[2]/div[1]/h1')
+html_text(titileNode)
+ratingnNode <-html_nodes(moviePage_html, xpath = '//*[@id="topSection"]/div[2]/div[1]/section/section/div[2]/h2/a/span[2]')
+ratingData = html_text(ratingnNode)
+ratingData = str_remove_all(ratingData, "[\n\\s]")
+ratingData
+df = data.frame(Title=c(html_text(titileNode)), Raiting=c(ratingData))
+}
+
+df
+#genreNode <-html_nodes(moviePage_html, 
+#                       xpath = '//*[@id="mainColumn"]/section[4]/div/div/ul/li[2]/div[2]/a[1]')
+#html_text(genreNode)
+
+########
+
+```
+
+
+
+
+
+
+
+
+
+### 4.2 Crawling
 
 * 자동화 봇인 web crawler가 ㅇ정해진 규칙에 따라서 복수개의 웹페이지를 browsing하는 행위
 
+## 5. 십습 문제
+
+> [로튼토마토](https://www.rottentomatoes.com/) 2019 TOP100 제목, user Rating, 장르 데이터 Scraping하여 파일 만들기
+
+```R
+##url 페이지 url지정
+url <-"https://www.rottentomatoes.com/top/bestofrt/?year=2019"
+request_url <- url
+
+page_html <- read_html(request_url, encoding="UTF-8")
+## html_nodes()함수 이용하여 url경로와 xpath이용하여 불로올 데이터 경로 설정
+nodes = html_nodes(page_html, xpath='//*[@id="top_movies_main"]/div/table/tr/td/a')
+nodes
+
+## 토마토 Top데이터가 1-100개로 나타나있고 user Rating, 장르 경로를 설정하려면 top100 데이터 a Tag link를 타고 들어가야 하기때문에 html_attr(nodes,"href") 를 통해 link접속
+type(html_text(nodes))
+titleLink <- html_attr(nodes,"href")
+titleLink
+# 100개의 데이터를 담기위해 데이터 담을 변수의 길이를 설정
+ratingData = vector(mode="character", length = length(titleLink))
+titleData = vector(mode="character", length = length(titleLink))
+genreData = vector(mode="character", length = length(titleLink))
+
+#반복문으로 각 index데이터를 저장
+for(i in 1:length(titleLink)){
+  # 100개 리스트 페지 경로 =>https://www.rottentomatoes.com/m/parasite_2019 로 되어있어 titleLink[i]를 통해 각 순위별 데이터값 index를 활용하여 호출
+enterLink = str_c("https://www.rottentomatoes.com",titleLink[i])
+moviePage_html <- read_html(enterLink, encoding = "UTF-8")
+#xpath로 받아온 데이터 값을 titleData[]에 담는다
+titleNode <- html_nodes(moviePage_html, xpath='//*[@id="topSection"]/div[2]/div[1]/h1')
+titleData[i] <- html_text(titleNode)
+
+ratingnNode <-html_nodes(moviePage_html, xpath = '//*[@id="topSection"]/div[2]/div[1]/section/section/div[2]/h2/a/span[2]')
+
+ratingData[i] =ifelse(length(ratingnNode)!=0,html_text(ratingnNode) ,"0")
+ratingData[i] = str_remove_all(ratingData[i], "[\n\\s]")
+
+genreNode <-html_nodes(moviePage_html,xpath = '//*[@class="meta-value"]')[2]
+
+genreData[i] <-html_text(genreNode)
+genreData[i] <- str_trim(genreData[i])
+
+}
+View(titleData)
+View(ratingData)
+View(genreData)
+df = data.frame(Title=c(titleData), Raiting=c(ratingData), Genre=c(genreData))
+View(df)
+```
+
+![image-20200312172706394](image/image-20200312172706394.png)
