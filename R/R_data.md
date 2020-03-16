@@ -128,7 +128,7 @@ result
 [1] 33.333
 ```
 
-### fromat
+### format
 
 ```R
 > # c와 java처럼 format을 이용한 출력도 가능하다.

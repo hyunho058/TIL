@@ -689,6 +689,8 @@ df
 
 ## 5. 십습 문제
 
+* 웹 스크래핑(로튼토마토)
+
 > [로튼토마토](https://www.rottentomatoes.com/) 2019 TOP100 제목, user Rating, 장르 데이터 Scraping하여 파일 만들기
 
 ```R
