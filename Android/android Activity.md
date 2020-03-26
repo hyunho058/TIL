@@ -97,8 +97,47 @@ startActivity(intent);
   4. 패키지 매니저는 요청한 데이터를 전달
   5. Activity Manager는 전달받은 정보에서 Activity실행
 
+* AndroidManifest
+  * <intent-filter>
+    * <action> 은 하나만 설정가능
+    * <category> 다중 선택 가능
+      * <category android:name="android.intent.category.DEFAULT"></category> 는 필수 선택 요소이다.
+
+```xml
+<activity android:name=".SubImplicitIntent">
+            <intent-filter>
+                <action android:name="MyAction"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+                <category android:name="IntetTest"></category>
+            </intent-filter>
+        </activity>
 ```
-Intent intent = new Intent(MainActivity.this, LayoutActivity.class);
-startActivity(intent);
+
+```java
+   View.OnClickListener mClick = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.btnImplicitIntent:
+                    Log.v(TAG,"onClick_btnImplicitIntent=="+btnImplicitIntent);
+                    Intent intent = new Intent();
+                    intent.setAction("MyAction");
+                    intent.addCategory("IntentTest");
+                    intent.putExtra("sendData","야이야이자슥아");
+                    startActivity(intent);
+            }
+        }
+    };
 ```
+
+* Intent 이용한 전화 Acitivity
+
+```java
+Intent intent1 = new Intent();
+                    intent1.setAction(Intent.ACTION_DIAL);
+                    intent1.setData(Uri.parse("tel:"+etCall.getText()));
+                    startActivity(intent1);
+```
+
+
 
