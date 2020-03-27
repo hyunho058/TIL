@@ -160,6 +160,73 @@ public class SubServiceLifecycle extends Service {
 
 
 
+## Sevice data 전달
+
+* Service와 Activity간에 데이터 전달
+* Acitivity 에서 Service로 데이터 전달
+
+```java
+@Override
+public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SubServiceDataTransferActivity.class);
+                intent.putExtra("ActivityData",etDataToService.getText().toString());
+                startService(intent);
+}
+```
+
+* Service에서 Activity로 부터 받은 데이터 호출 => Activity로 데이터 전달
+
+  * ```java
+    아래 함수를 사용 해줘야한다
+    intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    intent1.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    ```
+
+```java
+   @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        //로직 처리
+        //Activicy로 부터 전달된 intent가 이 method의 인자로 전달
+        activityData =intent.getStringExtra("ActivityData");
+
+        //전달받은 데이터를 이ㅛㅇ해서 일반적인 로직처를 진행
+        //만약 로직처리가 길어지면 activity가 block된다.
+
+        //결과데이터를 Service에서 생성
+        resultData = activityData+"를 받았다";
+
+        Intent intent1 = new Intent(getApplicationContext(),ServiceDataTransferActivity.class);
+        intent1.putExtra("resultData",resultData);
+        //Service에서 Activity 호출, 화면이 없는 Service에서 화면을 가지고 있는 Activity를 호출
+        //TASK필요
+        //Activity를 새로 생성하는게 아니고 메모리에 존재하는 이전 Activity를 찾아서 실행 =>Flag 2개 추가
+        intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent1.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent1);
+        return super.onStartCommand(intent, flags, startId);
+    }
+```
+
+* Service 에서 Activity로 데이터 전달
+  * onNewIntent() Method 사용
+
+```java
+   @Override
+    protected void onNewIntent(Intent intent) {
+        //여기서 Service가 보내주는 결과 데이터를 받아서 화면처리
+        tvDataFromService.setText(intent.getStringExtra("resultData"));
+        super.onNewIntent(intent);
+    }
+```
+
+
+
+
+
+
+
 
 
 학습 해야할것
