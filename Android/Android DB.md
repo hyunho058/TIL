@@ -381,6 +381,22 @@ class MyDatabaseHelper extends SQLiteOpenHelper{
 
 ## Content Resolver
 
+* getContentResolver Params
+
+```java
+// Queries the user dictionary and returns results
+cursor = getContentResolver().query(
+    UserDictionary.Words.CONTENT_URI,   // The content URI of the words table
+    projection,                        // The columns to return for each row
+    selectionClause,                   // Selection criteria
+    selectionArgs,                     // Selection criteria
+    sortOrder);                        // The sort order for the returned rows
+```
+
+![image-20200408115304559](image/image-20200408115304559.png) 
+
+
+
 * Content Provider
 
 ```java
@@ -427,6 +443,60 @@ class MyDatabaseHelper extends SQLiteOpenHelper{
 ```
 
 ## Android 주소록 접근
+
+* 주소록에 점근 권한 설정
+  * AndroidMainfest.xlm 
+    * permission 추가
+
+```xml
+<uses-permission android:name="android.permission.READ_CONTACTS"/>
+<uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+```
+
+* 주소록 가져오기
+
+```java
+    public void processContact() {
+        //주소록 가져오는 Code
+        //1.Contact Resolver 를 이용해서 데이터 가져온다.
+        // select 계열을 사용 = > query() method를 활용
+        // 1 => URI (Content Provider)
+        // 2 =>  null 은 모든 column 을 가져온다
+        // 3 => null 은 조건없ㅇ 다 들고옴
+        // 4 => null 조건절에 사용하는 값
+        // 5  => 정렬방향
+        Cursor cursor = getContentResolver().query(
+                ContactsContract.Contacts.CONTENT_URI,
+                null, null, null,null);
+        while (cursor.moveToNext()){
+            //주소의 저장된 사람의 이름과ID를 가져온다
+            //전화번호는 다른 Table에서 관리된다(전화번호는 여러개가 될 수 있기 때문이다)
+            //ID를 이용해서 각 사람의 전화번호를 다시 받아와야함.
+            //ID Column 을 가져와 index를 가져와줌 (우리가 column의 순서 를 알지 못하기 떄무네 아래처럼 ㅊ러ㅣ)
+            String id = cursor.getString(
+                    cursor.getColumnIndex(ContactsContract.Contacts._ID));
+            String name = cursor.getString(
+                    cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+            Log.v(TAG,"processContact()_id="+id+" / name="+name);
+            Cursor mobilecursor = getContentResolver().query(
+                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    null,
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID+"="+id, //조건 => id가 일치하면 가져옴
+                    null,null);
+            String msg="";
+            while (mobilecursor.moveToNext()){
+                String mobile = mobilecursor.getString(mobilecursor.getColumnIndex(
+                        ContactsContract.CommonDataKinds.Phone.NUMBER));
+                msg = "이름:"+name+","+"전화번호: "+mobile;
+            }
+            tvResultContact.append(msg+"\n");
+        }
+    }
+```
+
+
+
+
 
 
 
