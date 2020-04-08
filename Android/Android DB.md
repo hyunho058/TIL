@@ -178,7 +178,7 @@ class MyDatabaseHelper extends SQLiteOpenHelper{
 
 1. Content Provider 생성
 
-   * CRUD 제공
+   * CRUD 제공   
 
    * URI Authoritise - 다른 App이 해당 App을 찾기 위한 고유 값 (URI 형식으로 이름을 명시한다)
      * 중복이 되면 안된다
