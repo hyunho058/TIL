@@ -379,6 +379,55 @@ class MyDatabaseHelper extends SQLiteOpenHelper{
 
    
 
+## Content Resolver
+
+* Content Provider
+
+```java
+    @Override
+    public Cursor query(Uri uri, String[] projection, String selection,
+                        String[] selectionArgs, String sortOrder) {
+        // 1 번쨰 인자 = table 명 ,
+        // 2 번째 인자 = projection(select에서 가져올 컬렴명을 문자열로 표현)
+        // 3 번째 인자 = selection(where절 조건 명시)
+        // 4 번째 인자 = selection 의 In Parameter의 값
+        // 5 번째 인자 = groun by
+        // 6 번째 인자 = having절
+        // 7 번째 인자 = wjdfuf qkdqjq
+        Cursor cursor = sqLiteDatabase.query(
+                "person", projection, selection, selectionArgs,null,null, sortOrder);
+        return cursor;
+    }
+```
+
+* Activity
+
+```java
+    //select code
+    Log.v(TAG,"onClick()_DB Test");
+    //1.DB 처리 기능을 제공하는 Content Provider를 찾는다
+    //Content Provider를 찾기 위한 URI가 있어야한다
+    String uriString1 = "content://com.exam.person.provider/person";
+    Uri uri1 = new Uri.Builder().build().parse(uriString1);
+    //2. uri를 이용해서 Content provider를 찾아서 특정 method를 호출
+    //column을 표현하기 위한 String[]을 생성
+    // select name, age, mobile from person where xxxx
+    String[] columns = new String[]{"name","age","mobile"};
+    //(uri, column, selection, selectionArgc, 정렬 방향)
+    Cursor cursor = getContentResolver().query(
+        uri1, columns, null, null,"name ASC");
+    //성공하면 Database table에서 결과 record의 집합을 가져옴
+    while (cursor.moveToNext()){
+        String name = cursor.getString(0);
+        int age = cursor.getInt(1);
+        String mobile = cursor.getString(2);
+        String result = "record ="+name+","+age+","+mobile+"\n";
+        tvEmpInfo.append(result);
+    }
+```
+
+## Android 주소록 접근
+
 
 
 ## 참고자료
