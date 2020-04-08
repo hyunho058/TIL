@@ -381,7 +381,7 @@ class MyDatabaseHelper extends SQLiteOpenHelper{
 
 ## Content Resolver
 
-* getContentResolver Params
+* getContentResolver().query() Params
 
 ```java
 // Queries the user dictionary and returns results
@@ -501,6 +501,8 @@ cursor = getContentResolver().query(
 
 
 ## 참고자료
+
+[[Android Develope Content Resolver](https://developer.android.com/guide/topics/providers/content-provider-basics?hl=ko)
 
 [Android Developer SQLite](https://developer.android.com/reference/android/database/sqlite/SQLiteDatabase)
 
