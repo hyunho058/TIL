@@ -4,7 +4,8 @@
 
 > * 독립적 실행흐름
 >   1. Thread class를 직접 상속해 사용
->   2.  Runnable Interface구현한 객체를 이용해 Thread생성
+>      * 상속 개념을 사용해서 객체사용에 제한.
+>   2. Runnable Interface구현한 객체를 이용해 Thread생성
 
 ### JavaFX
 
@@ -239,6 +240,188 @@ public class Exam01_ThreadBasic extends Application {
 	}
 }
 ```
+
+
+
+#### thread State
+
+* JVM이 하나의 Thread를(main) 내부적으로 생성
+
+* thread sleep
+
+  <img src="image/image-20200409104522692.png" alt="image-20200409104522692" style="zoom:67%;" /> 
+
+  ![image-20200409104218929](image/image-20200409104218929.png) 
+
+  * OtherwiseBlocked => Runnable
+  * thread가 sleep후 해당 thread가 다시 실행하는게 아니고 Runnable을 다시 거처 Thread 재 할당을 후 다시 실행(만약 1초 sleep을 줘도 1초를 보장할수 없다)
+  * Code
+
+  ```java
+  button.setOnAction(arg0 -> {
+  			printMsg("Button Clicked");
+  			for (int i = 0; i < 5; i++) {
+  				Thread thread = new Thread(() -> {
+  						try {
+  							for(int j=0; j<3; j++) {
+  								Thread.sleep(1000);
+  								printMsg(j+"-"+Thread.currentThread().getName());
+  							}
+  						} catch (InterruptedException e) {
+  							e.printStackTrace();
+  						}
+  					}
+  				);
+  				thread.start();
+  			}
+  		});
+  ```
+
+  * 출력
+
+  ```
+  Button Clicked
+  0-Thread-5
+  0-Thread-7
+  0-Thread-4
+  0-Thread-8
+  0-Thread-6
+  
+  1-Thread-7
+  1-Thread-5
+  1-Thread-4
+  1-Thread-8
+  1-Thread-6
+  
+  2-Thread-5
+  2-Thread-8
+  2-Thread-4
+  2-Thread-6
+  2-Thread-7
+  ```
+
+
+#### Thread Synchronization(동기화)
+
+```
+ex)영화 예매
+* 좌석 예매 할때 구매자 마다 Thread 할당을 해줘야함.
+* Thread는 무한정 늘릴 수 없다.
+  * 순차처리 해줘야함
+```
+
+* Critical Section 에서 Thread들이 순서를 갖춰 자원을 사용하게 하는것
+
+* 하나의 자원을 여러 Thread가 사용할때, 한시점에 하나의 Thread만 사용할 수 있도록 **Monitor부여**
+
+  * Monitor를 획득하지 못한 나머지 Thread들은Look(Blocked)처리됨(대기상태)
+  * Monitor 획득한 Thread가 처리가 끝나면 Monitor를 자원에 반납
+  * Look(Blocked) 된 Thread들 중 하나의 Thread에 Monitor 부여, 나머지는 Look(Blocked)상태 유지
+
+* Monitor
+
+  * 객체(공유객체, instance)에 Thread가 접근하는 것을 제어허사위해
+
+  * 공유객체는 각자의 Monitor를 하나씩 가지고 있다.
+
+  * Thread가 공유객체의 Monitor를 획득 하는 방법
+
+    * Synchronized keyword  
+
+    
+
+  * 동기화 프로그래밍
+
+    1. synchronized method 순차적 처리
+
+       * method자체가 동기ㅗ하 처리가 되어서 프로그래밍 하기가 쉽다
+       * 해당 method의 실행이 만양 오래걸리게 되면 performance에 문자가 발생 (시간이 오래걸린다)
+
+       ```java
+       public synchronized void setNumber(int number) {
+       		this.number=number;
+       		try {
+       			//현재 공유객체를 사용하는Thread를 1초간 sleep
+       			Thread.sleep(1000);
+       			System.out.println("Number = "+getNumber());
+       		} catch (Exception e) {
+       		}
+       	}
+       ```
+
+    2. synchronized(monitor) {} 로직 부분 처리
+
+       * 공유객체에 순차적으로 동기화 할 Code 부분만 동기화 처리
+
+       ```java
+       class SharedObject{
+       	private int number; 
+       	Object monitor = new Object();
+       
+       public void setNumber(int number) {
+       		System.out.println("synchroniz Test");
+       		
+       		synchronized (monitor) {
+       			this.number=number;
+       			try {
+       				//현재 공유객체를 사용하는Thread를 1초간 sleep
+       				Thread.sleep(1000);
+       				System.out.println("Number = "+getNumber());
+       			} catch (Exception e) {
+       				e.printStackTrace();
+       			}
+       		}
+       	}
+       }
+       ```
+
+  #### Thread 순서 제어
+
+  * 일반적 방식으로 순서 제어는 불가하다
+
+    * Thread Scheduler에 의해 제어 되기 때문이다
+
+    * 특수한 method를 이용하면 Thread 제어 가능
+
+      * wait() - 자기가 가진 monitor를 반납하고 자신은 wait block 시키는 method
+      * notify() -wait으로 block되어있는 Thread를 깨우는 method
+      * notifyAll()
+
+      ```
+      위 세가지 method는 Critical Section(임계영역)에서만 사용 가능 => 동기화 코드가 적용된 부분
+      ex) synchronized{ 이 안에서 가능 (임계 영역)}
+      ```
+
+    * Critical Section 
+
+      *  한개의 연산을 둘 이상의 Thread가 동시에 실행할 경우 발생할 수 있는 Code Block
+
+      ![image-20200409154708369](image/image-20200409154708369.png)
+
+    
+
+#### Thread 용어
+
+* fairness(공정)
+  * 여러개의 스레드가 하나의 자원을 사용하기 위해 동시에 접근하는 프로그래밍을 작성할 경우 모든 스레드는 공정하게 자원을 사용할 수 있도록 해야한다
+* starvation(기아상태)
+  * 하나 또는 두개이상의 스레드가 자원을 얻기 위해 Blocked상태에 있고 그 자원을 얻을 수 없게 되면 다른 작업을 못하는 상태
+* deadlock(교착상태)
+  * 두 개 이상의 스레드가 만족하지 못하는 상태로 계속 기다릴떄 발생
+* racecondition(경쟁상태)
+  * 여러 스레드가 lock(제어권)을 얻기 위해 서로 경쟁하는 상태
+
+
+
+
+
+
+
+### 참고 자료
+
+[Thread]([https://joont92.github.io/java/%EC%93%B0%EB%A0%88%EB%93%9C-%EA%B8%B0%EB%B3%B8/](https://joont92.github.io/java/쓰레드-기본/))
+
+
 
 
 
