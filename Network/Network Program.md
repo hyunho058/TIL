@@ -245,6 +245,10 @@ public class Exam01_ThreadBasic extends Application {
 
 #### thread State
 
+* Thread 상태 전이도
+
+![image-20200410092814192](image/image-20200410092814192.png) 
+
 * JVM이 하나의 Thread를(main) 내부적으로 생성
 
 * thread sleep
@@ -398,7 +402,75 @@ ex)영화 예매
 
       ![image-20200409154708369](image/image-20200409154708369.png)
 
-    
+
+#### Thread 종료
+
+##### Thread Interrupt
+
+> thread.interrupt()
+
+* Thread에 interrupt가 수행되었다는 표시를 한다
+  * sleep() 이 수행 되었을때 해당 Thread가 interrupt가 표시되어 있으면 Exeption이 발생한다.
+* Thread의 강제 종료가 아닌 Logic 처리를 통해 Thread Dead 상태 로 만든다
+* 예시 (Exeption 이 발생할떄 break 를 이용하여 for loop를 빠져나가 Thread가 할 일을 끝내줌)
+
+```java
+btnStart.setOnAction(e -> {
+			//Click 되면 Thread를 생성
+			countThread = new Thread(() -> {
+				// run() method 장석
+				// 1부터 100 까지 1초 마다 출력
+				for(int i=0; i<100; i++) {
+					try {
+						Thread.sleep(1000);
+						printString("출력"+i);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+						break; //
+					}
+				}
+			});
+			countThread.start();
+		});
+		
+		btnStop = new Button("Thread Stop");
+		btnStop.setPrefSize(250, 50);
+		btnStop.setOnAction(e-> {
+			//Click 되면 Thread를 중지
+			countThread.interrupt();//기존에는 stop() method 를 이용했지만 현제 interrupt를 사용한다
+		});
+```
+
+##### Thread Daemon
+
+> setDaemon
+
+* 자신을 만든 UI FX Thread가 종료되면 해당 Thread가 종료된다 (종속 관계)
+  * 자신을 파생시킨Thread 와 생명주기 공유
+  * 자신을 생성한 Thread가 종료되면 자신도 같이 종료
+
+```java
+btnStart.setOnAction(e -> {
+			// Click 되면 Thread를 생성
+			countThread = new Thread(() -> {
+				// run() method 장석
+				// 1부터 100 까지 1초 마다 출력
+				for (int i = 0; i < 100; i++) {
+					try {
+						Thread.sleep(1000);
+						printString("출력" + i);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+						break;
+					}
+				}
+			});
+			countThread.setDaemon(true); // start() method 이전에 선언 해줘야한다
+			countThread.start();
+		});
+```
+
+
 
 #### Thread 용어
 
@@ -411,7 +483,172 @@ ex)영화 예매
 * racecondition(경쟁상태)
   * 여러 스레드가 lock(제어권)을 얻기 위해 서로 경쟁하는 상태
 
+###  예제
 
+* Producer & Consumer problem
+
+  * 생산자 
+    * 1개의 Thread로 표현
+    * 지속적으로 생성하는 역학을 하는 Thread
+    * 숫자를 0부터 1씩 증하해서 계속 만들어내는 역할
+    * 만들어진 숫자를 공용객체에 저장 =>ArrayList계열 이용(LinkedList)
+  * 소비자
+    * 3개의 Thread로 표현
+  * Main.class
+
+  ```java
+  package producerConsumer;
+  
+  public class ProConMain {
+  
+  	public static void main(String[] args) {
+  		//1. 데이터 접근에 대한 동기화 처리
+  		// 공유객체 생성
+  		SharedObject sharedObject = SharedObject.getInstance();
+  		
+  		//2. 4개의Thread 생성해야한다
+  		// 1개의producer, 3개의 consumer Thread
+  		Thread producer = new Thread(new ProducerRunnable(sharedObject));
+  		Thread con1 = new Thread(new ConsumerRunnable(sharedObject));
+  		Thread con2 = new Thread(new ConsumerRunnable(sharedObject));
+  		Thread con3 = new Thread(new ConsumerRunnable(sharedObject));
+  		
+  		con1.start();
+  		con2.start();
+  		con3.start();
+  		
+  		producer.start();
+  		try {
+  			Thread.sleep(2);
+  			producer.interrupt();
+  			Thread.sleep(2);
+  			con1.interrupt();
+  			con2.interrupt();
+  			con3.interrupt();
+  		} catch (Exception e) {
+  		}
+  	}
+  }
+  ```
+
+  * ProducerRunnable.class
+
+  ```java
+  package producerConsumer;
+  
+  public class ProducerRunnable implements Runnable{
+  	
+  	SharedObject sharedObject;
+  	String data;
+  	
+  	public ProducerRunnable(SharedObject sharedObject){
+  		this.sharedObject=sharedObject;
+  //		this.data=data;
+  	}
+  	
+  	@Override
+  	public void run() {
+  		System.out.println(Thread.currentThread().getName()+" Producer Thread Start");
+  		int i = 1;
+  		while(true) {
+  			if(Thread.currentThread().isInterrupted()) {
+  				break;
+  			}
+  			sharedObject.put(new Integer(i++).toString());			
+  		}
+  		System.out.println(Thread.currentThread().getName()+" Producer Thread END");
+  	}
+  }
+  
+  ```
+
+  * ConcumerRunnable.class
+
+  ```java
+  package producerConsumer;
+  
+  public class ConsumerRunnable implements Runnable{
+  	
+  	SharedObject shareObject;
+  	
+  	public ConsumerRunnable(SharedObject shareObject) {
+  		this.shareObject=shareObject;
+  	}
+  	
+  	@Override
+  	public void run() {
+  		System.out.println(Thread.currentThread().getName()+" Consumer Start");
+  		//반복적으로 공유객체 sharedObject가 가지고 있는 데이터를 뽑아 출력
+  		while(true) {
+  			if(Thread.currentThread().isInterrupted()){
+  				break;
+  			}
+  			System.out.println(Thread.currentThread().getName()+" -- "+shareObject.pop());
+  		}
+  		System.out.println(Thread.currentThread().getName()+" Consumer END");
+  	}
+  }
+  
+  ```
+
+  * SharedData.class
+
+  ```java
+  package producerConsumer;
+  
+  import java.util.LinkedList;
+  
+  //공용객체를 만들기 위한class 각 Thread가 공유하는 자료구조 => 자료구조를 사용하기 위한 method
+  //공유 객체는 1개만 존재히야하고 이 객체를 여러개의 Thread가 공유해서 사용 => singleton pattn
+  //Queue 자료구조 이용
+  public class SharedObject {
+  
+  	private static final Object monitor = new Object();
+  	private static SharedObject sharedObject = new SharedObject();
+  	private LinkedList<String> dataList = new LinkedList<String>();
+  
+  	// singleton 을 만들기위해 생성자는 private로 만든다 => 다른 class에서 생성자 호출을 막는다.
+  	private SharedObject() {
+  
+  	}
+  
+  	public static SharedObject getInstance() {
+  
+  		return sharedObject;
+  	}
+  
+  	// Thread에 의해서 공용으로 사용되는 method필요 ,
+  	// 2종류의Thread가 있는데 하나는 생산자(자료구조에 데이터를 집어넣는일)
+  	// 하나는 소비자(자료구조에서 데이터를 빼내서 혀면에 출력)
+  	public void put(String data) {
+  		synchronized (monitor) {
+  			this.dataList.addLast(data);
+  			monitor.notify();
+  		}
+  	}
+  
+  	// 소비자Thread에 의해서 사용되는 method
+  	public String pop() {
+  		String result = null;
+  		synchronized (monitor) {
+  			if (dataList.isEmpty()) {
+  				try {
+  					monitor.wait();
+  				} catch (InterruptedException e) {
+  					e.printStackTrace();
+  				}
+  			} else {
+  				result = dataList.removeFirst();
+  			}
+  		}
+  		return result;
+  	}
+  
+  }
+  
+  ```
+
+  
 
 
 
