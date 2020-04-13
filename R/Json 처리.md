@@ -737,6 +737,11 @@ View(ratingData)
 View(genreData)
 df = data.frame(Title=c(titleData), Raiting=c(ratingData), Genre=c(genreData))
 View(df)
+install.packages("writexl")
+library(writexl)
+writexl::write_xlsx(df, "C:/R_Workspce/R_Lecture/data.xlsx")
 ```
 
 ![image-20200312172706394](image/image-20200312172706394.png)
+
+![image-20200413145210486](image/image-20200413145210486.png)
