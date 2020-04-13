@@ -648,9 +648,116 @@ btnStart.setOnAction(e -> {
   
   ```
 
-  
 
 
+
+### Thrad Pool 
+
+> Thread를 조검 더 효율적으로 이용
+>
+> new Thread()로 Thread를 생성하는 것보다
+>
+> Thread Pool을 이용하는게 일반적이다.
+
+* 사용할 객체를 미리 생성해서 모아둠
+  * Pool이라고 불리는 공간에 모아둔다
+* 필요할때마다 Pool안에서 객체를 가져다 사용
+* 객체를 사용한후 끝나면 다시 Pool에 반납
+* 대표 활용 방식
+  * Database Connection Pool (DBCP
+  * Object Pool
+  * Thread Pool
+
+* Thread Pool Create
+
+  * newFixedThreadPool()
+    *  Thread pool 생성 (5)는 Thread가 최대 5개(5개를 넘을수 없다)
+
+  ```java
+  executorService = Executors.newFixedThreadPool(5); 
+  			printMsg("Pool안의 Thread 수: " + ((ThreadPoolExecutor) executorService).getPoolSize());
+  ```
+
+  * newCachedThreadPool()
+    * system 이 허용하는 만큼 Thread 생성(알아서 조절)
+
+  ```java
+  executorService = Executors.newCachedThreadPool(); 
+  			printMsg("Pool안의 Thread 수: " + ((ThreadPoolExecutor) executorService).getPoolSize());
+  ```
+
+* Thread Create
+
+```java
+startBtn = new Button("Thread Create");
+		startBtn.setPrefSize(250, 50);
+		startBtn.setOnAction(e -> {
+			// Thread Pool에서 Thread를 가져다 사용
+			// 10개의 Thread를 Thread Pool에서 가져다가 사용
+			for(int i=0; i<10; i++) {
+				// 1.Runnable Interface를 구현한 객체 생성
+				// 2.Thread Pool 을 이용해서 Thread Create.
+				Runnable runnable = new Runnable() {
+					@Override
+					public void run() {
+						String msg = "Pool안의 Thread 수: "+((
+								ThreadPoolExecutor) executorService).getPoolSize();
+						msg+=", Thread Name : "+Thread.currentThread().getName();
+						printMsg(msg);
+					}
+				};
+				executorService.execute(runnable);
+			}
+		});
+```
+
+* newFixedThreadPool(5) 방식
+
+```
+Pool안의 Thread 수: 0
+Pool안의 Thread 수: 4, Thread Name : pool-2-thread-1
+Pool안의 Thread 수: 5, Thread Name : pool-2-thread-3
+Pool안의 Thread 수: 5, Thread Name : pool-2-thread-2
+Pool안의 Thread 수: 5, Thread Name : pool-2-thread-2
+Pool안의 Thread 수: 5, Thread Name : pool-2-thread-1
+Pool안의 Thread 수: 5, Thread Name : pool-2-thread-2
+Pool안의 Thread 수: 5, Thread Name : pool-2-thread-4
+Pool안의 Thread 수: 5, Thread Name : pool-2-thread-1
+Pool안의 Thread 수: 5, Thread Name : pool-2-thread-3
+Pool안의 Thread 수: 5, Thread Name : pool-2-thread-5
+
+/////////만들어진 최대 5개의 Thread 가 반복적으로 재 사용됨/////////////
+```
+
+* newCachedThreadPool() 방식
+
+```java
+Pool안의 Thread 수: 0
+Pool안의 Thread 수: 3, Thread Name : pool-2-thread-1
+Pool안의 Thread 수: 4, Thread Name : pool-2-thread-2
+Pool안의 Thread 수: 4, Thread Name : pool-2-thread-3
+Pool안의 Thread 수: 6, Thread Name : pool-2-thread-4
+Pool안의 Thread 수: 6, Thread Name : pool-2-thread-5
+Pool안의 Thread 수: 6, Thread Name : pool-2-thread-2
+Pool안의 Thread 수: 6, Thread Name : pool-2-thread-3
+Pool안의 Thread 수: 6, Thread Name : pool-2-thread-4
+Pool안의 Thread 수: 6, Thread Name : pool-2-thread-1
+Pool안의 Thread 수: 6, Thread Name : pool-2-thread-6
+```
+
+* Thread Pool 종료
+  * shutdownNow()
+    * Thread Pool 안에 Thread 를 죽이면서 Thread Pool도 함꼐 죽여준다
+
+```java
+shutdownBtn = new Button("Thread Pool End");
+		shutdownBtn.setPrefSize(250, 50);
+		shutdownBtn.setOnAction(e -> {
+			// java lambda를 이용한 evemt 처리
+			//Thread Pool 안에 Thread 를 죽이면서 Thread Pool도 함꼐 죽여준다
+			executorService.shutdownNow();
+		});
+```
 
 
 
