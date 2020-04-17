@@ -2,13 +2,13 @@
 
 ## [CRAN](https://cran.r-project.org/)
 
-![image-20200309101436396](C:\Users\student\AppData\Roaming\Typora\typora-user-images\image-20200309101436396.png)
+![image-20200417163300654](image/image-20200417163300654.png)
 
 ## Rstudio
 
 * [Rstudio](https://rstudio.com/)
 
-![image-20200309102016301](C:\Users\student\AppData\Roaming\Typora\typora-user-images\image-20200309102016301.png) 
+![image-20200417163344041](image/image-20200417163344041.png) 
 
 * 최초 실행 화면
 
