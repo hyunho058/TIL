@@ -79,4 +79,43 @@
 
 * 송신 Bit Check
 
-![image-20200518151701194](image/image-20200518151701194.png)
+![image-20200518151701194](image/image-20200518151701194.png) 
+
+## JAVA CAN Communication
+
+* Data Send
+
+![image-20200519102812222](image/image-20200519102812222.png)
+
+* 송신 데이터
+
+  *  2문자 => 0000 0000 8bit
+    * 0010 1000 - CAN2.0B, Data size 8
+    * :W28
+
+* 송신 ID
+
+  * 4문자
+  * 00000006
+
+* 송신 데이터
+
+  * 1100002200000033
+
+* CheckSum
+
+  ```
+  통신 프로토콜 Frame에서 시작 문자, 끝 문자를 제외한 나머지를 모두 더한 후 0xff로 And
+  연산한 결과의 1바이트 값에 대응하는 Hex ASCII 문자열
+  ex) 통신 프로토콜 Frame(시작 문자, 끝 문자 제외) : “G10”인 경우
+  Check Sum = (‘G’ + ‘1’ + ‘0’) & 0xff한 Hex ASCII 문자열
+  ```
+
+* DataRecieve
+
+![image-20200519144502546](image/image-20200519144502546.png)
+
+* 수신 상태 설정
+
+![image-20200519144440498](image/image-20200519144440498.png)
+
