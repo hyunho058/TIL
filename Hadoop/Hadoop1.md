@@ -153,9 +153,25 @@
 
   ![image-20200520113327575](image/image-20200520113327575.png) 
 
+* 공유폴도 환경 설정
+
+```
+# sudo mkdir your_shared_folder
+
+# sudo vmware-hgfsclient
+
+# sudo vmhgfs-fuse your_shared_folder
+```
+
 
 
 ### java install
+
+* JDK 압출풀기
+
+```
+tar zxvf xxxxxxx
+```
 
 * JDK 파일 경로 이동
 
@@ -167,6 +183,7 @@ mv jdk1.8.0_251 /usr/local/java
   * vi 편집기 에서 아래쪽에 4줄 삽입
     * i - 수정
     * esc -> :wq - 종료
+    * esc -> :q! - 저장 안하고 종료
 
 ```
 export JAVA_HOME=/usr/local/java
@@ -190,6 +207,213 @@ java version "1.8.0_251"
 ```
 
 
+
+### SSH 설정
+
+* CentOS를 설치하면 방화벽이 켜져있다.
+  * Hadoop을 이용하기 위해 방화벽을 해제하고
+  * OS를 시작할때 방화벽을 켜지 않도록 설정이 필요하다
+
+* 공개키와 개인키 방식의 암호화를 이용한 통신
+  * 공개키 - 암호화힐떄 사용하는 key
+* 공개키는 복호화를 할 수 없다.
+  * 공개가 가능
+  * 공개키는 사람들에게 나눠주는 키이고 개인키는 유출되면 안된다
+* Hadoop01
+  * 공개키01
+  * 개인키01
+* Hadoop02
+  * 공개키02
+    * Hadoop01에게 공개키02를 넘겨주고 Hadoop01은 이 키를 가지고 암호화하여 Hadoop02에게 다시 전달한다(복호화)
+    * Hadoop02는 개인키02를 가지고 암호화된 키를 풀어 사용한다.
+  * 개인키02
+
+
+
+* Address
+* Hadoop01
+
+```
+[root@localhost java]# ifconfig
+ens33: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.111.128  netmask 255.255.255.0  broadcast 192.168.111.255
+        inet6 fe80::8b2e:8628:f2ae:8259  prefixlen 64  scopeid 0x20<link>
+        ether 00:0c:29:57:41:77  txqueuelen 1000  (Ethernet)
+        RX packets 477  bytes 70877 (69.2 KiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 215  bytes 22912 (22.3 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+```
+
+* Hadoop02
+
+```
+inet 192.168.111.131
+```
+
+* Hadoop03
+
+```
+inet 192.168.111.129
+```
+
+* Hadoop04
+
+```
+inet 192.168.111.130
+```
+
+
+
+* vi /etc/hosts
+
+```
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.111.128 namenode       ipAddress/name
+192.168.111.131 datanode01
+192.168.111.129 datanode02
+192.168.111.130 datanode03
+```
+
+* 이름설정
+  * vi /etc/hostname
+    * namenode
+    * datanode01
+    * datanode02
+    * datanode03
+* 공개키 개인키 설정
+  *  ssh-keygen
+
+```
+[root@namenode ~]# ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa): 
+Created directory '/root/.ssh'.
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /root/.ssh/id_rsa.
+Your public key has been saved in /root/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:wqce53RhinhK2x5mpeppRMnBRQ6cobSrn3TS9TjrJYA root@namenode
+The key's randomart image is:
++---[RSA 2048]----+
+|  .oo=o          |
+| . o=o           |
+|  o. o.          |
+|   o+.           |
+|  E.. + S o      |
+| . ..+ X o .     |
+|. o.= & * .      |
+| o =.@ @ .       |
+|  oo*o* .        |
++----[SHA256]-----+
+[root@namenode ~]# 
+
+```
+
+* id_rsa : 개인키
+* id_rsa.pub: 공개키
+
+```
+[root@namenode ~]# cd /root/.ssh/
+[root@namenode .ssh]# ls
+id_rsa  id_rsa.pub
+[root@namenode .ssh]# 
+
+```
+
+* 공개키 복사
+
+  * Hadoop01 에서만 공개키를 복사한다
+  * cp id_rsa.pub authorized_keys
+
+  ```
+  [root@namenode .ssh]# ls
+  authorized_keys  id_rsa  id_rsa.pub
+  ```
+
+  * 파일 내용
+    * cat authorized_keys
+
+  ```
+  [root@namenode .ssh]# cat authorized_keys 
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCeXVXOB2Po44053DurpDCyqC7gA58r6FQwJptfVwo0MTt6l1r3Prph11TtqXnpSyHfKrFmxXb4yviRgkfuMtlYNWvxu6ZveR2gnLDkJL612FOLCIGNaERAbOLkzKUp30d9kR6uIxuUMHrVUnsjczSgvjY6LPnC3btywyJJaPOdOLzYziuLjJrkZSrEfBNXWInIa5JQl0rR7DY7oJCresw5J/y19JSQ/HM2/7Cs22dO1WEbJSUSrqOnLoWhsH0/US1fARACBSNmkKjJbi3BaUGCr/fMJIZN2xqSvMxNaCSdylyj0CvNwm7Zn7eUbX7t6iU7YvtwCBhkjC4kbEhuwfWP root@namenode
+  ```
+
+  * ssh-copy-id root@namenode
+    * Hadoop01,02,03 에 동일하게 코드 작성 하고 root비밀번호 입력
+
+  ```
+  [root@dataname01 .ssh]# ssh-copy-id root@namenode
+  The authenticity of host 'namenode (192.168.111.128)' can't be established.
+  ECDSA key fingerprint is SHA256:FHu+eDadfQVpqy688f/SFFCfFkZANaru0orm5mso+b0.
+  ECDSA key fingerprint is MD5:3f:02:c2:4d:1c:72:3c:9f:e1:ea:13:8b:a1:8a:80:2b.
+  Are you sure you want to continue connecting (yes/no)? yes
+  /usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+  /usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+  root@namenode's password: 
+  Permission denied, please try again.
+  root@namenode's password: 
+  
+  Number of key(s) added: 1
+  
+  Now try logging into the machine, with:   "ssh 'root@namenode'"
+  and check to make sure that only the key(s) you wanted were added.
+  
+  [root@dataname01 .ssh]# 
+  ```
+
+  * 공개키 취합 확인
+    * Hadoop01에서
+
+  ```
+  [root@namenode .ssh]# cat authorized_keys 
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCeXVXOB2Po44053DurpDCyqC7gA58r6FQwJptfVwo0MTt6l1r3Prph11TtqXnpSyHfKrFmxXb4yviRgkfuMtlYNWvxu6ZveR2gnLDkJL612FOLCIGNaERAbOLkzKUp30d9kR6uIxuUMHrVUnsjczSgvjY6LPnC3btywyJJaPOdOLzYziuLjJrkZSrEfBNXWInIa5JQl0rR7DY7oJCresw5J/y19JSQ/HM2/7Cs22dO1WEbJSUSrqOnLoWhsH0/US1fARACBSNmkKjJbi3BaUGCr/fMJIZN2xqSvMxNaCSdylyj0CvNwm7Zn7eUbX7t6iU7YvtwCBhkjC4kbEhuwfWP root@namenode
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDpoMZGigGJJIFGqWtSBFb6cn+yljtOO/GtOHpgnr9YqN2ktw4O0KgXxOdE7tkDPhnsF1UKjTtVJX2BDc9Xb5zr/u5s0dqfiXxIqvU1AS478HdpsKLKVuEYZkxPodv4Ey5JrAGks+mS6sH2KqobgDj75Z5ViSV70Z7G3wS+WjRwS9FHLbk+8vPzQ8oNBHtSBPuTbXwV1WPOKppYuOFXPsfuro2KZZ+6ubs5pAG1wRbyiet9X88o1z8U6oFRherLaA6fnOwEuypxLUKbQWCBAynMduZxzs8KbDYv8QEMznEfcm0RxOHfnvZZ0eiBqJ1fNVTxNY8yBEwDEFKEQfmlSZFZ root@dataname01
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDkh340a3PXv+q6x/ZNxDzyUx6i6w7IzzCjeUgstmY0sBygbdCMuuVyIh8ckRWx8hHiWlnucGrHF5mjopKL+/Pb/eQGaLwLENnGHSXFLBTw2Br3mzsNLZt2mCatGGFKZ7hO2l1kzl1qqLJHqANG28dt+mlxNXdV+HQkzxvmsjKEsGZ2Ua7PIHuhIaYo0KxW2lXGFQXfdQrobTspt3IPMVhhIxEaFQbtYdRNzFRTCxRjYIDbgF0ijuDG21xkL9BAI5dlVRQZXUuvaPHnxY8+s6+x1l3oSknd6JoRoiO5MZyE9qCupPWua7wN27qYgWUW6N6DKPHx85EuXuORo28DHgwz root@datanode02
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCbKd4H72ZMMTaDjpgxj6Ih/G2hyIo77Z7UZMFXcQjL5OlNDiukKmt/WbHBplOuo+g8Qyl7RW1/nROKejIAB3v6csjzcESovsIxMebIVA1pVCvoWmsBUgogjlMkK7mHKngyl6r6oO10yUDmzwdss1kOjZBq9NFlXJ7xPnhrzKS0qYmY+rxqOeNvYwsUU74on5cFa+BRgGdD1h38P4ejzrXb0exHt/cZkD/RSgP9XcVIq14WqZmWDS9u9e+gWKDwhjSu7m06PB6s8LqyORws2107xddp5u2iXg4I6Mye55re/UtWGN5dwgjQMp2TDKaBIXTWfoSMiI12xy3TYnldu0gT root@datanode03
+  [root@namenode .ssh]# 
+  
+  ```
+
+  * scp -rp
+    * 암호화된 파일 복사
+    * datanode01,02,03을 동일하게  아래 코드 적용해준다
+
+  ```
+  [root@namenode .ssh]# ls
+  authorized_keys  id_rsa  id_rsa.pub
+  [root@namenode .ssh]# scp -rp authorized_keys root@datanode01:~/.ssh/authorized_keys
+  The authenticity of host 'datanode01 (192.168.111.131)' can't be established.
+  ECDSA key fingerprint is SHA256:FHu+eDadfQVpqy688f/SFFCfFkZANaru0orm5mso+b0.
+  ECDSA key fingerprint is MD5:3f:02:c2:4d:1c:72:3c:9f:e1:ea:13:8b:a1:8a:80:2b.
+  Are you sure you want to continue connecting (yes/no)? yes
+  Warning: Permanently added 'datanode01,192.168.111.131' (ECDSA) to the list of known hosts.
+  root@datanode01's password: 
+  authorized_keys                               100% 1586     1.6MB/s   00:00  
+  ```
+
+  * Hadoop01 에서 02로 데이터 전달
+    * 처음 통신할떄는 아래처럼 여부를 물어본다 
+
+  ```
+  [root@dataname01 .ssh]# ssh datanode02 date
+  The authenticity of host 'datanode02 (192.168.111.129)' can't be established.
+  ECDSA key fingerprint is SHA256:FHu+eDadfQVpqy688f/SFFCfFkZANaru0orm5mso+b0.
+  ECDSA key fingerprint is MD5:3f:02:c2:4d:1c:72:3c:9f:e1:ea:13:8b:a1:8a:80:2b.
+  Are you sure you want to continue connecting (yes/no)? yes
+  Warning: Permanently added 'datanode02,192.168.111.129' (ECDSA) to the list of known hosts.
+  2020. 05. 21. (목) 00:39:36 KST
+  ```
+
+* 방화벽 끄기
+
+  * systemctl stop firewalld
+
+* 방화벽 서비스 중지
+
+  * systemctl disable firewalld
 
 
 
