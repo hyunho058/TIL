@@ -415,6 +415,181 @@ id_rsa  id_rsa.pub
 
   * systemctl disable firewalld
 
+# Hadoop Download
+
+* hadoopp2.9.2.tar file  home directory 로이동
+
+```
+mv hadoopp2.9.2.tar /home/
+```
+
+* 압출풀기
+
+```
+tar zxvf hadoopp2.9.2.tar
+```
+
+* mv hadoop-2.9.2 /usr/local/hadoop
+  * 해당 경로 가서 확인하기
+* hadoop에서 사용할 디렉토리 생성
+  * 하둡시스템 데이터 저장 - 모든 System에 하위 명령어처럼 폴더를 만든다
+  * namedond, datanode01,02,03
+
+```
+mkdir -p /home/hadoop/hdfs/data
+mkdir -p /home/hadoop/hdfs/temp
+mkdir -p /home/hadoop/hdfs/name - 메타 데이터
+```
+
+* 환경설정파일 수정
+
+  * 환경설정 파일 경로 /usr/local/hadoop/etc/hadoop/
+
+  <img src="image/image-20200521093724650.png" alt="image-20200521093724650" style="zoom:50%;" />
+
+  * 제공된 설정파일을 Hadoop설정 디렉토리에 복사 한다
+
+  ```
+  [root@namenode Shared_Folder]# ls
+  Hadoop_config  jdk-8u251-linux-x64.tar.gz
+  [root@namenode Shared_Folder]# cd Hadoop_config/
+  [root@namenode Hadoop_config]# ls
+  core-site.xml  hdfs-site.xml    masters  yarn-env.sh
+  hadoop-env.sh  mapred-site.xml  slaves   yarn-site.xml
+  [root@namenode Hadoop_config]# cp * /usr/local/hadoop/etc/hadoop/
+  cp: overwrite `/usr/local/hadoop/etc/hadoop/core-site.xml'? yes
+  cp: overwrite `/usr/local/hadoop/etc/hadoop/hadoop-env.sh'? yes
+  cp: overwrite `/usr/local/hadoop/etc/hadoop/hdfs-site.xml'? yes
+  cp: overwrite `/usr/local/hadoop/etc/hadoop/slaves'? yes
+  cp: overwrite `/usr/local/hadoop/etc/hadoop/yarn-env.sh'? yes
+  cp: overwrite `/usr/local/hadoop/etc/hadoop/yarn-site.xml'? yes
+  ```
+
+  * 설정 파일 변경 확인
+
+    * hadoop-env.sh
+
+    * masters
+
+      * secondary namanode 지정
+        * datanode01로 지정
+
+    * slaves
+
+      * datanode를 지정
+        * datanode들을 지정해준다
+
+    * vi core-site.xml
+
+      ![image-20200521094859664](image/image-20200521094859664.png)
+
+      * 하이브를 연결하려면 아래 4개 프로퍼티가 필요
+
+    *  vi hdfs-site.xml
+
+```
+
+```
+
+* 설정 완료후 각 slave Hadoop(datanode0n) 에 복사
+
+  * scp 명령어 이용
+
+  ```
+  scp -r /usr/local/hadoop root@datanode01:/usr/local
+  scp -r /usr/local/hadoop root@datanode02:/usr/local
+  scp -r /usr/local/hadoop root@datanode03:/usr/local
+  ```
+
+  ```
+  scp /etc/profile root@datanode01:/etc/profile
+  scp /etc/profile root@datanode02:/etc/profile
+  scp /etc/profile root@datanode03:/etc/profile
+  ```
+
+* 모든 복사 완료후 version 확인 (모든 mode에서 확인)
+
+  * java -version
+  * hadoop version
+
+```
+[root@namenode ~]# java -version
+java version "1.8.0_251"
+Java(TM) SE Runtime Environment (build 1.8.0_251-b08)
+Java HotSpot(TM) 64-Bit Server VM (build 25.251-b08, mixed mode)
+[root@namenode ~]# hadoop version
+Hadoop 2.9.2
+Subversion https://git-wip-us.apache.org/repos/asf/hadoop.git -r 826afbeae31ca687bc2f8471dc841b66ed2c6704
+Compiled by ajisaka on 2018-11-13T12:42Z
+Compiled with protoc 2.5.0
+From source with checksum 3a9939967262218aa556c684d107985
+This command was run using /usr/local/hadoop/share/hadoop/common/hadoop-common-2.9.2.jar
+```
+
+## Hadoop start
+
+* namenode 에서만 작업한다.
+  * 통신을 통해 알아서 하둡시스템 구성해준다
+* 파일 시스템 포멧
+
+```
+hadoop namenode -format
+```
+
+* 하둡 시작
+  * stop-all.sh 중지
+
+```
+start-all.sh
+```
+
+* jps
+
+  * namenode
+    * ResourceManager
+    * NameNode
+      * 위 두개 표시되어야 한다
+
+  ```
+  [root@namenode ~]# jps
+  20754 ResourceManager     
+  21028 Jps
+  20472 NameNode
+  ```
+
+  * datanode01
+    * SecondaryNameNode 아기떄문에 나타 나야한다
+
+  ```
+  [root@dataname01 ~]# jps
+  19842 NodeManager
+  19779 SecondaryNameNode
+  20022 Jps
+  19688 DataNode
+  ```
+
+  * datanode02
+
+  ```
+  [root@datanode02 ~]# jps
+  19925 Jps
+  19662 DataNode
+  19775 NodeManager
+  ```
+
+  * datanode03
+
+  ```
+  [root@datanode03 ~]# jps
+  19827 NodeManager
+  19722 DataNode
+  20010 Jps
+  ```
+
+  
+
+
+
 
 
 
