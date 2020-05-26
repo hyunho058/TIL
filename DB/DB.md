@@ -6,21 +6,19 @@
 
 [Oracle DateBase](https://www.oracle.com/database/technologies/xe-downloads.html)
 
-![image-20191223094942291](C:\Users\student\AppData\Roaming\Typora\typora-user-images\image-20191223094942291.png)
+![image-20200526102925556](image/image-20200526102925556.png)
 
 SQL Developer
 
-![image-20191223094856069](C:\Users\student\AppData\Roaming\Typora\typora-user-images\image-20191223094856069.png)
+![image-20200526102942311](image/image-20200526102942311.png)
 
-![image-20191223095535889](C:\Users\student\AppData\Roaming\Typora\typora-user-images\image-20191223095535889.png)
+![image-20200526102954297](image/image-20200526102954297.png)
 
 ```
 할당 Port 
 Listener 1521
 Listener 8080
 ```
-
-
 
 
 
@@ -146,7 +144,7 @@ Tablespace created.
 
 
 
-![image-20191223104152364](C:\Users\student\AppData\Roaming\Typora\typora-user-images\image-20191223104152364.png)
+![image-20200526103014401](image/image-20200526103014401.png)
 
 ### 계정 파일 삭제  _ drop
 
