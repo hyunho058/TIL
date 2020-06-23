@@ -60,7 +60,7 @@
 ## [Github](https://github.com/hyunho058/TIL/tree/master/github)
 
 * MultiCampus 빅데이터를 활용한 IoT시스템개발(Feat. 스마트시티 프로젝트)
-* github 특강
+  * github 특강
 
 ## [TIL](https://github.com/hyunho058/TIL/tree/master/TIL)
 
