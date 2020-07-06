@@ -5,7 +5,7 @@
 ## REST API 구성
 
 1. 자원 (Resource) - URI
-2. 행위 (Verb) - Http Method
+2. 행위 (Verb) - HTTP Method
 3. 표현 (Representations) 
 
 
@@ -48,6 +48,8 @@
 
      ![image-20200418225058175](RESTAPI.assets/image-20200418225058175.png)  
 
+     ​
+
 ## 디자인 가이드
 
 > 1. URI는 정보의 자원을 표현해야 한다.
@@ -75,13 +77,14 @@
      POST /members/1   ==>GET 메서드는 리소스 생성에 맞지 않음.
      ```
 
-     POST - POST를 통해 해당 URI를 요청하면 리소스를 생성.
+   * HTTP Method
 
-     GET - GET을 통해 해당 리소스를 조회, 리소스를 조회하고 해당 document에 대한 자세한 정보를 가져온다.
+     * POST -  POST를 통해 해당 URI를 요청하면 리소스를 생성.
+     * GET - GET을 통해 해당 리소스를 조회, 리소스를 조회하고 해당 document에 대한 자세한 정보를 가져온다.
+     * PUT - 해당 리소스 수정
+     * DELETE - 리소슬르 삭제
 
-     PUT - 해당 리소스 수정
-
-     DELETE - 리소슬르 삭제
+   ​
 
 2. 자원 표현 - 리소스를 표현할 수 있으며 URI에 표현됨.
 
@@ -98,6 +101,8 @@
      * 하나의 객체
      * soccer 처럼 단수로 표기 해줌
 
+     ​
+
 3. HTTP 응답 상태코드
 
    * 200 - 클라이언트의 요청을 전상적으로 수행
@@ -109,9 +114,13 @@
    * 301 - 클라이언트가 요청한 리소스에 대한 URI가 변경 되었을떄
    * 500 - 서버에 문제가 있을 경우 사용
 
-# GET, POST 차이
 
-## GET
+
+## GET, POST 차이
+
+
+
+### GET
 
 * 클라이언트로부터의 데이터를 이름과 값이 결합된 소스 형태로 전달
 
@@ -129,7 +138,7 @@
 
 
 
-## POST
+### POST
 
 * 클라이언트와 서버간에 인코딩하여 서버로 전송
 
@@ -153,9 +162,9 @@
 
 * 사용자에게 값 들을 쉽게 노출을 시키지 않으려 할때 사용
 
-## 예제
 
-[GET/POST](https://all-record.tistory.com/100)
+
+### 예제
 
 * GET
 
@@ -211,3 +220,8 @@ http://localhost/test.asp
 </HTML>
 ```
 
+
+
+## Reference
+
+[GET/POST](https://all-record.tistory.com/100)
