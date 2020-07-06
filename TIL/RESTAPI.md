@@ -1,10 +1,21 @@
 #  REST API
 
-> Representational State Transfer
+> * Representational State Transfer
+> *  HTTP 기반으로 필요한 자원에 접근하는 방식을 정해놓은 architecture
+>   * DBMS, Image, Video, Document, 
+
+## REST API 속성
+
+* 서버에 있는 모든 Resource는 각 resourec당 클라이언트가 바로 접근 할 수 있는 고유 URI가 존재
+* 모든 Resource는 일반적으로 HTTP 인터페이스인 GET, POST, PUT. DELETE 4개의 메소드로 접근 해야 한다
+* 서비스 내에 하나의 Resource가 주변에 연관된 Resource들과 연결되어 표현이 되어야 한다
+* 모든 요청은 클라이언트가 요청할 떄마다 필요한 정보를 주기 때문에 서버에서는 세션 정보를 보관할 필요가 없다. 
+  * 서비스에 자유도가 높아지고 유연한 아키텍쳐 적응이 가능
 
 ## REST API 구성
 
-1. 자원 (Resource) - URI
+1. 자원 (Resource) - URI(Uniform Resource Identifier)
+   * 자원의 위치를 나타내는 일종의 식별자 이다
 2. 행위 (Verb) - HTTP Method
 3. 표현 (Representations) 
 
@@ -57,7 +68,7 @@
 
 1. 중심 규칙
 
-   * URI는 정보의 자원을 표현해야 한다(Resource 명은 동사보다 명사 사용)
+   * URI는 정보의 자원을 표현해야 한다**(Resource 명은 동사보다 명사 사용)**
 
      * REST를 제대로 적용하지 않은 URI(자원을 표현하는데 중점을 두어야함)
 
@@ -113,6 +124,17 @@
    * 405 - 클라이언트가 요청한 리소스에서는 사용 불가능한 method를 이용했을 경우
    * 301 - 클라이언트가 요청한 리소스에 대한 URI가 변경 되었을떄
    * 500 - 서버에 문제가 있을 경우 사용
+
+4. 메시지
+
+   * 메시지는 HTTP header와 body, 응답상태 코드로 구성되어 있으며 header와 body에 포함된 메시지는 메시지를 처리하기 위한 충분한 정보를 포함한다
+   * Body
+     * 자윈에 대한 정보를 전달(데이터 포멧 -  JSON/XML/사용자 정의 포맷)
+   * Header
+     * HTTP바디에 어떤 포맷으로 데이터가 담겼는지 정의
+     * 요청 HTTP헤더는 'Accept'항목으로 응답 HTTP헤더는 ' Content type'으로타입을 설명
+
+
 
 
 
@@ -222,6 +244,25 @@ http://localhost/test.asp
 
 
 
+
+
+## REST API 장단점
+
+* 장점
+  * 언어와 플랫폼에 독립적이다.
+  * SOAP(다른 통신 방식)보다 개발이 쉽고 단순
+  * REST가 지원하는 프레임워크나 언어등 도구들이 없어도 구현이 가능
+  * 기존 웹 인프라를 사용가능
+    * HTTP를 그대로 사용하기 떄문
+* 단점
+  * HTTP프로토콜만 사용 가능
+  * p2p통신 모델을 가정했기 때문에 둘 이상을 대상으로 하는 분산환경에 유용하지 않음
+  * 보안, 정책등에 대한 표준이 없기 때문에 관리가 어렵다
+
+
+
 ## Reference
 
 [GET/POST](https://all-record.tistory.com/100)
+
+[https://meetup.toast.com/posts/92](https://meetup.toast.com/posts/92)
