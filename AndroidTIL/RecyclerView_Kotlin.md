@@ -1,0 +1,10 @@
+# RecyclerView_Kotlin
+
+* Gradle
+
+```
+implementation 'com.android.support:recyclerview-v7:26.1.0'
+```
+
+
+
