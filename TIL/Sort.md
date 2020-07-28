@@ -58,3 +58,60 @@
     3. COUNTS[1]을 감소시키고 TEMP에 1을 삽입
        - COUNTS[1]의 값이 4임을 확인하고 TEMP[4]에 1을 삽입하고 COUNTS[1]을 3으로 줄임
     4. 같은 방식으로 Data 배열을 전부 진행
+
+
+
+## Selection Sort
+
+> * Selection Sort 는 Bubble Sort와 유사한 알고리즘이다
+> * **해당 순서에 원소를 넣을 위치는 이미 정해져 있고, 어떤 원소를 넣을지 선택하는 알고리즘이다**
+
+
+
+* Code
+  * 주어진 배열 중에서 최소값을 찾는다
+  * 그 값을 맨 앞에 위치한 값과 교체한다
+  * 맨 처음 위치를 뺀 나머지 배열을 같은 방법으로 교체한다
+
+```java
+int min = 0;
+int swap = 0;
+int[] numArr = {2,1,5,3,4,8,7,6};
+
+void selectionSort(int[] numList){
+    for(int i = 0 ; i < numList.length-1 ; i++){
+    	int min = i;
+        for(int j = i ; j <numList.length ; j++){
+            if(numList[min] > numList[j]){
+                min = j;
+            }
+        }
+    if(min < numList[i]){
+        int swap = numList[i];
+        numList[i] = numList[min];
+        numList[min] = swap;
+    }
+	Log.v("SORT","Selection Sort=="+ Arrays.toString(numList));
+}
+```
+
+
+
+* 시간복잡도
+  * (n-1) + (n-2) + .... + 2 + 1 => n(n-1)/2
+  * 비교하는 것이 상수 시간에 이루어진다는가정 아래, n개의 주어진 배열을 정렬하는데 **O(n^2)**만큼의 시간이 걸린다
+* 공간복잡도
+  * 주어진 배열 안에서 교환을 통해, 정렬이 수행되므로 **O(n)** 이다
+
+* 장점
+  * 알고리즘이 단순하다
+  * 정렬을 위한 비교 횟수는 많지만, Bubble Sort에 비해 실제로 교환하는 횟수는 적기 때문에 ㅁ낳은 교환이 일어나야하는 자료상태에서 비교적 효율적이다.
+  * Bubble Sort와 마찬가지로 정렬하고자 하는 배열 안에서 교환하는 방식이므로, 다른 메모리 공간을 필요로 하지 않는다
+* 단점
+  * 시간 복잡도가 비효율적
+  * **불안정 정렬(Unstable Sort)**이다.
+
+
+
+## Quick Sort
+
