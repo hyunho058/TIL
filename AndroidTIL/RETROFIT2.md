@@ -3,23 +3,134 @@
 * http 서버통신을 쉽게 사용할 수 있게 해주는 Android Library
 * HTTP call 을 단순화
 
-## 의존성
-
 * Build.gradle
 
 ```java
 implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+implementation 'com.google.code.gson:gson:2.8.0'	
 implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 implementation 'com.squareup.retrofit2:converter-scalars:2.4.0'
 ```
 
+![Retrofit Benchmark](RETROFIT2.assets/retrofit_benchmark.png)
+
+* 자동적으로 JSON응답을 사전에 정의된 POJO를 통해 직렬화 할 수 있다.
+* JSON을 직렬화 하기 위해서는 먼저 Gson converter가 필요하다
 
 
 
+## Kakao API 활용한 문제
+
+![image-20200804001557882](RETROFIT2.assets/image-20200804001557882.png)
+
+![image-20200804001633628](RETROFIT2.assets/image-20200804001633628.png)
+
+![image-20200804001718581](RETROFIT2.assets/image-20200804001718581.png)
+
+* KakaoRetorofit Interface
+  * Annotation을 통해 HTTP request 를 작성
+
+```java
+public interface KakaoRetrofit {
+    @GET("v3/search/book?target=title")
+    Call<DocumentList> getDocument(
+        @Header("Authorization") String kakaoAK,
+        @Query("query") String keyword);
+}
+```
+
+* APIClient.class
+  * getClient() 메서드는 Retrofit 인터페이스를 설정할 때마다 호출 한다.
+
+```java
+public class APIClient {
+
+    public static Retrofit retrofit = null;
+
+    public static Retrofit getClient() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://dapi.kakao.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+        return retrofit;
+    }
+}
+```
+
+* MainActivity
+
+```java
+ /**
+         * RETROFIT2 이요한 REST API Response and Request
+         */
+String kakaoAK = "KakaoAK xxxxxxxxxxxxxxx";
+String keyword = "JAVA";
+
+kakaoRetrofit = APIClient.getClient().create(KakaoRetrofit.class);
+Call<DocumentList> callDocumentList = kakaoRetrofit.getDocument(kakaoAK, keyword);
+callDocumentList.enqueue(new Callback<DocumentList>() {
+    @Override
+    public void onResponse(Call<DocumentList> call, Response<DocumentList> response) {
+        Log.v(TAG,"retrofit_onResponse=="+response.code());
+        Log.v(TAG,"retrofit_onResponse=="+call.request().toString());
+        Log.v(TAG,"retrofit_response.body().size()=="+response.body().documents.size());
+        Log.v(TAG,"retrofit_response.body()_documents.get(0).getAuthors()=="+response.body().documents.get(0).getAuthors());
+        documents = response.body().documents;
+        Log.v(TAG,"retrofit_documents=="+documents.get(0).getAuthors());
+        //initData(keyword);
+        //documentListR = (List<SearchData>) response.body();
+        //                Log.v(TAG,"retrofit_response=="+documentListR.get(0).toString());
+    }
+    @Override
+    public void onFailure(Call<DocumentList> call, Throwable t) {
+        Log.v(TAG,"retrofit_onFailure=="+t.toString());
+        Log.v(TAG,"retrofit_onFailure=="+call.request().toString());
+    }
+});
+```
+
+
+
+## ERR 처리
+
+> Retrofit2 Android: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path $
+
+* [참고_Stack overflow](https://stackoverflow.com/questions/36177629/retrofit2-android-expected-begin-array-but-was-begin-object-at-line-1-column-2)
+
+* Response 로 넘어온 데이터가 List 가 아닌 객체로 넘어와 에러발생
+
+  * getData 메서드의 반환 타입을 List로 해서 에러가 발생하였다
+
+  ```java
+  //Error Code//
+  public interface KakaoRetrofit {
+      @GET("v3/search/book?target=title")
+      Call<List<SearchData>> getData(
+          @Header("Authorization") String kakaoAK,
+          @Query("query") String keyword);
+  }
+  
+  //수정 코드//
+  public interface KakaoRetrofit {
+      @GET("v3/search/book?target=title")
+      Call<DocumentList> getDocument(
+          @Header("Authorization") String kakaoAK,
+          @Query("query") String keyword);
+  }
+  ```
+
+  
 
 # 참고사이트
 
-[Rerofit](https://square.github.io/retrofit/)
+[Retrofit](https://square.github.io/retrofit/)
+
+[RETROFIT2](https://jongmin92.github.io/2018/01/29/Programming/android-retrofit2-okhttp3/)
 
 [Retrofit2 Example](https://falinrush.tistory.com/5)
 
@@ -31,55 +142,7 @@ implementation 'com.squareup.retrofit2:converter-scalars:2.4.0'
 
 
 
-
-
 ```kotlin
-lateinit var retrofit : Retrofit
-    lateinit var myAPI : IWakaServer
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val TAG = MainActivity::class.java.simpleName
-        Log.d(TAG,"on create!")
-        setContentView(R.layout.activity_main)
-        //retrofit setting
-        retrofit = RetrofitClient.getInstnace() // 2에서 만든 Retrofit client의 instance를 불러옵니다.
-        myAPI = retrofit.create(IWakaServer :: class.java) // 여기서 retrofit이 우리의 interface를 구현해주고
-                                                      //우리는 이제 그것을 사용할 수 있습니다.
-       //Runnable로 감싸주는 이유는!
-       // Android 에서 MainThread 에서 네트워킹 관련 일을 못해서
-       // 새로운 스레드에서 해주어야 합니다. 마지막에 .run() 잊지 마세요
-       Runnable { myAPI.getCodingTime("2019-11-09","MY_API_KEY").enqueue(object : Callback<RawResponseData>{
-           
-           //이때 onFaliure는 Cal을 서버쪽으로 아예 보내지 못한 경우입니다.
-           override fun onFailure(call: Call<RawResponseData>, t: Throwable) {
-                Log.d(TAG,t.message) 
-           }
-           
-        
-          //만약 보낸 것이 성공했을 경우는 resonse를 가지고 들어옵니다.
-          //그리고 call을 때릴 때 RawResponseData로 갔으니까 Reponse도 그 타입을 가지고 옵니다. 
-           override fun onResponse(call: Call<RawResponseData>, response: Response<RawResponseData>) {
-               Log.d(TAG,"response : ${response.body()!!.start}") // 정상출력이 되야 합니다. 
-              
-               //만약 정상 출력이 되지 않으면 문제가 있는 겁니다. 
-               //이때는 Call은 제대로 보냈으나 서버에서 이거뭐냐? 하고 reponse를 보낸 경우 입니다. 
-               Log.d(TAG,"response : ${response.errorBody()}")
-               Log.d(TAG,"response : ${response.message()}")
-               Log.d(TAG,"response : ${response.code()}") //이게 가장 에러를 알아보기 쉬운 곳 입니다. 
-               Log.d(TAG,"response : ${response.raw().request().url().url()}") //무슨 url로 api call 을 보냈는지
-                                                                             //확인 할 수 있습니다. 
-           }
-       })
-       }.run() //잊지 마세요!
+
 ```
-
-https://dapi.kakao.com/v3/search/book?target=title&query=JAVA
-
-https://dapi.kakao.com/v3/search/book?target=title&query=java
-
-https://dapi.kakao.com/v3/search/book?target=title&query=java&sort=recency&page=1&size=10
-
-https://dapi.kakao.com/v3/search/book?query=java&sort=recency&page=1&size=10
-
-https://dapi.kakao.com/v2/search/web?query=java&sort=recency&page=1&size=10
 
