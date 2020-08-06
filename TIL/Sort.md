@@ -74,26 +74,37 @@
   * 맨 처음 위치를 뺀 나머지 배열을 같은 방법으로 교체한다
 
 ```java
-int min = 0;
-int swap = 0;
-int[] numArr = {2,1,5,3,4,8,7,6};
+package sort;
 
-void selectionSort(int[] numList){
-    for(int i = 0 ; i < numList.length-1 ; i++){
-    	int min = i;
-        for(int j = i ; j <numList.length ; j++){
-            if(numList[min] > numList[j]){
-                min = j;
-            }
-        }
-    if(min < numList[i]){
-        int swap = numList[i];
-        numList[i] = numList[min];
-        numList[min] = swap;
-    }
-	Log.v("SORT","Selection Sort=="+ Arrays.toString(numList));
+public class SelectSort {
+
+	public static void main(String[] args) {
+		
+		int[] numList={5,3,2,1,4,7,6,11};
+		int swap;
+		int minNum;
+		
+		for(int i=0; i<numList.length; i++) {
+			minNum = i;
+			for(int j=i+1; j<numList.length; j++) {
+				if(numList[minNum] > numList[j]) {
+					minNum = j;
+				}
+			}
+			if(numList[i] > numList[minNum]) {
+				swap = numList[i];
+				numList[i] = numList[minNum];
+				numList[minNum] = swap;
+			}
+			System.out.print(numList[i]+" ");
+		}
+	}
 }
 ```
+
+* 결과
+
+![image-20200806111410297](Sort.assets/image-20200806111410297.png) 
 
 
 
