@@ -76,7 +76,7 @@
 ```java
 package sort;
 
-public class SelectSort {
+public class SelectionSort {
 
 	public static void main(String[] args) {
 		
