@@ -1,5 +1,15 @@
 # README
 
+## [TIL](https://github.com/hyunho058/TIL/tree/master/TIL)
+
+* computer Science Study
+* [Algorism](https://github.com/hyunho058/baekjoonAlgorism)
+
+## [Android TIL](https://github.com/hyunho058/TIL/tree/master/AndroidTIL)
+
+* Android 학습
+* [Kotlin](https://github.com/hyunho058/TIL/tree/master/kotlin)
+
 ## [JAVA](https://github.com/hyunho058/MC_TIL/tree/master/Java)
 
 * MultiCampus 빅데이터를 활용한 IoT시스템개발(Feat. 스마트시티 프로젝트)
@@ -16,11 +26,6 @@
   * Component
   * Open API
     * Kakao API
-
-## [Android TIL](https://github.com/hyunho058/TIL/tree/master/AndroidTIL)
-
-* Android 학습
-* [Kotlin](https://github.com/hyunho058/TIL/tree/master/kotlin)
 
 ## [Web](https://github.com/hyunho058/TIL/tree/master/Web)
 
@@ -63,10 +68,7 @@
 * MultiCampus 빅데이터를 활용한 IoT시스템개발(Feat. 스마트시티 프로젝트)
   * github 특강
 
-## [TIL](https://github.com/hyunho058/TIL/tree/master/TIL)
 
-* computer Science Study
-* [Algorism](https://github.com/hyunho058/baekjoonAlgorism)
 
 
 
