@@ -20,6 +20,18 @@
 > 2. 프래그먼트 실행 - 정해진 동작을 수행
 > 3. 프래그먼트 파괴 - 역할을 다하고 종료
 
+* onAttach() - Fragment가 Activity 에 최초로 연결될 떄호출
+* onCreate() - Fragment를 초기화하는 메소드
+* onCreateView() - Layout inflator 작업이 진행
+* onActivityCreated() - Activity의 onCreate() UI 작업이 마무리된 후, Fragment가 Activity에 완벽히연결된 상태.
+* onStrat() - 부모 Activity가 화면에 보이면 호출
+* onResume() - 부모 Activity가 유저 input을 받을 준비가 됨
+* onPause() - 부모 Activity가 화면에 보이지만 포커스를 잃게회면 호출
+* onStop() - 부모 Activity가 더이상 화면에 보이지 않을 때 호출
+* onDestroyVIew() - onCreateView()에서 호출된 View들이 Activity에서 제거되면서 호출된다. 일반적으로 View리소스를 해제하는데 사용한다.
+* onDestroy() - onCreate()에 대응되는 함수, Fragment가 더 이상 유효하지 않을 때 호출, 일반적으로 Fragment 자체 리소스를 해제하는 용도로 사용된다.
+* onDetach() - Fragment가 더이상 Activity에 연결되어 있지 않은 상황에서 호출, 일반적으로 부모 Activity에서 Fragment의 참조를 가지고 있다면 null로 바꿔주는 작업을 수행
+
 ## 기본 생성 Code
 
 * Activity
