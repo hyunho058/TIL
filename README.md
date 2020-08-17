@@ -3,29 +3,27 @@
 ## [TIL](https://github.com/hyunho058/TIL/tree/master/TIL)
 
 * computer Science Study
+  * data structure
 * [Algorism](https://github.com/hyunho058/baekjoonAlgorism)
 
 ## [Android TIL](https://github.com/hyunho058/TIL/tree/master/AndroidTIL)
 
 * Android 학습
 * [Kotlin](https://github.com/hyunho058/TIL/tree/master/kotlin)
+* [Android- (MultiCampus 빅데이터를 활용한 IoT시스템개발(Feat. 스마트시티 프로젝트))](https://github.com/hyunho058/MC_TIL/tree/master/Android)
+  * Activity
+  * Broadcast receiver
+  * Service
+  * Permission
+  * Component
+  * Open API
+    * Kakao API
 
 ## [JAVA](https://github.com/hyunho058/MC_TIL/tree/master/Java)
 
 * MultiCampus 빅데이터를 활용한 IoT시스템개발(Feat. 스마트시티 프로젝트)
 * [Java NetWork](https://github.com/hyunho058/TIL/tree/master/Network)
   * [NetWork Programing](https://github.com/hyunho058/JavaNetwork)
-
-## [Android](https://github.com/hyunho058/MC_TIL/tree/master/Android)
-
-* MultiCampus 빅데이터를 활용한 IoT시스템개발(Feat. 스마트시티 프로젝트)
-  * Activity
-  * Boradcast receiver
-  * Service
-  * Permission
-  * Component
-  * Open API
-    * Kakao API
 
 ## [Web](https://github.com/hyunho058/TIL/tree/master/Web)
 
