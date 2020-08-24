@@ -4,7 +4,7 @@
 
 * computer Science Study
   * data structure
-* [Algorism](https://github.com/hyunho058/baekjoonAlgorism)
+* [Algorithm](https://github.com/hyunho058/Algorithm)
 
 ## [Android TIL](https://github.com/hyunho058/TIL/tree/master/AndroidTIL)
 
