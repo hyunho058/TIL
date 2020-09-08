@@ -193,6 +193,189 @@ fragmentManager.popBackStack();
 
 
 
+# RecyclerView
+
+* Code
+
+  * xml
+
+  ```xml
+  <?xml version="1.0" encoding="utf-8"?>
+  <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+        
+    <include layout="@layout/toolbar_back"/>
+        
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/return_record_recycler_view"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/color_ffffff">
+    </androidx.recyclerview.widget.RecyclerView>
+          
+  </LinearLayout>
+  ```
+
+  ![image-20200908224819686](RecyclerVIew.assets/image-20200908224819686.png) 
+
+  * RecyclerView Item(row)
+
+  ```xml
+  <?xml version="1.0" encoding="utf-8"?>
+  <RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+  
+    <LinearLayout
+      android:id="@+id/request_linear_layout"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_marginTop="25dp"
+      android:layout_marginLeft="20dp">
+      <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="변경 요청 날짜"
+        android:textSize="14dp"
+        android:textColor="@color/color_222222"
+        android:fontFamily="@font/nanumsquareroundb"/>
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/request_date_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2020.05.09"
+        android:textSize="14dp"
+        android:textColor="@color/color_666666"
+        android:fontFamily="@font/nanumsquareroundb"
+        android:layout_marginLeft="20dp"/>
+  
+    </LinearLayout>
+  
+    <LinearLayout
+      android:id="@+id/request_date_linear_layout"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_marginTop="13dp"
+      android:layout_marginLeft="20dp"
+      android:layout_marginBottom="25dp"
+      android:layout_below="@+id/request_linear_layout">
+      <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="반려일"
+        android:textSize="14dp"
+        android:textColor="@color/color_222222"
+        android:fontFamily="@font/nanumsquareroundb"/>
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/return_date_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2020.05.09"
+        android:textSize="14dp"
+        android:textColor="@color/color_666666"
+        android:fontFamily="@font/nanumsquareroundb"
+        android:layout_marginLeft="67dp"/>
+  
+    </LinearLayout>
+  
+    <androidx.appcompat.widget.AppCompatImageView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:src="@drawable/arrow_right"
+      android:layout_alignParentRight="true"
+      android:layout_centerVertical="true"
+      android:layout_marginRight="20dp"/>
+  
+  </RelativeLayout>
+  ```
+
+  ![image-20200908231133459](RecyclerVIew.assets/image-20200908231133459.png) 
+
+  * Activity
+    * Adapter객체를 생성해 row layout과 recyclerView 에 표시할 데이터를 인자로 넣는다
+    * setLayoutManager() 
+    * setAdapter() 에 객체를 생성한 Adapter를 넣어준다
+
+  ```java
+  public class ReturnRecordActivity extends MyActivity {
+  
+    public static Intent getStartIntent(Context context) {
+      Intent intent = new Intent(context, ReturnRecordActivity.class);
+      return intent;
+    }
+   
+    @BindView(R.id.return_record_recycler_view)
+    RecyclerView mReturnRecordRecyclerView;
+    @BindView(R.id.empty_refuse_lineal_layout)
+    LinearLayout mEmptyRefuseLinearLayout;
+  
+    private ReturnRecordAdapter mReturnRecordAdapter;
+    private ArrayList<BaseModel> baseModels = new ArrayList<>();
+  
+    @Override
+    protected int inflateLayout() {
+      return R.layout.activity_return_record;
+    }
+  
+    @Override
+    protected void initLayout() {
+      mToolbarTitle.setText("ToobarTitle");
+      initReturnRecordAdapter();
+    }
+  
+    @Override
+    protected void initRequest() {
+  
+    }
+  
+   
+    public void initReturnRecordAdapter(){
+      //RecyclerView DATA//
+      baseModels.add(new BaseModel());
+      baseModels.add(new BaseModel());
+      baseModels.add(new BaseModel());
+      baseModels.add(new BaseModel());
+  
+      mReturnRecordAdapter = new ReturnRecordAdapter(R.layout.row_return_record, baseModels);
+      mReturnRecordRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, RecyclerView.VERTICAL,false));
+      mReturnRecordRecyclerView.setAdapter(mReturnRecordAdapter);
+  
+      mReturnRecordAdapter.setOnItemClickListener(new ReturnRecordAdapter.OnItemClickListener(){
+        @Override
+        public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+          Timber.i("mReturnRecordAdapter: %s", position);
+          Intent retailReturnRecordActivity = DetailReturnRecordActivity.getStartIntent(ReturnRecordActivity.this);
+          startActivity(retailReturnRecordActivity, TRANS.PUSH);
+        }
+      });
+    }
+  }
+  ```
+
+  * Adapter
+    * adapter class에서 recyclerView position별로 데이터를 적용할 수 있다.
+
+  ```java
+  public class ReturnRecordAdapter extends BaseQuickAdapter<BaseModel, BaseViewHolder> {
+  
+    ReturnRecordAdapter(int layoutResId, @Nullable List<BaseModel> baseModel) {
+      super(layoutResId, baseModel);
+    }
+  
+    @Override
+    protected void convert(BaseViewHolder helper, BaseModel item) {
+      helper.setText(R.id.request_date_text_view, "2020.08.31");
+      helper.setText(R.id.return_date_text_view, "2020.08.31");
+    }
+  }
+  ```
+
+  
+
 ## Other Refernece
 
 [itemListener](https://onlyformylittlefox.tistory.com/9)
