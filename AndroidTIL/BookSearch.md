@@ -7,7 +7,7 @@
   ```java
   dependencies {
           implementation 'com.android.support:recyclerview-v7:28.0.0'
-      }
+      }  
   ```
 
   * LinearLayoutManager
