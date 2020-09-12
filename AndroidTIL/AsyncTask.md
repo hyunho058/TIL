@@ -65,13 +65,13 @@ public class JSONTASK extends AsyncTask<String,Void,String> {
 
 ## 결과값 얻는 방법
 
-> AsyncTask의 DoInBackground의 리턴값으로 얻어올 수 있다.
+> * AsyncTask의 DoInBackground의 리턴값으로 얻어올 수 있다.
 >
-> 위의 예시처럼 하면, 
+>   위의 예시처럼 하면, 
 >
-> long result = new DownloadFilesTask().execute(url1, url2, url3).get();
+> * long result = new DownloadFilesTask().execute(url1, url2, url3).get();
 >
-> 으로 하면된다!!! 무려 execute 하고 난 후에 get을 하면 얻어올수 잇다
+>   으로 하면된다!!! 무려 execute 하고 난 후에 get을 하면 얻어올수 잇다
 
 * 비동기식을 이용
 * AsyncTask class 를 상속받는 class Code 구현
