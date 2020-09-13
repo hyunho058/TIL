@@ -1,8 +1,8 @@
 # Compound Button
 
-> 사용자가 IoT 기기 로부터 On 실행 하면 통신이 넘어오면서 Android Device에 해당 Button이 On이 되면서 IoT기기에 실행 하라는 명령어를 날려준다 이러하면, IoT 기기 가 실을 하고 있어도 동일한 On신호가 전달 되기때문에 문제가 발생 할수 있다.
+> * 사용자가 IoT 기기 로부터 On 실행 하면 통신이 넘어오면서 Android Device에 해당 Button이 On이 되면서 IoT기기에 실행 하라는 명령어를 날려준다 이러하면, IoT 기기 가 실을 하고 있어도 동일한 On신호가 전달 되기때문에 문제가 발생 할수 있다.
 >
->  이것을 방지하기 위해 Android에서 onTouch이 동작 되었을때 IoT에 동작 신호를 보내면 이를 방지 할 수 있다. Android 는 View 의 onTouch가 최상위 이기때문에 이를 가지고 여러 조건을 부여 할 수있다. 
+>  * 이것을 방지하기 위해 Android에서 onTouch이 동작 되었을때 IoT에 동작 신호를 보내면 이를 방지 할 수 있다. Android 는 View 의 onTouch가 최상위 이기때문에 이를 가지고 여러 조건을 부여 할 수있다. 
 
 ## Button 사용시 주의사항
 
