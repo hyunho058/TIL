@@ -67,7 +67,7 @@ public class JSONTASK extends AsyncTask<String,Void,String> {
 
 > * AsyncTask의 DoInBackground의 리턴값으로 얻어올 수 있다.
 >
->   위의 예시처럼 하면, 
+>   위의 예시처럼 하면
 >
 > * long result = new DownloadFilesTask().execute(url1, url2, url3).get();
 >
