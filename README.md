@@ -9,6 +9,8 @@
 ## [Android TIL](https://github.com/hyunho058/TIL/tree/master/AndroidTIL)
 
 * Android 학습
+  * [UI](https://github.com/hyunho058/TIL/tree/master/AndroidTIL/UI)
+  * [API](https://github.com/hyunho058/TIL/tree/master/AndroidTIL/API)
 * [Kotlin](https://github.com/hyunho058/TIL/tree/master/kotlin)
 * [Android- (MultiCampus 빅데이터를 활용한 IoT시스템개발(Feat. 스마트시티 프로젝트))](https://github.com/hyunho058/MC_TIL/tree/master/Android)
   * Activity
