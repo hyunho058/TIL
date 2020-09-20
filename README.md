@@ -11,6 +11,7 @@
 * Android 학습
   * [UI](https://github.com/hyunho058/TIL/tree/master/AndroidTIL/UI)
   * [API](https://github.com/hyunho058/TIL/tree/master/AndroidTIL/API)
+  * [Library](https://github.com/hyunho058/TIL/tree/master/AndroidTIL/library)
 * [Kotlin](https://github.com/hyunho058/TIL/tree/master/kotlin)
 * [Android- (MultiCampus 빅데이터를 활용한 IoT시스템개발(Feat. 스마트시티 프로젝트))](https://github.com/hyunho058/MC_TIL/tree/master/Android)
   * Activity
@@ -19,7 +20,7 @@
   * Permission
   * Component
   * Open API
-    * Kakao API
+    * Kakao API(검색)
 
 ## [JAVA](https://github.com/hyunho058/MC_TIL/tree/master/Java)
 
