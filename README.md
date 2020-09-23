@@ -1,6 +1,6 @@
 # README
 
-## [TIL](https://github.com/hyunho058/TIL/tree/master/TIL)
+## [computer Science](https://github.com/hyunho058/TIL/tree/master/ComputerScienceStudy)
 
 * computer Science Study
   * data structure
