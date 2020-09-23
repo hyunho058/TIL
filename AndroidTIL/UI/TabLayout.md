@@ -82,59 +82,78 @@
 * Activity
 
 ```java
-mMainTabLayout.getTabAt(0).setIcon(R.drawable.loan_menu_1_on);
-mMainTabLayout.getTabAt(1).setIcon(R.drawable.loan_menu_2_off);
-mMainTabLayout.getTabAt(2).setIcon(R.drawable.loan_menu_3_off);
-mMainTabLayout.getTabAt(3).setIcon(R.drawable.loan_menu_4_off);
-mMainTabLayout.getTabAt(4).setIcon(R.drawable.loan_menu_5_off);
+public class MainActivity extends AppCompatActivity {
 
-LoanMainTabPagerAdapter mLoanMainTabPagerAdapter =
-    new LoanMainTabPagerAdapter(getSupportFragmentManager(), this);
-mMainViewPager.setAdapter(mLoanMainTabPagerAdapter);
-mMainViewPager.setOffscreenPageLimit(5);
-mMainViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mMainTabLayout));
-mMainViewPager.setPagingEnabled(false);
-
-mMainTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+    @BindView(R.id.main_tab_layout)
+    TabLayout mMainTabLayout;
+    
     @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        if (tab.getPosition() == 0){
-            tab.setIcon(R.drawable.loan_menu_1_on);
-        }else if (tab.getPosition() == 1){
-            tab.setIcon(R.drawable.loan_menu_2_on);
-        }else if (tab.getPosition() == 2){
-            tab.setIcon(R.drawable.loan_menu_3_on);
-        }else if (tab.getPosition() == 3){
-            tab.setIcon(R.drawable.loan_menu_4_on);
-        }else if (tab.getPosition() == 4){
-            tab.setIcon(R.drawable.loan_menu_5_on);
-        }
-        mMainViewPager.setCurrentItem(tab.getPosition());
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
+        mMainTabLayout.getTabAt(0).setIcon(R.drawable.loan_menu_1_on);
+        mMainTabLayout.getTabAt(1).setIcon(R.drawable.loan_menu_2_off);
+        mMainTabLayout.getTabAt(2).setIcon(R.drawable.loan_menu_3_off);
+        mMainTabLayout.getTabAt(3).setIcon(R.drawable.loan_menu_4_off);
+        mMainTabLayout.getTabAt(4).setIcon(R.drawable.loan_menu_5_off);
+
+        MainTabPagerAdapter mTabPagerAdapter =
+            new MainTabPagerAdapter(getSupportFragmentManager(), this);
+            mMainViewPager.setAdapter(mTabPagerAdapter);
+            mMainViewPager.setOffscreenPageLimit(5);
+            mMainViewPager.addOnPageChangeListener
+                (new TabLayout.TabLayoutOnPageChangeListener(mMainTabLayout));
+            mMainViewPager.setPagingEnabled(false);
+
+        mMainTabLayout.setOnTabSelectedListener(
+            new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 0){
+                    tab.setIcon(R.drawable.loan_menu_1_on);
+                }else if (tab.getPosition() == 1){
+                    tab.setIcon(R.drawable.loan_menu_2_on);
+                }else if (tab.getPosition() == 2){
+                    tab.setIcon(R.drawable.loan_menu_3_on);
+                }else if (tab.getPosition() == 3){
+                    tab.setIcon(R.drawable.loan_menu_4_on);
+                }else if (tab.getPosition() == 4){
+                    tab.setIcon(R.drawable.loan_menu_5_on);
+                }
+                mMainViewPager.setCurrentItem(tab.getPosition());
+
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 0){
+                    tab.setIcon(R.drawable.loan_menu_1_off);
+                    
+                }else if (tab.getPosition() == 1){
+                    tab.setIcon(R.drawable.loan_menu_2_off);
+                }else if (tab.getPosition() == 2){
+                    tab.setIcon(R.drawable.loan_menu_3_off);
+                }else if (tab.getPosition() == 3){
+                    tab.setIcon(R.drawable.loan_menu_4_off);
+                }else if (tab.getPosition() == 4){
+                    tab.setIcon(R.drawable.loan_menu_5_off);
+                }
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+	}
+    //Move Fragment
+    public void moveToFragment(){
+      mMainTabLayout.getTabAt(2).select();
+      mMainViewPager.setCurrentItem(2);
     }
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-        if (tab.getPosition() == 0){
-            tab.setIcon(R.drawable.loan_menu_1_off);
-        }else if (tab.getPosition() == 1){
-            tab.setIcon(R.drawable.loan_menu_2_off);
-        }else if (tab.getPosition() == 2){
-            tab.setIcon(R.drawable.loan_menu_3_off);
-        }else if (tab.getPosition() == 3){
-            tab.setIcon(R.drawable.loan_menu_4_off);
-        }else if (tab.getPosition() == 4){
-            tab.setIcon(R.drawable.loan_menu_5_off);
-        }
-    }
+}
 
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
 
-    }
-});
-
-mMainTabLayout.getTabAt(0).select();
-mMainViewPager.setCurrentItem(0);
 ```
 
 * TabPagerAdapter
@@ -143,36 +162,39 @@ mMainViewPager.setCurrentItem(0);
 ```java
 public class LoanMainTabPagerAdapter extends FragmentStatePagerAdapter {
 
-  private LoanMainActivity mLoanMainActivity;
+  private MActivity mActivity;
 
-  private LoanHomeFragment mLoanHomeFragment;
-  private ConsultationManagementFragment mConsultationManagementFragment;
-  private CustomerManagementFragment mCustomerManagementFragment;
-  private ExpertMyPageFragment mExpertMyPageFragment;
+  private FragmentA fragmentA;
+  private FragmentB fragmentB;
+  private FragmentC fragmentC;
+  private FragmentD fragmentD;
+  private FragmentE fragmentE;
 
-  public LoanMainTabPagerAdapter(FragmentManager fragmentManager,LoanMainActivity mLoanMainActivity){
+  public LoanMainTabPagerAdapter(
+      FragmentManager fragmentManager
+      ,MActivity mActivity){
     super(fragmentManager);
-    this.mLoanMainActivity = mLoanMainActivity;
+    this.mActivity = mActivity;
   }
 
   @Override
   public Fragment getItem(int position) {
     switch (position){
       case 0:
-        mLoanHomeFragment = new LoanHomeFragment(mLoanMainActivity);
-        return mLoanHomeFragment;
+        fragmentA = new FragmentA(mActivity);
+        return fragmentA;
       case 1:
-        mLoanHomeFragment = new LoanHomeFragment(mLoanMainActivity);
-        return mLoanHomeFragment;
+        fragmentB = new FragmentB(mActivity);
+        return fragmentB;
       case 2:
-        mConsultationManagementFragment = new ConsultationManagementFragment();
-        return mConsultationManagementFragment;
+        fragmentC = new FragmentC();
+        return fragmentC;
       case 3:
-        mCustomerManagementFragment = new CustomerManagementFragment();
-        return mCustomerManagementFragment;
+        fragmentD = new FragmentD();
+        return fragmentD;
       case 4:
-        mExpertMyPageFragment = new ExpertMyPageFragment();
-        return mExpertMyPageFragment;
+        fragmentE = new FragmentE();
+        return fragmentE;
     }
     return null;
   }
@@ -184,6 +206,37 @@ public class LoanMainTabPagerAdapter extends FragmentStatePagerAdapter {
 }
 
 ```
+
+
+
+## select() 함수
+
+* Java Code 에서 tab 선택
+  * getTabAt(Index) - 이동하고자 하는 Fragment Index를 설정한다.
+
+```java
+TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+TabLayout.Tab tab = tabLayout.getTabAt(Index);
+tab.select();
+```
+
+* [참고](https://hee96-story.tistory.com/52)
+* select 함수를 사용하지 않고 Fragment를 이동하는 방법
+  * TabLayout 객체를 생성한 Activity에 아래와 같이 Method를 만들어 호출하여 사용한다.
+
+```java
+//Move Fragment
+public void moveToFragment(){
+  mMainTabLayout.getTabAt(2).select();
+  mMainViewPager.setCurrentItem(2);
+}
+```
+
+
+
+
+
+
 
 ## 실행 화면
 
