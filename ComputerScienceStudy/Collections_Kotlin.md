@@ -21,7 +21,7 @@
 ## List
 
 * Immutable (수정할 수 없는 객체, 불변의) => GET만 가능
-  * ListOf<Type>(item)
+  * ListOf<타입>(item)
 
 ```kotlin
 val fruits= listOf<String>("apple", "banana", "kiwi", "peach")
@@ -39,4 +39,62 @@ Log.i("fruits.indexOf("peach") = "+fruits.indexOf("peach"))
 
 * Mutable (수정가능한 객체, 변할 수 있는)
   * mutableListOf => 추가 및 삭제 가능
+
+```kotlin
+val mMutableListOF = mutableListOf<String>("apple", "banana", "kiwi", "peach")
+
+mMutableListOF.remove("apple")
+mMutableListOF.add("grape")
+Timber.i("mMutableListOF: %s", mMutableListOF)
+mMutableListOF.addAll(listOf("melon", "cherry"))
+Timber.i("mMutableListOF: %s", mMutableListOF)
+mMutableListOF.removeAt(3)
+Timber.i("mMutableListOF: %s", mMutableListOF)
+```
+
+![image-20200925234241567](Collections_Kotlin.assets/image-20200925234241567.png) 
+
+
+
+
+
+## Set
+
+> * Set은 동일한 아이템이 없는 Collection이다
+> * 아이템들의 순서는 특별히 지정해져 있지 않다
+> * null객체를 갖고 있을 수 있다
+> * 동일한 객체는 추가될 수 없기 때문에 null도 1개만 갖고 있을 수 있다
+> * Immutable과 Mutable을 지원한다
+
+
+
+*  Immutable
+  * setOf<타입>(items)
+
+```kotlin
+val mSetOf = setOf<Int>(1,2,3,4,5,6,7,8)
+
+Timber.i("mSetOf: %s",mSetOf)
+Timber.i("mSetOf Size: %s", mSetOf.size)
+Timber.i("mSetOf.contains(1): %s",mSetOf.contains(1));
+Timber.i("mSetOf.isEmpty(): %s", mSetOf.isEmpty())
+```
+
+![image-20200926000052035](Collections_Kotlin.assets/image-20200926000052035.png) 
+
+
+
+* Mutable
+  * mutableSetOf<타입>(아이템) => 추가, 삭제 가능
+
+```kotlin
+val mMutableSetOf = mutableSetOf<Int>(1,2,3,4,5,6,7,8)
+
+Timber.i("mMutableSetOf: %s", mMutableSetOf)
+mMutableSetOf.add(100)
+mMutableSetOf.remove(1)
+Timber.i("mMutableSetOf: %s", mMutableSetOf)
+```
+
+![image-20200926000706806](Collections_Kotlin.assets/image-20200926000706806.png) 
 
