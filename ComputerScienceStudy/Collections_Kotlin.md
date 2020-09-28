@@ -98,3 +98,61 @@ Timber.i("mMutableSetOf: %s", mMutableSetOf)
 
 ![image-20200926000706806](Collections_Kotlin.assets/image-20200926000706806.png) 
 
+
+
+
+
+##  Map
+
+> * key와 value를 짝지어 저장하는 Collection이다
+> * key는 유일하기 떄문에 동일한 이름의 key는 허용되지 않는다.
+> * Immutable과 Mutable을 지원
+
+
+
+* Immutable
+  * mapOf<key, value>(item)
+    * item은 Pair객체로 ㅠㅛ현하며, Pair에 key와 value를 넣을 수 있다
+    * Pair(A,B) = > A toB로 간단하게 표현 가능 (to는 infix이다)
+
+```kotlin
+val mMap0 = mapOf<String, String>( "1" to "one", "2" to "two", "3" to "three")
+val mMap1 = mapOf(Pair("1", "one"), Pair("2", "two"), Pair("3", "three"))
+
+Timber.i("mMap0: %s", mMap0)
+Timber.i("mMap1: %s", mMap1)
+```
+
+![image-20200928233348621](Collections_Kotlin.assets/image-20200928233348621.png) 
+
+```kotlin
+Timber.i("mMap0.get(\"1\"): %s", mMap0.get("1"))
+Timber.i("mMap0[\"1\"]: %s", mMap0["1"])
+Timber.i("mMap0[\"1\"]: %s", mMap0.values)
+Timber.i("mMap0 keys: %s", mMap0.keys)
+Timber.i("mMap0 values: %s", mMap0.values)
+```
+
+![image-20200928234255286](Collections_Kotlin.assets/image-20200928234255286.png) 
+
+* Mutable
+  * mutableMapOf<key, value>(item)
+    * put() - 객체 추가
+
+```kotlin
+val mMutableMap = mutableMapOf<String, String>(
+    "1" to "one", "2" to "two", "3" to "three")
+
+Timber.i("mMutableMap: %s", mMutableMap)
+mMutableMap.put("4", "four")
+mMutableMap["5"] = "five"
+Timber.i("mMutableMap: %s", mMutableMap)
+
+mMutableMap.remove("1")
+Timber.i("mMutableMap: %s", mMutableMap)
+
+mMutableMap.clear()
+Timber.i("mMutableMap: %s", mMutableMap)
+```
+
+![image-20200928235112660](Collections_Kotlin.assets/image-20200928235112660.png) 
