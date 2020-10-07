@@ -12,6 +12,18 @@ implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 implementation 'com.squareup.retrofit2:converter-scalars:2.4.0'
 ```
 
+* JSON은 Object  형식으로, Object 형식을 JSON으로 바꿀 수 있다.
+* **gson은 JSON을 저바 클래스로 바꿔주는 역할을 한다.**
+  * 따로 변환 객체를 구현하지 않아도 되게 도와준다.
+* 인터넷을 사용하기 위해 AndroidManifest파일에 인터넷 권한 추가
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+```
+
+
+
 ![Retrofit Benchmark](RETROFIT2.assets/retrofit_benchmark.png)
 
 * 자동적으로 JSON응답을 사전에 정의된 POJO를 통해 직렬화 할 수 있다.
@@ -139,10 +151,4 @@ callDocumentList.enqueue(new Callback<DocumentList>() {
 [jsonschema2pojo](http://www.jsonschema2pojo.org/)
 
 [REST API](https://medium.com/@joycehong0524/android-studio-retrofit2-%EA%B8%B0%EB%B3%B8-%EC%82%AC%EC%9A%A9%EB%B2%95-retrofit-%EC%9D%98%EB%AC%B8%EC%A0%90-%ED%92%80%EC%96%B4%ED%97%A4%EC%B9%98%EA%B8%B0-%EC%8A%A4%EC%95%95-f150db436add)
-
-
-
-```kotlin
-
-```
 
