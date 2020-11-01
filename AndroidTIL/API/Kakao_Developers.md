@@ -1,7 +1,5 @@
 # Kakao_Developers
 
-> * Kakao Open API  사용
-
 
 
 ## 앱 키 발급
@@ -30,20 +28,51 @@
 
  ## API사용
 
-* 문서 - API 개발 가이드 - 해당 API - API TEST / 개발 문서 확인
+* Gradle  설정
 
-1. 기본 가이드
+  * 프로젠트 Gradle 설정
 
-   <img src="Kakao_Developers.assets/image-20201029220159439.png" alt="image-20201029220159439" style="zoom:67%;" /> 
+  ```groovy
+  maven { url 'https://devrepo.kakao.com/nexus/content/groups/public/' }
+  ```
 
-2. API 가이드
+  ![image-20201101214400253](Kakao_Developers.assets/image-20201101214400253.png)
 
-   <img src="Kakao_Developers.assets/image-20201029215817467.png" alt="image-20201029215817467" style="zoom:67%;" /> 
+  * 모듈 레벨의 Gradle 설정
 
- 
+  ```groovy
+  dependencies {
+    implementation "com.kakao.sdk:v2-user:2.0.5" // 카카오 로그인
+    implementation "com.kakao.sdk:v2-talk:2.0.5" // 친구, 메시지(카카오톡)
+    implementation "com.kakao.sdk:v2-story:2.0.5" // 카카오스토리
+    implementation "com.kakao.sdk:v2-link:2.0.5" // 메시지(카카오링크)
+    implementation "com.kakao.sdk:v2-navi:2.0.5" // 카카오내비
+  }
+  ```
 
- 
+  ![image-20201101214501257](Kakao_Developers.assets/image-20201101214501257.png)
 
- 
+
+
+* 개발 문서 확인
+  * 문서 - API 개발 가이드 - 해당 API - API TEST / 개발 문서 확인
+
+    * 기본 가이드
+
+    <img src="Kakao_Developers.assets/image-20201029220159439.png" alt="image-20201029220159439" style="zoom:67%;" />
+
+    * API 가이드
+
+    ​    <img src="Kakao_Developers.assets/image-20201029215817467.png" alt="image-20201029215817467" style="zoom:67%;" /> 
+
+    
+
+     
+
+  
+
+ ## Reference
+
+[Kakao Developers](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-android)
 
  
