@@ -37,3 +37,11 @@ class ImageFragment : Fragment(), ImageContract.View {
 ```
 
 * `import`에는 `kotlinx.android.synthetic.main`까지는 공통으로 적용하고, 이후에는 `layout`의 이름을 사용합니다.
+
+
+
+
+
+## Reference
+
+[https://thdev.tech/kotlin/2017/03/05/AndroidStudio-Kotlin-Extensions/](https://thdev.tech/kotlin/2017/03/05/AndroidStudio-Kotlin-Extensions/)
