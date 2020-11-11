@@ -38,6 +38,29 @@ class ImageFragment : Fragment(), ImageContract.View {
 
 * `import`에는 `kotlinx.android.synthetic.main`까지는 공통으로 적용하고, 이후에는 `layout`의 이름을 사용합니다.
 
+```kotlin
+with (activity) {
+  root_container.visibility = View.GONE
+}
+
+activity?.apply {
+    root_container.visibility = View.GONE
+}
+```
+
+* 커스텀 View나 ViewHolder에서는 아래와 같은 코드를 함께 사용 해야한다
+
+```kotlin
+with (itemView) {
+  root_container.visibility = View.GONE
+}
+
+// Null 발생을 대처하기 위해서 아래와 같이 사용한다
+itemView?.run {
+    root_container.visibility = View.GONE
+}
+```
+
 
 
 
