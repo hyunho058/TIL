@@ -80,3 +80,10 @@ class ExampleUnitTest {
 }
 ```
 
+
+
+
+
+## Reference
+
+[https://thdev.tech/kotlin/androiddev/2017/10/03/Kotlin-Generics/](https://thdev.tech/kotlin/androiddev/2017/10/03/Kotlin-Generics/)
