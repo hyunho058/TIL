@@ -147,6 +147,23 @@ registerReceiver(receiver, intetFilter);
   }
   ```
 
+* 브로드캐스트 전달
+
+  * java
+
+  ```java
+  Intent refresh = new Intent(Constants.BROADCAT_RECEIVER);
+  refresh.putExtra(Constants.KEYWORD, mSearchEditText.getText().toString());
+  mActivity.sendBroadcast(refresh);
+  ```
+
+  * kotlin
+
+  ```kotlin
+  val intent = Intent(Intent.ACTION_LOCALE_CHANGED)
+  sendBroadcast(intent)
+  ```
+
   
 
 
