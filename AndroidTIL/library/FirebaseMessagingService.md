@@ -317,7 +317,7 @@ public class FBMessagingService extends FirebaseMessagingService {
 
 6. 설정 - Token key 확인
 
-   ![image-20210105220809497](FirebaseMessagingService.assets/image-20210105220809497.png)
+   ![image-20210105221631047](FirebaseMessagingService.assets/image-20210105221631047.png)
 
 
 
