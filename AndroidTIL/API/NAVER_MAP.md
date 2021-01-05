@@ -131,9 +131,48 @@
             	}
           });
     	}
+      
+       /**
+   * Naver Map Polygon Overlay
+     *
+     * @param naverMap
+     */
+    private void setPolygonOverlay(@NonNull NaverMap naverMap) {
+      //Naver Map Polygon Overlay
+      PolygonOverlay polygonOverlay = new PolygonOverlay();
+  
+      List<LatLng> latLngs = new ArrayList<>();
+  
+      for (int i = 0; i < areaPointList.size(); i++) {
+        latLngs.add(new LatLng(Double.parseDouble(areaPointList.get(i).getLat()), Double.parseDouble(areaPointList.get(i).getLng())));
+      }
+  
+      polygonOverlay.setCoords(latLngs);
+      polygonOverlay.setColor(Color.parseColor("#26F95959"));
+      polygonOverlay.setOutlineColor(Color.RED);
+      polygonOverlay.setOutlineWidth(5);
+      polygonOverlay.setMap(naverMap);
+  
+      polygonList.add(polygonOverlay);
+  
+      if (polygonList.size() > 1) {
+        Timber.i("remove polygonOverlay");
+        polygonList.get(0).setMap(null);
+        polygonList.remove(0);
+      }
+  
+      //polygon Click Event
+      polygonOverlay.setOnClickListener(new PolygonOverlay.OnClickListener() {
+        @Override
+        public boolean onClick(@NonNull Overlay overlay) {
+          Timber.i("PolygonOverlay");
+          return false;
+        }
+      });
+    }
   }
   ```
-
+  
   
 
 
