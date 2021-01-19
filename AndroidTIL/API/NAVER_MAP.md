@@ -179,9 +179,15 @@
   
   
 
-
-
 ## 좌표값을 이용한 면적 계산
+
+* 면적 계산 이미지
+
+  ![image-20210119214816194](NAVER_MAP.assets/20210119_214732438.gif) 
+
+* Naver Map 면적 측정 이미지(https://map.naver.com/)
+
+  ![image-20210119215129635](NAVER_MAP.assets/image-20210119215129635.png) 
 
 * 네이버 지도의 onMapClick() 이벤트를 이용해 좌표 값을 얻는다.
 
