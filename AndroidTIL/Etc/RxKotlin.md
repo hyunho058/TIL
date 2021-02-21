@@ -18,7 +18,9 @@
     * 이때 넘어오는 Disposable 객체는 Observer가 구독을 해제할때 사용
   * onComplete() - 가지고 있는 값을 모두 전달하면 호출함.
 
-* Example Code
+### Observable 생성
+
+* create
 
 ```kotlin
 override fun onCreate(savedInstanceState: Bundle?) {
