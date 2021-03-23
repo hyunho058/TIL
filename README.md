@@ -30,8 +30,8 @@
 
 ## Spring
 
-* SporingBoot
-* JPA
+* [SporingBoot](https://github.com/hyunho058/TIL/tree/master/Spring/SpringBoot)
+* [JPA](https://github.com/hyunho058/TIL/tree/master/Spring/JPA)
 
 ## [Web](https://github.com/hyunho058/TIL/tree/master/Web)
 
