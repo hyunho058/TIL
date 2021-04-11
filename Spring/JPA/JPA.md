@@ -113,8 +113,90 @@
 ### 영속성 커넥스트의 이점
 
 * 1차 캐시
+
+  * 1차 캐시에서 조회
+
+  ```java
+  Member member = new Member();
+  member.setId("member1");
+  member.setUsername("회원1");
+  //1차 캐시에 저장됨
+  em.persist(member);
+  //1차 캐시에서 조회
+  Member findMember = em.find(Member.class, "member1");
+  ```
+
+  ![image-20210412075751145](JPA.assets/image-20210412075751145.png)
+
+  * 데이터베이스에서 조회
+
+  ```java
+  Member findMember2 = em.find(Member.class, "member2");
+  ```
+
+  ![image-20210412080043039](JPA.assets/image-20210412080043039.png)
+
 * 동일성(idntity)보장
+
+  * 1차 캐시로 반복 가능한 읽기 등급의 트랜잭션 격리 수준을 데이터베이스가 아닌 애플리케이션 차원에서 제공
+
+  ```java
+  Member a = em.find(Member.class, "member1");
+  Member b = em.find(Member.class, "member1");
+  System.out.println(a == b); //동일성 비교 true
+  ```
+
 * 트랜잭션을 지원하는 쓰기 지연(transaction write-behind)
+
+  ```java
+  EntityManager em = emf.createEntityManager();
+  EntityTransaction transaction = em.getTransaction();
+  
+  //엔티티 매니저는 데이터 변경시 트랜잭션을 시작해야 한다.
+  transaction.begin(); // [트랜잭션] 시작
+  em.persist(memberA);
+  em.persist(memberB);
+  //여기까지 INSERT SQL을 데이터베이스에 보내지 않는다.
+  //커밋하는 순간 데이터베이스에 INSERT SQL을 보낸다.
+  transaction.commit(); // [트랜잭션] 커밋
+  ```
+
+  * em.persist();
+
+  ![image-20210412082407435](JPA.assets/image-20210412082407435.png)
+
+  *  transaction.commit();
+
+  ![image-20210412082448566](JPA.assets/image-20210412082448566.png)
+
 * 변경 감지(Dirty Checking)
+
+  ```java
+  EntityManager me = emf.createEntityManager();
+  EntityTransaction transaction = em.getTransaction();
+  transcation.begin(); //[Transaction] 시작
+  
+  //영속 엔티티 조회
+  Member memberA = em.find(Member.class, "memberA");
+  
+  //영속 엔티티 데이터 수정
+  memberA.setUsername("memberB");
+  memberA.setAge(10);
+  
+  transaction.commit(); //[Transcation] 커밋
+  ```
+
+  ![image-20210412083055104](JPA.assets/image-20210412083055104.png)
+
 * 지연 로딩(Lazy Loading)
 
+  ```java
+  Member memberA = em.find(Member.class, "memberA");
+  
+  em.remove(memberA); //엔티티 삭제
+  ```
+
+### 플러시
+
+* 영속성 컨텍스트의 변경내용르 데이터베이스에 반영
+* 
