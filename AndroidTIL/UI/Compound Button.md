@@ -12,17 +12,11 @@ Log로 예시 확인
 
 > onTouch 가 실행 되고 OnClickListener가 실행 되는 모습을 확인 할수있따.
 
-![image-20200209164908224](C:\Users\hyunh\AppData\Roaming\Typora\typora-user-images\image-20200209164908224.png)
+
 
 * On Long Touch
 
 > Long Touch 를 사용 할 수도 있다.
-
-![image-20200209170204014](C:\Users\hyunh\AppData\Roaming\Typora\typora-user-images\image-20200209170204014.png)
-
-<img src="C:\Users\hyunh\AppData\Roaming\Typora\typora-user-images\image-20200209161620747.png" alt="image-20200209161620747" style="zoom:25%;" />
-
-![image-20200209135626501](C:\Users\hyunh\AppData\Roaming\Typora\typora-user-images\image-20200209135626501.png)
 
 > Checked - default : false
 >
