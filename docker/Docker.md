@@ -10,6 +10,7 @@
 *  Download
   * [공식홈페이지](https://www.docker.com/get-started)
   * [Docker Hub](https://hub.docker.com/editions/community/docker-ce-desktop-mac)
+
 *  버전 확인
 
 ```bash
@@ -19,7 +20,7 @@ Docker version 20.10.5, build 55c4c88
 
 ### MariaDB 설치
 
-* 도커 이미지 다운
+* 도커 이미지 다운(mariaDB)
 
 ```bash
 docker pull mariadb:latest
@@ -35,6 +36,8 @@ docker pull mariadb:latest
 ```bash
 docker container run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -v /Users/Shared/data/mariadb:/var/lib/mysql --name mariadb_local mariadb
 ```
+
+## 컨테이너 구동
 
 * 컨테이너 구동
 
@@ -62,6 +65,39 @@ docker stop mariadb_local => 정지
 ```
 
 
+
+## 컨테이너에서 MariaDB실행
+
+* DB접속
+  * mariadb가 설치된 컴테이너 실행
+  * mariadb 접속 (mysql -u root -p)
+
+```bash
+docker exec -i -t mariadb bash 
+
+mysql -uroot -p1234
+```
+
+* database 확인
+
+```bash
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
++--------------------+
+3 rows in set (0.001 sec)
+```
+
+* 사용중인 계정 조회
+
+```bash
+ use mysql;						    // mysql db 사용		
+ select host, user, password from user;	    // 사용중인 계정 조회
+```
 
 
 

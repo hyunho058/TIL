@@ -54,4 +54,5 @@
 * 부모 뷰의 특정 위치를 기준으로 할때 사용
 * app:layout_constraintGuide_begin : 시작지점으로 부터의 거리
 * app:layout_constraintGuide_end : 끝 지점으로 부터의 거리
-* app:layout_constraintGuide_percent: 시작짖머으로 부터의 % 거리
+* app:layout_constraintGuide_percent: 시작점으로 부터의 % 거리
+* app:layout_constraintVertical_bias  : 세로 방향에 비율을 정한다
