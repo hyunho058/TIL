@@ -13,7 +13,7 @@
   * [API](https://github.com/hyunho058/TIL/tree/master/AndroidTIL/API)
   * [Library](https://github.com/hyunho058/TIL/tree/master/AndroidTIL/library)
 * [Kotlin](https://github.com/hyunho058/TIL/tree/master/kotlin)
-* [Android- (MultiCampus 빅데이터를 활용한 IoT시스템개발(Feat. 스마트시티 프로젝트))](https://github.com/hyunho058/MC_TIL/tree/master/Android)
+* [Android- (MultiCampus 빅데이터를 활용한 IoT시스템개발(Feat. 스마트시티 프로젝트))](https://github.com/hyunho058/TIL/tree/master/AndroidTIL/multicampus/Android)
   * Activity
   * Broadcast receiver
   * Service
@@ -21,12 +21,6 @@
   * Component
   * Open API
     * Kakao API(검색)
-
-## [JAVA](https://github.com/hyunho058/MC_TIL/tree/master/Java)
-
-* MultiCampus 빅데이터를 활용한 IoT시스템개발(Feat. 스마트시티 프로젝트)
-* [Java NetWork](https://github.com/hyunho058/TIL/tree/master/Network)
-  * [NetWork Programing](https://github.com/hyunho058/JavaNetwork)
 
 ## Spring
 
@@ -46,6 +40,12 @@
 
 * MultiCampus 빅데이터를 활용한 IoT시스템개발(Feat. 스마트시티 프로젝트)
   * Oracle
+
+## [JAVA](https://github.com/hyunho058/MC_TIL/tree/master/Java)
+
+* MultiCampus 빅데이터를 활용한 IoT시스템개발(Feat. 스마트시티 프로젝트)
+* [Java NetWork](https://github.com/hyunho058/TIL/tree/master/Network)
+  * [NetWork Programing](
 
 ## [R](https://github.com/hyunho058/MC_TIL/tree/master/R)
 
