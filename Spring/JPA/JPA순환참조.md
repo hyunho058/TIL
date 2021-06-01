@@ -3,9 +3,9 @@
 > * 엔티티를 JSON으로 변환하는 도중에 에러가 발생
 >   *  양방향 연관관계 설정시 지연로딩으로 설정된 엔티티를 API에서 내려줄 때,  Jackson이 데이터를 변환하다가 알 수 없는 타입이라는 에러가 발생.
 
-* 엔티티
+* 엔티티 구조
 
-  ![스크린샷 2021-05-31 오전 7.29.48](JPA순환참조.assets/스크린샷 2021-05-31 오전 7.29.48.png)
+  ![image-20210602072309208](JPA순환참조.assets/image-20210602072309208.png)
 
 
 
@@ -43,7 +43,7 @@ public class Book {
     @Column(name = "BOOK_IMAGE")
     private String img;
 
-//    @JsonIgnore //bookReviewList 를 호회하지 않는다..... 쓰면 좋지 않다..... 쓰지마라
+//    @JsonIgnore //bookReviewList 를 조회하지 않는다..... 쓰면 좋지 않다..... 쓰지마라
     @OneToMany(mappedBy = "book")
     private List<BookReview> bookReviewList = new ArrayList<>();
 }
