@@ -26,6 +26,10 @@ public BookResponse findAll(int pageNum) {
 
 
 
+```ba
+
+
+
 
 
 
@@ -65,7 +69,7 @@ public BookResponse findAll(int pageNum) {
           book_review bookreview1_ 
               on book0_.isbn=bookreview1_.isbn
   
-  ```
+```
 
   * countQuery 적용
     * book을 가져오는 query는 복잡해도 CountQuery는 단순해진다.
