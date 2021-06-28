@@ -6,6 +6,8 @@
 
 ## Page
 
+> * 추가 count 쿼리 결과를 포함하는 페이징
+
 * Repository
 
 ```java
@@ -13,6 +15,9 @@ Page<Book> findAll(Pageable pageable);
 ```
 
 * Service
+  * 파라미터로 받은 Pageble은 인터페이스다. 따라서 실제 사용할 때는 해당 인터페이스를 구현한 **org.springframework.data.domain.PageRequest** 객체를 사용
+  * PageRequest 생성자의 첫번째 파라미터에는 현재 페이지를, 두번째 파라미터에는 조회할 데이터 수를 입력.
+    * 추가로 정렬 정보도 파라미터로 사용할 수 있다.
 
 ```java
 public BookResponse findAll(int pageNum) {
@@ -82,7 +87,8 @@ public BookResponse findAll(int pageNum) {
     * 조인이 없기때문에 데이터가 많아도 DB에서 쉽게 가져올수 있다.
 
 ```java
-@Query(value = "select b from Book b left join b.bookReviewList br", countQuery = "select count(b.bookName) from Book b")
+@Query(value = "select b from Book b left join b.bookReviewList br", 
+       countQuery = "select count(b.bookName) from Book b")
 Page<Book> findAll(Pageable pageable);
 ```
 
@@ -113,11 +119,54 @@ Page<Book> findAll(Pageable pageable);
 
   
 
-
-
-
-
 ## Slice
+
+> *  내부적으로 limit +1 
+
+* Repository
+
+```java
+@Query(value = "select b from Book b left join fetch b.bookReviewList br")
+    Slice<Book> findAll(Pageable pageable);
+```
+
+* Service
+
+```jade
+PageRequest pageRequest = PageRequest.of(pageNum, 5);
+Slice<Book> page = bookRepository.findAll(pageRequest);
+```
+
+* slice 결과 쿼리
+
+```bash
+select
+    book0_.isbn as isbn1_0_0_,
+    bookreview1_.review_no as review_n1_1_1_,
+    book0_.author as author2_0_0_,
+    book0_.book_name as book_nam3_0_0_,
+    book0_.category as category4_0_0_,
+    book0_.book_image as book_ima5_0_0_,
+    book0_.kdc as kdc6_0_0_,
+    book0_.keyword as keyword7_0_0_,
+    book0_.publisher as publishe8_0_0_,
+    bookreview1_.isbn as isbn7_1_1_,
+    bookreview1_.create_date as create_d2_1_1_,
+    bookreview1_.declaration as declarat3_1_1_,
+    bookreview1_.rating as rating4_1_1_,
+    bookreview1_.review_contents as review_c5_1_1_,
+    bookreview1_.review_status as review_s6_1_1_,
+    bookreview1_.user_no as user_no8_1_1_,
+    bookreview1_.isbn as isbn7_1_0__,
+    bookreview1_.review_no as review_n1_1_0__ 
+from
+    book book0_ 
+left outer join
+    book_review bookreview1_ 
+	    on book0_.isbn=bookreview1_.isbn 
+order by
+		book0_.book_name desc
+```
 
 
 
