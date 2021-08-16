@@ -6,7 +6,14 @@
   * data structure
 * [Algorithm](https://github.com/hyunho058/Algorithm)
 
-## [Android TIL](https://github.com/hyunho058/TIL/tree/master/AndroidTIL)
+## [Spring](https://github.com/hyunho058/TIL/tree/master/Spring)
+
+* [JPA](https://github.com/hyunho058/TIL/tree/master/Spring/JPA)
+* [Querydsl](https://github.com/hyunho058/TIL/tree/master/Spring/Querydsl)
+* [SrpingBatch](https://github.com/hyunho058/TIL/tree/master/Spring/SpringBatch)
+* [StudyProject](https://github.com/hyunho058/SpringBoot)
+
+## [Android](https://github.com/hyunho058/TIL/tree/master/AndroidTIL)
 
 * Android 학습
   * [UI](https://github.com/hyunho058/TIL/tree/master/AndroidTIL/UI)
@@ -21,12 +28,6 @@
   * Component
   * Open API
     * Kakao API(검색)
-
-## Spring
-
-* [SporingBoot](https://github.com/hyunho058/TIL/tree/master/Spring/SpringBoot)
-* [JPA](https://github.com/hyunho058/TIL/tree/master/Spring/JPA)
-* [StudyProject](https://github.com/hyunho058/SpringBoot)
 
 ## [Web](https://github.com/hyunho058/TIL/tree/master/Web)
 
