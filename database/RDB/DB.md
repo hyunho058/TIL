@@ -2088,13 +2088,13 @@ DEPTNO DNAME                        LOC
 
 .properties
 
-![image-20191224105511259](C:\Users\student\Desktop\khh\myGit\DB\image-20191224105511259.png)
+![image-20191224105511259](DB.assets/image-20191224105511259.png)
 
-![image-20191224101957525](C:\Users\student\Desktop\khh\myGit\DB\image-20191224101957525.png)
+![image-20191224101957525](DB.assets/image-20191224101957525.png)
 
 ojdbc6복사 - 내가 보관하는 lib파일에 붙어넣기 
 
-![image-20191224105701152](C:\Users\student\Desktop\khh\myGit\DB\image-20191224105701152.png)
+![image-20191224105701152](DB.assets/image-20191224105701152.png)
 
 .properties file 생성
 
@@ -2106,10 +2106,9 @@ ojdbc6복사 - 내가 보관하는 lib파일에 붙어넣기
 
 자바 EE로 변경 - data source explower - 
 
-
-
-![image-20191224102509611](C:\Users\student\Desktop\khh\myGit\DB\image-20191224102509611.png)
+![image-20191224102509611](DB.assets/image-20191224102509611.png)
 
 루프백 127.0.0.1 내 자리에 서버 있어
 
-![image-20191224112548237](C:\Users\student\Desktop\khh\myGit\DB\image-20191224112548237.png)
+![image-20191224112548237](DB.assets/image-20191224112548237.png)
+
