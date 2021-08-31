@@ -169,7 +169,7 @@ public class UpdateBookConfiguration {
 
 
 
-## JPA를 사용항
+## JPA를 사용시 주의
 
 * JpaRepository를 ListItemReader, QueueItemReader에 사용하면 안됨.
   - JpaRepository를 사용할 경우 Spring Batch의 장점인 페이징 & Cursor 구현이 없어 대규모 데이터 처리가 불가능. (Chunk 단위 트랜잭션은 됩니다.)
