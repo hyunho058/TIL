@@ -4,7 +4,7 @@
   * 트랜잭션 시작 - 여러 쿼리 실행 - 커밋 또는 롤백
   * 모두 반영(커밋) 또는 모두 반영하지 않거나(롤백)
 
-<img src="트랜잭션.assets/trancaction01.png" alt="trancaction01" style="zoom: 50%;" /> 
+<img src="Transaction.assets/trancaction01.png" alt="trancaction01" style="zoom: 50%;" /> 
 
 * 트랜재션의 범위는 커넥션 기준으로 한다
   * 여러 메소드를 호출할때 여러 메소드를
@@ -89,13 +89,13 @@ public void insertMember(UserInfo userInfo){
 
       * 트랜잭션 동안 같은 데이터를 일게 함(읽는 시점에 특정 버전에 해당하는 데이터만 읽음)
 
-      <img src="트랜잭션.assets/trancaction02.png" alt="trancaction02" style="zoom:33%;" /> 
+      <img src="Transaction.assets/trancaction02.png" alt="trancaction02" style="zoom:33%;" /> 
 
     * Serializable
 
       * 인덱스 잠금이나 조건 기반 잠금 사용
 
-      <img src="트랜잭션.assets/trancaction03.png" alt="trancaction03" style="zoom: 50%;" /> 
+      <img src="Transaction.assets/trancaction03.png" alt="trancaction03" style="zoom: 50%;" /> 
 
 * 동시성 관련 문제들
 
@@ -103,25 +103,25 @@ public void insertMember(UserInfo userInfo){
 
     * Dirty read
 
-    <img src="트랜잭션.assets/trancaction04.png" alt="trancaction04" style="zoom: 50%;" /> 
+    <img src="Transaction.assets/trancaction04.png" alt="trancaction04" style="zoom: 50%;" /> 
 
   * 커밋되지 않은 데이터 덮어쓰 기
 
     * Dirty write
 
-    <img src="트랜잭션.assets/trancaction05.png" alt="trancaction05" style="zoom:50%;" /> 
+    <img src="Transaction.assets/trancaction05.png" alt="trancaction05" style="zoom:50%;" /> 
 
   * 읽는 동안 데이터 변경
 
     * Read skew
 
-    <img src="트랜잭션.assets/trancaction06.png" alt="trancaction06" style="zoom:50%;" /> 
+    <img src="Transaction.assets/trancaction06.png" alt="trancaction06" style="zoom:50%;" /> 
 
   * 변경 유실
 
     * Loas Update (같은 데이터를 쓸 때 발생)
 
-    <img src="트랜잭션.assets/trancaction07.png" alt="trancaction07" style="zoom:50%;" /> 
+    <img src="Transaction.assets/trancaction07.png" alt="trancaction07" style="zoom:50%;" /> 
 
     * 변경 유실 처리 방법
 
@@ -133,13 +133,13 @@ public void insertMember(UserInfo userInfo){
 
         * 조회할 때 수정할 행을 미리 잠금
 
-        <img src="트랜잭션.assets/trancaction08.png" alt="trancaction08" style="zoom:50%;" /> 
+        <img src="Transaction.assets/trancaction08.png" alt="trancaction08" style="zoom:50%;" /> 
 
       * CAS(Compare And Set)
 
         * 수정할 때 값이 같은지 비교
 
-        <img src="트랜잭션.assets/trancaction09.png" alt="trancaction09" style="zoom:50%;" /> 
+        <img src="Transaction.assets/trancaction09.png" alt="trancaction09" style="zoom:50%;" /> 
 
 
 
