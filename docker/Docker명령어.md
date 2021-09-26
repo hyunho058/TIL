@@ -81,8 +81,33 @@ docker attach 컨테이너명
 
 * 컨테이너 외부에서 컨테이너 명령 실행
 
+  * `docker exec`
+  * 이미 실행중인 컨테이너에 명령어를 전달
+
+  `docker run`은 **새로 컨테이너를 만들어서 실행**
+
+  `docker exec`은 **이미 실행중인 컨테이너에 명령어를 전달**
+
 ```bash
-docker exec 컨테이너명 명령 매개변수
+docker exec 컨테이너명 명령
+% docker exec 1233c05773bf ls
+bin
+dev
+etc
+home
+lib
+media
+mnt
+opt
+proc
+root
+run
+sbin
+srv
+sys
+tmp
+usr
+var
 ```
 
 * 컨테이너 삭제
