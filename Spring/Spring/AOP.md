@@ -16,7 +16,7 @@
 ## AOP용어
 
 * Aspect :  흩어진 관심사를 모듈화 한것, 주로 부가기능을 모듈화
-* Target : Aspect를 적용한 곳(어떤 대상에 부가 기능을 부여할 섯인가.)
+* Target : Aspect를 적용한 곳(어떤 대상에 부가 기능을 부여할 것인가.)
 * Advice : 어떤 부가기능을 해야할지에 대한것(Before, AfterReturning, AfterThrowing, After, Around)
 * JoinPoint : Advice가 작용될 지점, 끼어들 수 있는 지점(**메서드**, 필드, 객체, 생성자 등)
 * Point cut : JoinPoint의 상세한 스팩을 정리한 것, Spring AOP에서는 advice가 적용될 메서드를 선정 
@@ -43,13 +43,122 @@
 
 
 
+## 구현 예제
 
+> 메서드가 실행된 시간을 측정하는 예제
 
+### AOP 사용X
 
+```java
+public ResponseEntity<UserResponse> signInCon(@Parameter @RequestBody UserSignInRequest userSignInRequest) {
+    StopWatch stopWatch = new StopWatch();
+    stopWatch.start();
+    try {
+        return ResponseEntity.ok(userService.signIn(userSignInRequest));
+    }finally {
+        stopWatch.stop();
+        log.info("user sign in {} ms", stopWatch.getLastTaskTimeMillis());
+    }
+}
+```
 
+![aop_test_code1](AOP.assets/aop_test_code1.png)
 
+### Spring AOP적용
 
+#### execution을 이용한 방법
 
+* 접근제한자, 리턴타입, 인자타입, 클래스/인터페이스, 메소드명, 파라미터타입, 예외타입 등을 전부 조합가능(특정 타입내의 모든 메소드를 지정가능)
 
+```java
+@Component
+@Aspect
+@Slf4j
+public class Performance {
+    @Around("execution(* com.semobook..*.UserController.*(..))")
+    public Object calculatePerformanceTime(ProceedingJoinPoint proceedingJoinPoint) {
+        Object result = null;
+        try {
+            long start = System.currentTimeMillis();
+            result = proceedingJoinPoint.proceed();
+            long end = System.currentTimeMillis();
+            log.info("{} ms", end - start);
+        } catch (Throwable throwable) {
+            log.info("Exception");
+            throwable.printStackTrace();
+        }
+        return result;
+    }
+}
+```
 
+`@Aspect`어노테이션을 붙여 Aspect를 나타내는 클래스라는 겻을 명시하고 `@Component`를 사용해 스프링 빈에 등록.
+
+`@Around`어노테이션은 타겟 메서드를 감싸서 특정 Advice를 실행한다는 의미이며, `@Around("execution(* com.semobook..*.UserController.*(..))")`는 com.semobook 아래의 패키지 경로의 UserController객체의 모든 메서드에 이 Aspect를 정용한다는 의미.
+
+* `@Around` : 어드바이스
+* `execution` : 포인트컷 지정자
+* `*`리턴타입을 나타냄, 위코드에서는 모든 타입 리턴 가능
+* `com.semobook..*.UserController.*` : 타겟이 되는 메소드 지정
+* `(..)` : 인자(agument)타입, 위코드에서는 모든 타입 인자 허용
+
+* 어드바이스
+  *  `@Before` : 어드바이스 타겟 메소드가 호출되기 전에 어드바이스 기능을 수행
+  * `@After`: 타겟 메소드의 결과에 관계없이(성공, 예외 관게 없음) 타겟 메소드가 완료 되면 어드바이스 기능을 수행
+  * `@AfterReturning`:타겟 메소드가 성곡적으로 결과값을 반환 후에 어드바이스 기능을 수행
+  * `@AfterThrowing`: 타겟 메소드가 수행 중 예외를 던지게 되면 어드바이스 기능을 수행
+  * `@Around`: 어드바이스가 타겟 메소드를 감싸서 타게 ㅅ메소드 흐름전과 후에 어드바이스 기능을 수행
+
+#### @annotation 적용하기
+
+* annotation 작성
+
+```java
+@Documented
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.CLASS)
+public @interface PerformanceCheck {
+}
+```
+
+* Aspect
+
+```java
+@Component
+@Aspect
+@Slf4j
+public class PerformanceAspect {
+
+//    @Around("execution(* com.semobook..*.UserController.*(..))")
+    @Around("@annotation(com.semobook.tools.PerformanceCheck)")
+    public Object calculatePerformanceTime(ProceedingJoinPoint proceedingJoinPoint) {
+        Object result = null;
+        try {
+            long start = System.currentTimeMillis();
+            result = proceedingJoinPoint.proceed();
+            long end = System.currentTimeMillis();
+            log.info("{} ms", end - start);
+        } catch (Throwable throwable) {
+            log.info("Exception");
+            throwable.printStackTrace();
+        }
+        return result;
+    }
+}
+```
+
+execution expression을 `"@annotation(com.semobook.tools.PerformanceCheck)"`로 대체
+
+* 적용 메서드
+
+```java
+/**
+ * userId로 회원조회
+ **/
+@PerformanceCheck
+public UserInfoDto findByUserId(String userId) {
+  	UserInfoDto userInfoDto = new UserInfoDto(userRepository.findByUserId(userId));
+    return userInfoDto;
+}
+```
 
