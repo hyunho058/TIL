@@ -87,3 +87,29 @@
 
 ### 파라미터 그룹 데이터베이스 연결
 
+![스크린샷 2021-10-21 오후 3 36 05](https://user-images.githubusercontent.com/58923731/138224318-88ffb323-9c2d-49e7-b1c3-6709d8850144.png)
+
+데이터베이스 - 파라미터 그룹 선택 - 수정
+
+![스크린샷 2021-10-21 오후 3 37 43](https://user-images.githubusercontent.com/58923731/138224497-56c340fe-4da1-4dee-9fe8-ffc937795d67.png)
+
+DB 파라미터 그룹을 생성한 파라미터 그룹으로 변경.
+
+변경을 완료하고 파라미터 그룹이 반영되지 않을 때가 있기때문에 데이터베이스 - 작업 - 재부팅 을 눌러 재부팅 진행
+
+## PC에서 RDS접속
+
+로컬에서 RDS로 접근하기 위해서 RDS의 보안 그룹에 접속할 PC의 IP주소를 추가가 필요.
+
+EC2-인스턴스-보안탭(생성한 EC2 인스턴스) -보안 그룹 ID 복사-RDS-연결&버안 탭(생성한 RDS )-VPC보안 그룹 클릭
+
+![스크린샷 2021-10-21 오후 4 03 09](https://user-images.githubusercontent.com/58923731/138227924-ba4fa3a0-8542-4887-9a15-17d96d0d58b2.png)
+
+![스크린샷 2021-10-21 오후 4 04 28](https://user-images.githubusercontent.com/58923731/138228103-2a0373ef-77e6-42bf-b71d-881bd181d74f.png)
+
+![스크린샷 2021-10-21 오후 3 56 54](https://user-images.githubusercontent.com/58923731/138228190-fca7dd60-696f-4fa9-96d2-adaa0adb7e63.png)
+
+* 첫 번째 줄에는 EC2의 보안 그룹 추가.
+  * EC2와 RDS 간에 접근가능.
+* 두 번째 줄에는 내 PC의 IP를 등록
+
