@@ -13,7 +13,7 @@ Projection : Entity의 속성들중 일부 데이터만 가져오는 방법
 
 이번에 정리할 내용은 생성자를 이용한 DTO 조회이다.
 * Entity
-```
+```java
 @Entity
 @NoArgsConstructor
 @Getter
@@ -34,10 +34,10 @@ public class UserInfo {
 	
 	  ...
 }
-```java
+```
 
 * DTO 클래스
-```
+```java
 @Data
 public class UserInfoDto {
     private long userNo;
@@ -61,9 +61,9 @@ public class UserInfoDto {
 	  }
 
 }
-```java
-* querydsl
 ```
+* querydsl
+```java
 @Override
 public Page<UserInfoDto> findAllDtoByProjection(Pageable pageable) {
     List<UserInfoDto> results = queryFactory
@@ -86,9 +86,9 @@ public Page<UserInfoDto> findAllDtoByProjection(Pageable pageable) {
             .fetchCount();
     return new PageImpl<>(results, pageable, totalCount);
 }
-```java
-* Test code
 ```
+* Test code
+```java
 @Test
 @DisplayName("FIND_ALL_DTO_BY_PROJECTION")
 void FIND_ALL_DTO_BY_PROJECTION(){
@@ -125,22 +125,22 @@ void FIND_ALL_DTO_BY_PROJECTION(){
     assertThat(results.getTotalElements()).isEqualTo(3L);
     assertThat(results.getTotalPages()).isEqualTo(2);
 }
-```java
+```
 
 
 ## @QueryProjection
-```
+```java
 @QueryProjection
 public UserInfoDto(String userId, String userName) {
     this.userId = userId;
     this.userName = userName;
 }
-```java
+```
 
 위와같이 생성자에 `@QueryProjection`을 달아주고 `compileQuerydsl`을 실행 시켜준뒤 querydsl을 작성해준다
 <img width="282" alt="스크린샷 2021-12-24 오후 4 55 56" src="https://user-images.githubusercontent.com/58923731/147331875-ac5e9292-9ba0-4425-a34f-721fbfaa5ff5.png">
 
-```
+```java
 @Override
 public Page<UserInfoDto> findAllDtoByQueryProjection(Pageable pageable) {
     List<UserInfoDto> results = queryFactory
@@ -155,7 +155,7 @@ public Page<UserInfoDto> findAllDtoByQueryProjection(Pageable pageable) {
             .fetchCount();
     return new PageImpl<>(results, pageable, totalCount);
 }
-```java
+```
 
 * 단점
 	* `@QueryProjection`를 DTO클래스 생성자에 작성해줘야 한다.
