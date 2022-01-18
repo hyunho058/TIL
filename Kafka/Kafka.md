@@ -1,4 +1,4 @@
-# # Kafka
+# Kafka
 ## Kafka 설정
 > docker 환경에 Kafka 설정  
 
