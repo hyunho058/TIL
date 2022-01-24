@@ -101,7 +101,77 @@ MariaDB [(none)]> show databases;
 
 
 
+## Docker mariadb 컨테이너에 샘플 데이터 넣기
 
+[GitHub_test_db](https://github.com/datacharmer/test_db) 에서 `ziq`파일 다운로드
+
+![스크린샷 2022-01-25 오전 8 15 35](https://user-images.githubusercontent.com/58923731/150880924-1ed26a92-966a-465d-997d-881c7b76cbe0.png)
+
+다운받은 test_db파일 복사 - `docker cp 파일경로 컨테이너이름:/`
+
+```bash
+docker cp sw/test_db-master mariadb:/
+```
+
+mariadb 접속 - `docker exec -it 컨테이너ID /bin/bash`
+
+```bash
+root@f789:/# ls
+bin  boot  dev  docker-entrypoint-initdb.d  etc  home  lib  media  mnt  opt  proc  root  run  sbin  srv  sys  test_db-master  tmp  usr  var
+```
+
+test db 설치하기 위해선 `employees.sql`가 있는 위치에서 `mysql -u root -p < employees.sql`명령어 입력
+
+```bash
+root@f789:/# cd test_db-master/
+
+root@f789:/test_db-master# ls
+Changelog      employees_partitioned.sql      load_departments.dump   load_employees.dump  load_salaries3.dump  sakila            test_employees_md5.sql
+README.md      employees_partitioned_5.1.sql  load_dept_emp.dump      load_salaries1.dump  load_titles.dump     show_elapsed.sql  test_employees_sha.sql
+employees.sql  images                         load_dept_manager.dump  load_salaries2.dump  objects.sql          sql_test.sh       test_versions.sh
+
+root@f789:/test_db-master# mysql -u root -p < employees.sql
+```
+
+설치후 `mysql -u root -p`명렁어로 데이터베이스 접속후 `show databases`명령어로 추가 되었는지 확인.
+
+```bash
+root@f789:/# mysql -u root -p
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| employees          |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sql_test           |
+| sys                |
++--------------------+
+6 rows in set (0.001 sec)
+
+MariaDB [(none)]> use employees;
+
+MariaDB [employees]> show tables;
++----------------------+
+| Tables_in_employees  |
++----------------------+
+| current_dept_emp     |
+| departments          |
+| dept_emp             |
+| dept_emp_latest_date |
+| dept_manager         |
+| employees            |
+| salaries             |
+| titles               |
++----------------------+
+8 rows in set (0.001 sec)
+```
+
+
+
+![스크린샷 2022-01-25 오전 8 15 35](https://user-images.githubusercontent.com/58923731/150880924-1ed26a92-966a-465d-997d-881c7b76cbe0.png)
 
 
 
