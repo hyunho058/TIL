@@ -17,7 +17,7 @@ Optional.onNullable(value) :value값이 null인 경우 Optional.empty()가 리�
 Optional.empty() : 빈 객체를 생성
 
 **값이 있는지 없는지 확인**
-inPresent() : 람다식을 인자로 받아, 값이 존재할 때 그 값을 람다시을 적용해준다.
+isPresent() : 람다식을 인자로 받아, 값이 존재할 때 그 값을 람다시을 적용해준다.
 isEmpty() => JAVA11 이상부터 사용가능
 
 **Optional 값 가져오기**
