@@ -3,7 +3,7 @@ version: '3'
 services:
   prometheus:
     image: prom/prometheus
-    container_name: test-prometheus
+    container_name: prometheus
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
@@ -11,6 +11,6 @@ services:
 
   grafana:
     image: grafana/grafana
-    container_name: test-grafana
+    container_name: grafana
     ports:
       - "3000:3000"
